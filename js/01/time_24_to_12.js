@@ -13,7 +13,7 @@ do {
                     time24 = prompt("Минут не может быть больше 59!\nВведите время в 24-часовом формате через точку (Часы.Минуты):", "21.45")
     } while (((!(+time24) && (time24 != null) && (time24 != 0)) || ((time24 < 0 || time24 >= 24) && !!time24) || ((time24 - Math.trunc(time24)) > 0.59)));
 
-    if (time24 > 13) { time12 = time24 - 12 } else { time12 = time24 };
+    if (time24 >= 13) { time12 = time24 - 12 } else { time12 = time24 };
     if (time12) {
         time12 = +time12;
         alert(`Вы ввели время: ` + time24 + `.\nВремя в 12-часовом формате: ` + time12.toFixed(2) + " !!!")
