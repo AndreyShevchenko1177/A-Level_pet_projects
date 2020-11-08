@@ -1,0 +1,140 @@
+Отметьте неверные декларации идентификаторов:
+let $__100500;
+var 5x5 = 25;		//неверно - начинается с цифры
+const ПИ = 3.1459;	//можно - но не стоит использовать кирилицу
+var $$$$ = 1000000
+under_score = 15;	//если раньше было объявление переменной under_score, то можно
+====================================================================
+
+
+Выберите все правильные конструкции в коде ниже
+var var = 5;		
+var VaR;		//можно
+var vaR = undefined;	//можно
+Var var = 10;
+====================================================================
+
+
+Выберите правильные операции присвоения
+a = 5;			//если раньше было объявление переменной a, то можно
+let b = Math.random();	//можно
+var c = prompt()	//можно
+prompt() = null
+====================================================================
+
+
+var b  = 5;
+    b += 2;
+
+var a  = 5;
+    a %= 2;
+
+Чему будет равно b:	//7
+Чему будет равно a:	//1
+====================================================================
+
+
+let a = 5
+Каково значение выражения a++ + a--	//11
+Чему будет равно a ?			//5	
+====================================================================
+
+
+
+Сформируйте объект с массивами и массив с объектами с осмысленными данными.
+
+let firstClassPassengers = ["John Doe", "Петя Иванов", "fio_3", "fio_4", "fio_5"];
+let businessClassPassengers = ["fio_6", "fio_7", "fio_8", "", "fio_9"];
+let economClassPassengers = ["fio_10", "fio_11", "fio_12", "fio_13", "fio_14"];
+
+
+let plainKharkovRio = {
+    dateOfFly: "2020-11-08",
+    firstClass: firstClassPassengers,
+    businessClass: businessClassPassengers,
+    economClass: economClassPassengers
+}
+====================================================================
+
+
+Добавьте условие отрицательного возраста. 
+Расставьте недостающие (но синтаксически необязательные) фигурные скобки.
+
+var age = +prompt("Сколько вам лет?", "");
+
+if (age < 18) { alert("школьник"); }
+else {
+    if (age > 18 && age < 30) { alert("молодежь"); }
+    else {
+        if (age > 30 && age < 45) { alert("зрелость"); }
+        else {
+            if (age > 45 && age < 60) { alert("закат"); }
+            else {
+                if (age > 60) { alert("как пенсия?"); }
+                else {
+                    if (age < 0) { alert("похоже вы еще не родились :))"); }
+                    else { alert("то ли киборг, то ли ошибка"); }
+                }
+            }
+        }
+    }
+}
+====================================================================
+
+
+Перепишите пример выше, используя if-else
+
+var color = prompt("Введите цвет", "");
+
+switch (color) {
+    case "red": document.write("<div style='background-color: red;'>красный</div>");
+        break;
+    case "black": document.write("<div style='background-color: black; color: white;'>черный</div>");
+        break;
+    case "blue": document.write("<div style='background-color: blue;'>синий</div>");
+        break;
+    case "green": document.write("<div style='background-color: green;'>зеленый</div>");
+        break;
+    default: document.write("<div style='background-color: gray;'>Я не понял</div>");
+}
+
+
+if (color == "red") { document.write("<div style='background-color: red;'>красный</div>"); }
+else {
+    if (color == "black") { document.write("<div style='background-color: black; color: white;'>черный</div>") }
+    else {
+        if (color == "blue") { document.write("<div style='background-color: blue;'>синий</div>") }
+        else {
+            if (color == "green") { document.write("<div style='background-color: green;'>зеленый</div>"); }
+            else { document.write("<div style='background-color: gray;'>Я не понял</div>"); }
+        }
+    }
+}
+====================================================================
+
+
+
+Напишите бессмысленное выражение, используя максимум усвоенных на текущий момент знаний.
+
+//просто непреодолимо трудно написать бессмысленное выражение
+//лучше приведу часть кода из предыдущего ДЗ
+
+do {
+..
+..
+   } while (((!(+time24) && (time24 != null) && (time24 != 0)) || ((time24 < 0 || time24 >= 24) && !!time24) || ((time24 - Math.trunc(time24)) > 0.59)));
+====================================================================
+
+
+Исследуйте код, найдите выражения в нём. 
+Расставьте скобки так, что бы код не изменил своего поведения (работал так же как и сейчас). 
+Объясните как и в каком порядке вычисляются выражения и подвыражения.
+
+
+
+
+
+
+
+
+
