@@ -347,7 +347,7 @@ a {
   /* border: 2px solid rgb(62, 251, 37); */
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   margin: 0 -7px 150px;
 }
 
@@ -357,6 +357,7 @@ a {
   align-items: center;
   margin: 0 7px 30px;
   max-width: calc(50% - 14px);
+  flex-grow: 1;
 }
 
 .servicess_item__img {
@@ -374,6 +375,7 @@ a {
 }
 
 .servicess_item__info__name {
+  /* text-align: left; */
   font-weight: 500;
   font-size: 22px;
   line-height: 26px;
@@ -382,6 +384,7 @@ a {
 }
 
 .servicess_item__info__content {
+  text-align: left;
   font-size: 14px;
   line-height: 20px;
   color: #7e7e7e;
@@ -433,6 +436,10 @@ a {
     overflow: hidden;
     width: 135px;
     margin: 0 auto;
+  }
+
+  .servicess_item__info__content {
+    text-align: center;
   }
 }
 
