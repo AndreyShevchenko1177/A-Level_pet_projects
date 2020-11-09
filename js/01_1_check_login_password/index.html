@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <title>JS-01-1_Check_Login_Password</title>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/normalize.css">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="allWindow">
+        <div class="formaLogin" id="formLog">
+            <form>
+                <p></p><input type="text" id="usLog" name="usrlog" placeholder="Input login (Current year)" required
+                    inputmode="number" value="">
+                </p>
+                <p><input type="password" id="usPass" name="usrpass" placeholder="Input password (Month number)"
+                        required inputmode="number" value="">
+                </p>
+                <div class="buttons">
+                    <input type="button" value="Sign in" onclick="checkPass()">
+                    <button value="Refresh Page" onClick="window.location.reload()">Log off</button>
+                </div>
+
+            </form>
+        </div>
+        <script src="./checkpass.js"></script>
+
+    </div>
+</body>
+
+</html>
