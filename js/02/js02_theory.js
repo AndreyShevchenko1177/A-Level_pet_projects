@@ -16,7 +16,7 @@ let plainKhakovRio = {
 
 var age = +prompt("Сколько вам лет?", "");
 
-if (age < 18) { alert("школьник"); }
+if ((age < 18) && (age >= 0)) { alert("школьник или еще меньше"); }
 else {
     if (age > 18 && age < 30) { alert("молодежь") }
     else {
