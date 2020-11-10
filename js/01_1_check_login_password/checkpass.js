@@ -1,3 +1,11 @@
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+}
+
 function checkPass() {
     let log = document.getElementById("usLog").value;
     let pas = document.getElementById("usPass").value;
@@ -7,4 +15,6 @@ function checkPass() {
     if ((log == currYear) && (pas == currMonth)) {
         document.getElementById("formLog").style.background = "#00ff00"
     } else { document.getElementById("formLog").style.background = "#ff0000" }
+    // sleep(2000);
+    // return;
 }

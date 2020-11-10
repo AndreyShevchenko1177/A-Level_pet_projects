@@ -27,7 +27,7 @@ let economClassPassengers = ["fio_10", "fio_11", "fio_12", "fio_13", "fio_14"];
 
 
 let plainKhakovRio = {
-    dateOfFly,
+    dateOfFly: "202-11-08",
     firstClass: firstClassPassengers,
     businessClass: businessClassPassengers,
     economClass: economClassPassengers
@@ -36,7 +36,7 @@ let plainKhakovRio = {
 
 var age = +prompt("Сколько вам лет?", "");
 
-if (age < 18) { alert("школьник"); }
+if ((age < 18) && (age >= 0)) { alert("школьник"); }
 else {
     if (age > 18 && age < 30) { alert("молодежь") }
     else {
