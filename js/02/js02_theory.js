@@ -160,8 +160,32 @@ Alert(myExCar.getAge());               //28 лет
 
 
 
+var color = prompt("Введите цвет", "");
+switch (color) {
+    case "red": document.write("<div style='background-color: red;'>красный</div>");
+    case "black": document.write("<div style='background-color: black; color: white;'>черный</div>");
+        break;
+    case "blue": document.write("<div style='background-color: blue;'>синий</div>");
+    case "green": document.write("<div style='background-color: green;'>зеленый</div>");
+        break;
+    default: document.write("<div style='background-color: gray;'>Я не понял</div>");
+}
 
+// Перепишите пример выше, используя if-else
 
+let color = "1";
+debugger;
+while (color !== 'stop') {
+    color = prompt("Введите цвет", "");
+    if ((color === "black") || (color === "red")) {
+        if (color === "red") { document.write("<div style='background-color: red;'>красный</div>"); }
+        document.write("<div style='background-color: black; color: white;'>черный</div>");
+    } else {
+        if ((color === "blue") || (color === "green")) {
+            if (color === "blue") { document.write("<div style='background-color: blue;'>синий</div>"); }
+            document.write("<div style='background-color: green;'>зеленый</div>");
 
-
-
+        } else { document.write("<div style='background-color: gray;'>Я не понял</div>") }
+    }
+}
+// ================================================
