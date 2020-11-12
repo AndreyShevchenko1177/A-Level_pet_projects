@@ -21,6 +21,8 @@ do {
 } while (time24);
 
 
+
+
 let firstClassPassengers = ["fio_1", "fio_2", "fio_3", "fio_4", "fio_5"];
 let businessClassPassengers = ["fio_6", "fio_7", "fio_8", "", "fio_9"];
 let economClassPassengers = ["fio_10", "fio_11", "fio_12", "fio_13", "fio_14"];

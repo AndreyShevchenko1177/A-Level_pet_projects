@@ -189,3 +189,104 @@ while (color !== 'stop') {
     }
 }
 // ================================================
+
+
+
+let a = {
+    pole1: 1,
+    pole2: 2,
+    pole3: 3,
+}
+
+
+// вывести значения всех полей объекта
+
+Object.keys(a).forEach(function (currentvalue) { console.log(a[currentvalue]) })
+
+
+
+// получить массив  имен всех полей объекта
+
+b = Object.keys(a)
+
+
+//вывести имена всех полей
+
+Object.keys(a).forEach(function (currentvalue) { console.log(currentvalue) })
+
+Object.keys(tablOfSize).forEach(function (currentvalue) { console.log(currentvalue); console.log(tablOfSize[currentvalue]) })
+
+// ======================================================
+
+
+
+// двумерный массив
+
+var n = 4, m = 4;
+var mas = [];
+for (var i = 0; i < m; i++) {
+    mas[i] = [];
+    for (var j = 0; j < n; j++) {
+        mas[i][j] = 0;
+    }
+}
+console.log(mas);
+
+
+
+
+// ======================================================
+
+
+// Подумайте о том, как можно применить объекты к:
+// Сделайте перевод перевод из нашей системы размеров в американскую 
+// или любую на выбор.Используйте prompt, условия сравнения и alert.
+
+
+
+let tablOfSize = {
+    ru: {
+        countryName: "россия",
+        size: [40, 42, 44, 46, 48, 50, 52, 54,]
+    },
+
+    eu1: {
+        countryName: "бельгия германия нидерланды норвегия финляндия швеция",
+        size: [34, 36, 38, 40, 42, 44, 46, 48,]
+    },
+
+    eu2: {
+        countryName: "франция швейцария",
+        size: [36, 38, 40, 42, 44, 46, 48, 50,]
+    },
+
+    italy: {
+        countryName: "италия",
+        size: [38, 40, 42, 44, 46, 48, 50, 52,]
+    },
+
+    gb: {
+        countryName: "великобритания",
+        size: [8, 10, 12, 14, 16, 18, 20, 22,]
+    },
+
+    usa: {
+        countryName: "сша",
+        size: [6, 8, 10, 12, 14, 16, 18, 20,]
+    },
+
+    usa2: {
+        countryName: "сша",
+        size: ["S", "M", "", "L", "", "XL", "", "XXL",]
+    },
+}
+
+let inputCountry = "";
+let inputSise = 46;
+
+
+inputCountry = (prompt("Введите название страны:", "Россия")).toLowerCase();
+inputSise = +(prompt(`Введите размер одежды в стране ${inputCountry}:`, "46"));
+
+alert()
+
