@@ -315,3 +315,4 @@ while (inputCountry = (prompt("Введите название страны 1:",
     targetSize = "";
 }
 
+
