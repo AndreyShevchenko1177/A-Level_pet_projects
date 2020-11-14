@@ -1,0 +1,230 @@
+/* Andrey Shevchenko. FEA-23. Home work 5 */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: rgb(0, 0, 0);
+  padding: 0px;
+  margin: 0;
+}
+
+.headerclass {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  padding: 62px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 3;
+}
+
+.headerclass > :nth-child(-n + 2) {
+  margin-right: 20px;
+}
+
+.headerclass a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.headerclass a:hover {
+  text-decoration: underline;
+}
+
+.navclass {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-width: 400px;
+  max-width: 550px;
+  flex-grow: 1;
+  margin-right: -20px;
+}
+
+.navclass > :last-child {
+  color: rgba(255, 202, 0, 1);
+  width: 120px;
+}
+
+.heademail {
+  font-size: 16px;
+}
+
+.emeilmenu {
+  display: flex;
+  justify-content: space-between;
+  max-width: 420px;
+  flex-grow: 1;
+}
+
+.headmenu {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-left: 25px;
+}
+
+.poloski {
+  width: 50px;
+  height: 12px;
+  border-top: #fff solid 1px;
+  border-bottom: #fff solid 1px;
+  margin-left: 25px;
+}
+
+/* ---------------MAIN-------------- */
+
+.all_window {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.video {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+}
+
+.center_blok {
+  max-width: 960px;
+  z-index: 2;
+}
+
+.welcome {
+  margin-bottom: 23px;
+}
+
+.welcome__svg {
+  margin-right: 9px;
+}
+
+.welcome__text {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 21px;
+  color: rgb(255, 255, 255, 1);
+}
+
+.center_blok__title {
+  font-weight: 700;
+  font-size: 64px;
+  line-height: 75px;
+  color: #ffffff;
+  max-width: 806px;
+  margin-bottom: 100px;
+}
+
+.center_blok__discuss {
+  position: relative;
+  width: 240px;
+  height: 68px;
+  background-color: rgb(255, 202, 0, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.center_blok__discuss:hover .center_blok__discuss__text {
+  color: rgb(255, 202, 0, 1);
+  transition: all 1s linear;
+}
+
+.center_blok__discuss:hover .center_blok__discuss__tochka {
+  transition: all 1s linear;
+  box-shadow: 0 0px 0 180px rgb(32, 32, 32, 1);
+  right: 150px;
+}
+
+.center_blok__discuss__text {
+  position: absolute;
+  left: 30px;
+  font-weight: 500;
+  font-size: 14px;
+  color: #202020;
+  z-index: 10;
+  transition: all 0.4s linear;
+}
+
+/* .center_blok__discuss__text::after {
+  content: '';
+  color: #fff;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgb(32, 32, 32);
+  margin-left: 20px;
+} */
+
+.center_blok__discuss__tochka {
+  position: absolute;
+  right: 30px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: rgb(32, 32, 32);
+  margin-left: 67px;
+  z-index: 9;
+  box-shadow: 0 0px 0 0px rgb(32, 32, 32, 1);
+  transition: all 0.4s linear;
+}
+
+/* -------BOTTOM----------- */
+
+.low_left_scroll {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 60px;
+  bottom: 111px;
+  color: rgb(126, 126, 126);
+  font-size: 14px;
+  line-height: 20px;
+  transform: rotate(-90deg);
+  z-index: 3;
+}
+
+.low_left_scroll__arrow {
+  transform: rotate(90deg);
+  margin-right: 35px;
+}
+
+.chatbutton {
+  position: absolute;
+  right: 60px;
+  bottom: 109px;
+  width: 76px;
+  height: 76px;
+  background-color: rgb(255, 202, 0);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none;
+  transition: all 0.2s linear;
+  z-index: 3;
+}
+
+.chatbutton:hover {
+  box-shadow: 0 0px 0 15px rgb(255, 202, 0, 0.2);
+}

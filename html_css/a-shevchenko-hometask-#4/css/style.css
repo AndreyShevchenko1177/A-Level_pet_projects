@@ -1,0 +1,81 @@
+/* Andrey Shevchenko. FEA-23. Home work 4 */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #000;
+  padding: 0px;
+  margin: 0;
+}
+
+.headerclass {
+  padding: 62px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.headerclass > :nth-child(-n + 2) {
+  margin-right: 20px;
+}
+
+.headerclass a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.headerclass a:hover {
+  text-decoration: underline;
+}
+
+.navclass {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-width: 400px;
+  max-width: 550px;
+  flex-grow: 1;
+  margin-right: -20px;
+}
+
+.navclass > :last-child {
+  color: rgba(255, 202, 0, 1);
+  width: 120px;
+}
+
+.heademail {
+  font-size: 16px;
+}
+
+.emeilmenu {
+  display: flex;
+  justify-content: space-between;
+  max-width: 420px;
+  flex-grow: 1;
+}
+
+.headmenu {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-left: 25px;
+}
+
+.poloski {
+  width: 50px;
+  height: 12px;
+  border-top: #fff solid 1px;
+  border-bottom: #fff solid 1px;
+  margin-left: 25px;
+}

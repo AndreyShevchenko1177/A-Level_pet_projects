@@ -1,0 +1,160 @@
+/* Andrey Shevchenko. FEA-23. Home work 5 */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  /* background-color: #000; */
+  padding: 0px;
+  margin: 0;
+}
+
+.headerclass {
+  z-index: 5;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  padding: 62px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  color: rgb(255, 255, 255);
+  opacity: 50%;
+  background-color: rgb(255, 59, 59);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.headerclass > :nth-child(-n + 2) {
+  margin-right: 20px;
+}
+
+.headerclass a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.headerclass a:hover {
+  text-decoration: underline;
+}
+
+.navclass {
+  color: #fff;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  min-width: 400px;
+  max-width: 550px;
+  flex-grow: 1;
+  margin-right: -20px;
+}
+
+.navclass > :last-child {
+  color: rgba(255, 202, 0, 1);
+  width: 120px;
+}
+
+.heademail {
+  font-size: 16px;
+}
+
+.emeilmenu {
+  display: flex;
+  justify-content: space-between;
+  max-width: 420px;
+  flex-grow: 1;
+}
+
+.headmenu {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-left: 25px;
+}
+
+.poloski {
+  width: 50px;
+  height: 12px;
+  border-top: #fff solid 1px;
+  border-bottom: #fff solid 1px;
+  margin-left: 25px;
+}
+
+/* -----main----- */
+
+.heading {
+  background-color: rgb(42, 42, 42);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.heading__inner {
+  max-width: 960px;
+  width: 100%;
+  background-color: rgb(0, 179, 0);
+  height: 300px;
+}
+
+.arrow {
+  font-size: 14px;
+  line-height: 20px;
+  color: #7e7e7e;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 65px;
+  bottom: 174px;
+  transform: rotate(-90deg);
+}
+
+.arrow svg {
+  transform: rotate(90deg);
+  margin-right: 40px;
+}
+
+.chat {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: ;
+  background-color: #ffca00;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 65px;
+  bottom: 174px;
+  box-shadow: none;
+  /* transition: all 0.5s linear; */
+  animation-name: button;
+  animation-duration: 1s;
+  animation-iteration-count: 5;
+  animation-direction: normal;
+}
+
+.chat:hover {
+  background-color: saddlebrown;
+  box-shadow: 0 0px 0 15px rgb(255, 202, 179, 0.1);
+}
+
+@keyframes button {
+  0% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: 0 0px 0 15px rgb(255, 202, 179, 0.1);
+  }
+  100% {
+    box-shadow: 0 0px 0 15px rgb(255, 202, 179, 0.1);
+  }
+}

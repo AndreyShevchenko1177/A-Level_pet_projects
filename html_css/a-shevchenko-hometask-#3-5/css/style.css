@@ -1,0 +1,55 @@
+/* Andrey Shevchenko. FEA-23. Home work #3-5. */
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+header {
+  background: #ff8888;
+  height: 150px;
+  line-height: 150px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 96px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  /* margin: 0 auto; */
+  /* min-width: 320px; */
+}
+
+.maincont {
+  min-height: 725px;
+  width: calc(100% - 390px);
+  background: rgba(58, 249, 77, 1);
+  font-size: 96px;
+  text-align: center;
+}
+
+.fio {
+  font-size: 30px;
+  text-align: center;
+}
+
+.sidebar {
+  background: rgba(248, 252, 40, 1);
+  width: 390px;
+  font-size: 72px;
+  text-align: center;
+}
+
+footer {
+  background: #88c6ff;
+  height: 145px;
+  line-height: 145px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 96px;
+}

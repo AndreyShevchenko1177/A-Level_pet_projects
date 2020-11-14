@@ -1,0 +1,56 @@
+/* lesson 3 */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  height: 4000px;
+}
+
+div {
+  font-size: 25px;
+  text-align: center;
+  /* min-height: 300px; */
+  margin-bottom: 50px;
+  padding: 30px;
+  vertical-align: middle;
+  color: #fff;
+}
+
+.float {
+  /* height: auto; */
+  padding: 0;
+  margin: 0;
+}
+
+.float::after {
+  content: '';
+  clear: both;
+  display: block;
+}
+
+.fixed {
+  background: rgb(228, 62, 95);
+  border: 10px solid rgb(90, 4, 21);
+  border-radius: 30%;
+  float: left;
+}
+
+.absolute {
+  background: rgb(20, 220, 37);
+  border: 5px solid rgb(133, 6, 31);
+  float: right;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+}
+.relativ {
+  background: rgb(173, 20, 220);
+  border: 7px dotted rgb(41, 4, 63);
+}
+.relativ-child {
+  background: rgb(220, 110, 20);
+  border: 5px solid rgb(114, 59, 7);
+  float: left;
+}

@@ -1,0 +1,54 @@
+
+Server:
+
+@students.a-level.com.ua
+
+andreyshevchenko1177@students.a-level.com.ua
+
+Pass:
+
+HfpLdfNhB
+
+
+========================
+
+
+http://alvl.andreyshevchenko1177.fe.a-level.com.ua/
+
+
+pwd - меое местоположение
+
+/
+cd  --- если без параметров - то в домашнюю папку
+
+cd /home/asmodeus/public_html/
+
+cd- --- вернуться в предыдущую папку
+
+ls -a   --- список всего
+ls -A     almost all
+
+ cd ../../filonitta/public_html/exam/
+
+ls -l ---- long подробно
+
+uptime   --- сколько работал?
+
+права - себе, своим, остальным   r w x
+
+vim index.html
+
+i - incert
+
+esc :wq
+
+mkdir
+vim index.html
+
+cd ~/public_html
+mv html-css-final-sheva77 html_final    ---- переименовать каталог
+
+rm - r 'dir'
+
+
+

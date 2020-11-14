@@ -1,0 +1,52 @@
+/* Andrey Shevchenko. FEA-23. Home work 2. */
+
+a[href^='https'] {
+  color: red;
+} /* все ссылки начин с https - красные */
+
+/* 1-й способ */
+.list > li:last-child a {
+  background-color: green;
+}
+
+/* 2-й способ */
+/* div>ul>li:last-of-type {background-color: green;} */
+
+/* 3-й способ */
+/* h1+ul>li:last-of-type{background-color: green;} */
+
+ul + p {
+  font-size: 26px;
+}
+
+h1 + p {
+  margin-bottom: 100px;
+}
+
+.text-box h3:first-child {
+  color: pink;
+}
+
+#greycol {
+  color: gray;
+}
+
+div > p:first-child {
+  color: red;
+}
+
+.text-box p:nth-last-child(2) {
+  color: green;
+}
+
+.yellow {
+  color: yellow;
+}
+
+footer {
+  background-color: rgb(100, 200, 100);
+  font-weight: 700;
+  color: blue;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 30px;
+}

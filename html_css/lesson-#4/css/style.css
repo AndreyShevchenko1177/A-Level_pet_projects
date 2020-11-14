@@ -1,0 +1,88 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+
+.header {
+  padding: 15px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #000000;
+  margin-bottom: 123px;
+}
+.header__info {
+  display: flex;
+  justify-content: space-between;
+}
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-decoration: none;
+  margin: 0;
+  margin-left: 103px;
+  padding: 0;
+  list-style: none;
+}
+.navigation li {
+  margin-right: 35px;
+}
+.navigation li:last-child {
+  margin-right: 0;
+}
+.navigation li a {
+  color: #000;
+  text-decoration: none;
+  font-size: 14px;
+}
+.phone {
+  font-size: 18px;
+  line-height: 21px;
+  text-decoration: none;
+  color: #000;
+}
+.car-item {
+  width: 350px;
+  border: 1px solid #000000;
+  padding: 20px 15px 29px;
+  margin: 0 37px 0;
+}
+.car-item__img {
+  margin-bottom: 45px;
+}
+.car-item__title {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  margin-bottom: 29px;
+  text-align: center;
+}
+.car-holder {
+  margin: 0 auto;
+  max-width: 1198px;
+}
+.car-list {
+  display: flex;
+  justify-content: space-around;
+  margin: 0 -37px;
+}
+.car-item__description {
+  font-size: 12px;
+  line-height: 14px;
+  margin-bottom: 30px;
+}
+.car-item__link {
+  background: #28A5FF;
+  max-width: 320px;
+  height: 56px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
