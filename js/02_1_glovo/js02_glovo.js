@@ -11,7 +11,7 @@ let flatsPerFloor;
 let entrance;
 let floor;
 while (namberOfFlat !== 0) {
-    namberOfFlat = (+prompt("Ведите номер квартиры", "1"));
+    namberOfFlat = (+prompt("Ведите номер квартиры", "1");
     maxFloor = (+prompt("Сколько в доме этажей?", "1"));
     flatsPerFloor = (+prompt("Сколько квартир на этаже?", "1"));
     // debugger;
