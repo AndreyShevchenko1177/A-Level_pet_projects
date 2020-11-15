@@ -10,7 +10,7 @@ let taskList = (`
 8 default: if (John Doe with IF)
 9 login and password
 10 currency calc
-11 scissors
+11 scissors (камень ножницы бумага) - черный пояс
 `)
 
 function hw03_logika_v2() {
@@ -228,8 +228,25 @@ function hw03_logika_v2() {
 
         };
             break;
-        //     case "currency calc": { ; }; break;
-        //     case "scissors": { ; }; break;
+        //     case "currency calc": { ; }; break;  --- буду делать real data
+        case 11: {
+            let greeting = `\nТвой вариант?\n1-камень, 2-ножницы, 3-бумага ?\n\nВведи число:\nДля завершения введи ноль "0"`
+            let youChoice = "1";
+            let myChoice;
+            let arrVariant = ["камень", "ножницы", "бумага"];
+            // debugger;
+            while (!!youChoice) {
+                while (!(youChoice = +(prompt(greeting, "0"))) && (youChoice !== 0));
+                if ((youChoice < 4) && (youChoice > 0)) {
+                    myChoice = Math.floor(Math.random() * 3) + 1;
+                    alert(`Мой вариант - ${arrVariant[myChoice - 1]}`);
+                    console.log(youChoice, myChoice);
+                    (((youChoice - myChoice === 1) || ((youChoice - myChoice) === (-2))) && (!alert("Ты проиграл!!! LOSER!"))) ||
+                        (((youChoice === myChoice) && (!alert("---НИЧЬЯ---"))) || (alert("Ты выиграл, мой повелитель!")))
+                }
+            }
+        };
+            break;
         default: { alert("Такого мы еще не умеем...!!!") };
     }
 }
