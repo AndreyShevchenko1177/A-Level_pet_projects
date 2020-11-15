@@ -203,6 +203,28 @@ function hw03_logika_v2() {
         };
             break;
         case 9: {
+            // debugger
+            let correctLogin = "admin";
+            let correctPass = "qwerty";
+            let inputLogin = inputPass = "";
+
+
+            if (inputLogin = prompt("Login?")) {
+                if (inputLogin === correctLogin) {
+                    if (inputPass = prompt("Password"))
+                        if (inputPass === correctPass) { alert("CORRECT") }
+                        else { alert("Incorrect password") }
+                } else { alert("Incorrect login!") }
+            };
+
+
+            // Дальше тоже рабочий вариант, но не перестает спрашивать логин, пока не введем правильный логин
+            // {
+            //     while (!((((inputLogin = prompt("Login?")) && (inputLogin === correctLogin)) || (alert("Такого пользователя не существует.")))
+            //         && ((inputPass = prompt("Password?")) || alert("Пароль надо ввести!"))));
+            //     ((inputLogin === correctLogin) && (inputPass === correctPass)) &&
+            //         !(alert("CORRECT !!")) || (alert("Ваш пароль не верный!"))
+            // };
 
         };
             break;
