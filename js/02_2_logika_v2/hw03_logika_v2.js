@@ -92,6 +92,8 @@ function hw03_logika_v2() {
             }
         };
             break;
+
+
         case 2: {
             // var color = prompt("Введите цвет", "");
             // switch (color) {
@@ -123,6 +125,8 @@ function hw03_logika_v2() {
             };
         };
             break;
+
+
         case 3: {
             let age = "";
             while (!(age)) {
@@ -131,14 +135,20 @@ function hw03_logika_v2() {
             alert(`Вы родились в ${new Date().getFullYear() - +age} году, \nконечно, если дата на компьютере установлена правильно.`);
         };
             break;
+
+
         case 4: {
             ((confirm("Сегодня будет шопинг?")) || (alert("Вот ты бяка!!!"))) && (alert("COOL!!!"));
         };
             break;
+
+
         case 5: {
             if (confirm("Сегодня будет шопинг?")) { alert("COOL!!!") } else alert("Вот ты бяка!!!");
         };
             break;
+
+
         case 6: {
             function ucFirst(str) {
                 if (!str) { return str; }
@@ -156,6 +166,8 @@ function hw03_logika_v2() {
             alert(surname + " " + name + " " + patronymic);
         };
             break;
+
+
         case 7: {
             function ucFirst(str) {
                 if (!str) { return str; }
@@ -177,6 +189,8 @@ function hw03_logika_v2() {
             alert(surname + " " + name + " " + patronymic);
         };
             break;
+
+
         case 8: {
 
             function ucFirst(str) {
@@ -202,6 +216,8 @@ function hw03_logika_v2() {
             alert(surname + " " + name + " " + patronymic);
         };
             break;
+
+
         case 9: {
             // debugger
             let correctLogin = "admin";
@@ -229,24 +245,30 @@ function hw03_logika_v2() {
         };
             break;
         //     case "currency calc": { ; }; break;  --- буду делать real data
+
+
         case 11: {
             let greeting = `\nТвой вариант?\n1-камень, 2-ножницы, 3-бумага ?\n\nВведи число:\nДля завершения введи ноль "0"`
             let youChoice = "1";
             let myChoice;
             let arrVariant = ["камень", "ножницы", "бумага"];
+            let result;
             // debugger;
             while (!!youChoice) {
                 while (!(youChoice = +(prompt(greeting, "0"))) && (youChoice !== 0));
                 if ((youChoice < 4) && (youChoice > 0)) {
                     myChoice = Math.floor(Math.random() * 3) + 1;
                     alert(`Мой вариант - ${arrVariant[myChoice - 1]}`);
-                    console.log(youChoice, myChoice);
-                    (((youChoice - myChoice === 1) || ((youChoice - myChoice) === (-2))) && (!alert("Ты проиграл!!! LOSER!"))) ||
-                        (((youChoice === myChoice) && (!alert("---НИЧЬЯ---"))) || (alert("Ты выиграл, мой повелитель!")))
+                    result = (youChoice - myChoice + 3) % 3;
+                    ((result === 1) && (!alert("Ты проиграл!!! LOSER!"))) ||
+                        (((result === 0) && (!alert("---НИЧЬЯ---"))) ||
+                            (alert("Ты выиграл, мой повелитель!")))
                 }
             }
         };
             break;
+
+
         default: { alert("Такого мы еще не умеем...!!!") };
     }
 }
