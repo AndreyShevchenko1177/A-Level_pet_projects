@@ -498,8 +498,34 @@ function hw03_loops() {
             // Гадалка пытается угадать, что введет пользователь(естественно перед его вводом),
             //     но не показывает пользователю, что бы пользователь не выбрал противоположный вариант,
             //         а выводит предполагаемый вариант в консоль, скрытую от пользователя.
+
+            let predictArray = [];
+            let history = [];
+            let a;
+            for (i = 0; i < 4; i++) {
+                history[i] = prompt("Введи 1 или 0", 1);
+                gad = (Math.round(Math.random()));
+                (!!gad) && !alert(`${gad} - BINGO !!!`) || alert(`${gad} - Uuups...`);
+                predictArray[i] = [];
+                for (j = 0; j < 4; j++) {
+                    predictArray[i][j] = [];
+                    for (k = 0; k < 4; k++) {
+                        predictArray[i][j][k] = [];
+                        for (l = 0; l < 4; l++) {
+                            predictArray[i][j][k][l] = (-1);
+                        }
+
+                    }
+                }
+            }
+            // еще не доделал
+            debugger;
+            while ((a = prompt("Введи 1 или 0")) !== "0") {
+
+            }
+
         };
-        // break;
+            break;
 
         default: { alert("Такого мы еще не умеем...!!!") };
     }
