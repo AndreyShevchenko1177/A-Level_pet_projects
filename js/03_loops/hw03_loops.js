@@ -4,17 +4,17 @@ let taskList = (`
 2 declarative fields
 3 object links
 4 imperative array fill 3
-5 while confirm
+5 while confirm (confirm наоборот)
 6 array fill
 7 array fill nopush
-8 infinite probability
-9 empty loop
+8 infinite probability (бесконечный rundom)
+9 empty loop (prompt наоборот)
 10 progression sum
-11 chess one line
-12 numbers
-13 chess
-14 cubes
-15 multiply table
+11 chess one line (Шахматы в линию)
+12 numbers (Башня из цифр 0123456789)
+13 chess (Шахматная доска)
+14 cubes (Возведение в степень)
+15 multiply table (табл умножения)
 16 matrix to html table
 17 Задание на синий пояс: Треугольник
 18 Задание на черный пояс: Электронная гадалка
@@ -408,22 +408,64 @@ function hw03_loops() {
         case 14: {
             // Сформируйте массив из N элементов, содержащий в себе кубы индексов, т.е:
             // [0, 1, 8, 27, 64...]
+
+            let cubes = [];
+            let namOfItem = +prompt("Сколько элементов создать?", 5);
+            let pow = +prompt("В какую степень возводить?", 3);
+            for (let i = 0; i <= namOfItem; i++) {
+                cubes[i] = Math.pow(i, pow);
+            }
+            alert(cubes);
+
         };
-        // break;
+            break;
 
 
         case 15: {
             // C помощью вложенного цикла сформируйте массив массивов "таблица умножения".Для инициализации вложенных массивов используйте
             // arr[i] = [] //в i-тый элемент массива заносится новый пустой массив
             // arr[5][6] должен быть равен, соответственно, 30, arr[7][2] == 14 и так далее.
+
+            let n = m = 10;
+            let str = "";
+            var masMultip = [];
+            for (var i = 1; i <= m; i++) {
+                masMultip[i] = [];
+                str = "";
+                for (var j = 1; j <= n; j++) {
+                    masMultip[i][j] = i * j;
+                    if (masMultip[i][j] < 10) { str = str + "0" }
+                    str = str + masMultip[i][j] + " ";
+                }
+                str = "<div>" + str + "</div>";
+                document.write(str);
+            }
         };
-        // break;
+            break;
 
 
         case 16: {
-            // Сделайте вложенный цикл, который формирует HTML - таблицу в переменной строкового типа из любого двумерного массива.Т.е.если в нём использовать результат работы предыдущего задания, то получится таблица умножения в HTML(Таблица Пифагора)
+            // Сделайте вложенный цикл, который формирует HTML - таблицу 
+            // в переменной строкового типа из любого двумерного массива.
+            //     Т.е.если в нём использовать результат работы предыдущего задания,
+            //         то получится таблица умножения в HTML(Таблица Пифагора)
+
+            let n = m = 10;
+            let str1 = str = `<table border="1" align="center">`;
+            var masMultip = [];
+            for (var i = 1; i <= m; i++) {
+                masMultip[i] = [];
+                str1 = ``;
+                for (var j = 1; j <= n; j++) {
+                    masMultip[i][j] = i * j;
+                    str1 = str1 + `<td align="center">` + masMultip[i][j] + `</td>`;
+                }
+                str = str + `<tr>` + str1 + `</tr>`;
+            }
+            str = str + `</table>`
+            document.write(str);
         };
-        // break;
+            break;
 
 
         case 17: {
@@ -433,12 +475,29 @@ function hw03_loops() {
             // ...#####...
             // ..#######..
             // ###########
+
+            let hi;
+            hi = +prompt("Задайте высоту пирамиды:", 6);
+            let str = "";
+            for (let i = 1; i <= hi; i++) {
+                for (k = 1; k <= hi - i; k++) { str = str + "."; }
+                for (k = 1; k <= ((i - 1) * 2 + 1); k++) { str = str + "#"; }
+                for (k = 1; k <= hi - i; k++) { str = str + "."; }
+                str = str + "\n"
+            }
+            console.log(str);
+            alert(str);
+
+
         };
-        // break;
+            break;
 
 
         case 18: {
-            // Пользователь вводит 0 или 1. Гадалка пытается угадать, что введет пользователь(естественно перед его вводом), но не показывает пользователю, что бы пользователь не выбрал противоположный вариант, а выводит предполагаемый вариант в консоль, скрытую от пользователя.
+            // Пользователь вводит 0 или 1. 
+            // Гадалка пытается угадать, что введет пользователь(естественно перед его вводом),
+            //     но не показывает пользователю, что бы пользователь не выбрал противоположный вариант,
+            //         а выводит предполагаемый вариант в консоль, скрытую от пользователя.
         };
         // break;
 
