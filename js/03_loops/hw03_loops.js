@@ -20,7 +20,7 @@ let taskList = (`
 18 Задание на черный пояс: Электронная гадалка
 `)
 
-function hw03_logika_v2() {
+function hw03_loops() {
     var task = +(prompt("Что? Новый хозяин! надо???  Введите номер задания:\n" + taskList, "Напечь за меня пирогов!").toLowerCase());
     switch (task) {
         case 1: {
@@ -291,7 +291,7 @@ function hw03_logika_v2() {
             // Сделайте цикл с prompt, который прерывается по нажатию OK и
             //  продолжается по нажатию "Отмена" c пустым телом цикла.
             let a;
-            while (!(((!!(a = prompt("OK - выйдет из цикла\nCancel - продолжит цикл"))) || (!(a !== ""))) && (a !== null))) { };
+            while ((a = prompt("OK - выйдет из цикла\nCancel - продолжит цикл")) === null) { };
 
         };
             break;
@@ -299,20 +299,62 @@ function hw03_logika_v2() {
 
         case 10: {
             // Подсчитать сумму арифметической прогрессии от 1 до N c шагом 3(1, 4, 7....) используя цикл for.
+            let maxNumber = (+prompt("До какого числа подсчитывать арифметическую прогрессию?", 1)) + 1;
+            let mySum = 0;
+            let sequence = "";
+
+            for (let i = 1; i < maxNumber; (i += 3)) {
+                mySum = mySum + i;
+                sequence = sequence + ", " + i;
+            };
+            alert(`Max = ${maxNumber - 1}\n${sequence.slice(2, sequence.length)}\nСумма = ${mySum}`);
+
         };
-        // break;
+            break;
 
 
         case 11: {
-            // Сформировать строку " # # # # # " с помощью цикла for.Длина строки может быть четной и нечетной, и указывается в одном месте в коде.
+            // Сформировать строку " # # # # # " с помощью цикла for.
+            // Длина строки может быть четной и нечетной, и указывается в одном месте в коде.
+
+            let leng;
+            let str = str1 = "";
+            leng = +prompt("Какую длину строки формировать?", 10);
+            for (let i = 0; i < leng; i += 2) {
+                str = str + " #";
+            }
+            str1 = str.slice(0, leng);
+            alert(`"${str1}"`);
+
         };
-        // break;
+            break;
 
 
         case 12: {
             // Сформировать строку c помощью вложенных циклов.Для перевода строки используйте \n.
+            // 0123456789
+            // 0123456789
+            // 0123456789
+            // 0123456789
+            // 0123456789
+            // 0123456789
+            // 0123456789
+            // 0123456789
+            // 0123456789
+            // 0123456789
+
+            let str = str1 = "";
+            let hi;
+            hi = +prompt("Какой высоты строить башню?", 5);
+            for (let i = 0; i < hi; i++) {
+                for (j = 0; j < 10; j++) { str = str + j; };
+                str = str + `\n`
+            }
+            str1 = str.slice(0, -1);
+            alert(str1);
+
         };
-        // break;
+            break;
 
 
         case 13: {
@@ -328,8 +370,39 @@ function hw03_logika_v2() {
             // #.#.#.#.#.#.
             // .#.#.#.#.#.#
             // #.#.#.#.#.#.
+
+
+            //  ---------------ТОЖЕ РАБОЧИЙ ВАРИАНТ
+            // let x = y = 0;
+            // let str = strtemp = "";
+            // x = +prompt("Ширина доски?", 5);
+            // y = +prompt("Высота доски?", 5);
+            // for (i = 0; i < y; i = i + 2) {
+            //     strtemp = "";
+            //     for (k = 0; k < x; k = k + 2) { strtemp = strtemp + "_#"; };
+            //     str = str + strtemp.slice(0, x) + "\n";
+            //     strtemp = "";
+            //     for (k = 0; k < x; k = k + 2) { strtemp = strtemp + "#_"; };
+            //     str = str + strtemp.slice(0, x) + "\n";
+            // }
+            // strtemp = str.slice(0, (x * y + y - 1));
+            // alert(`${x} x ${y}\n${strtemp}`);
+
+            let x = y = 0;
+            let str = str2 = "";
+            x = +prompt("Ширина доски?", 5);
+            y = +prompt("Высота доски?", 5);
+            for (let i = 1; i < x + 2; i = i + 2) { str = str + "_#" };
+            for (let i = 0; i < y; i++) { str2 = str2 + str.slice((i % 2), (x + (i % 2))) + "\n"; }
+            str = str2.slice(0, -1);
+            alert(`${x} x ${y}\n${str}`);
+
+
+
+
+
         };
-        // break;
+            break;
 
 
         case 14: {
