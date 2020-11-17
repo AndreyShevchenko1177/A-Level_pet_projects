@@ -145,7 +145,7 @@ function hw03_logika_v2() {
             // var arr3 = [+prompt(text), +prompt(text), +prompt(text)]; //вводим числа.
             // Организуйте таким способом заполнение полей в объектах:
 
-            var notebook = {
+            let notebook = {
                 brand: prompt("Введите бренд:", "HP"),
                 type: prompt("Введите тип:", "440 G4"),
                 model: prompt("Введите модель:", "Y7Z75EA"),
@@ -158,17 +158,17 @@ function hw03_logika_v2() {
                 },
             };
 
-            var phone = {
-                brand: "meizu",
-                model: "m2",
-                ram: 2,
-                color: "black",
+            let phone = {
+                brand: prompt("Введите бренд", "meizu"),
+                model: prompt("Введите модель", "m2"),
+                ram: +prompt("Введите объем ОЗУ", 2),
+                color: prompt("Введите цвет", "black"),
             };
 
-            var person = {
-                name: "Donald",
-                surname: "Trump",
-                married: true,
+            let person = {
+                name: prompt("Введите имя", "Donald"),
+                surname: prompt("Введите фамилию", "Trump"),
+                married: confirm("Вы женаты?"),
             }
 
         };
@@ -180,44 +180,121 @@ function hw03_logika_v2() {
             // Добавьте владельца в гаджеты, используя новое поле owner в объектах телефона и ноутбука.
             // обратите внимание на цикличность ссылок в объектах, если вы все сделали правильно, то
             // person.smartphone.owner.laptop.owner.smartphone == person.smartphone
+
+            let person = {
+                name: prompt("Введите имя", "Donald"),
+                surname: prompt("Введите фамилию", "Trump"),
+                married: confirm("Вы женаты?"),
+            }
+
+            if (confirm("Ноутбук есть?")) {
+                person["laptop"] = {
+                    owner: person,
+                    brand: prompt("Введите бренд:", "HP"),
+                    type: prompt("Введите тип:", "440 G4"),
+                    model: prompt("Введите модель:", "Y7Z75EA"),
+                    ram: +prompt("Введите объем ОЗУ:", "4"),
+                    size: prompt("Введите диагональ:", "14"),
+                    weight: +prompt("Вес:", "1.8"),
+                    resolution: {
+                        width: +prompt("Разрешение по горизонтали:", "1920"),
+                        height: +prompt("Разрешение по вертикали:", "1080"),
+                    }
+                }
+            }
+
+            if (confirm("Смартфон есть?")) {
+                person["smartphone"] = {
+                    owner: person,
+                    brand: prompt("Введите бренд", "meizu"),
+                    model: prompt("Введите модель", "m2"),
+                    ram: +prompt("Введите объем ОЗУ", 2),
+                    color: prompt("Введите цвет", "black"),
+                };
+            }
+
+            alert(`person.smartphone.owner.laptop.owner.smartphone == person.smartphone\n${person.smartphone.owner.laptop.owner.smartphone == person.smartphone}`)
+
+
         };
-        // break;
+            break;
 
 
         case 4: {
-            // Создайте пустой массив и добавьте в него три элемента, введенные пользователем(prompt), используя императивный подход(несколько операторов подряд)
+            // Создайте пустой массив и добавьте в него три элемента, введенные пользователем(prompt), 
+            // используя императивный подход(несколько операторов подряд)
+
+            let myArr = [];
+            for (let i = 0; i < 3; i++) { myArr[i] = prompt(`Введите значение ${i}-го элемента массива:`) };
+            alert(myArr);
+
         };
-        // break;
+            break;
 
 
         case 5: {
             // Сделайте цикл с confirm, который продолжается по Отмена и заканчивается по ОК.
+            while (!confirm("Еще разок?"));
         };
-        // break;
+            break;
 
 
         case 6: {
-            // Создайте пустой массив и добавляйте в него элементы, пока пользователь не нажмет Отмена в очередном prompt.Используйте push для удобства: push
+            // Создайте пустой массив и добавляйте в него элементы, пока пользователь не нажмет Отмена в очередном prompt.
+            // Используйте push для удобства: push
+
+            let myArr = [];
+            do {
+                myArr.push(prompt(`Введите значение ${myArr.length}-го элемента массива:`));
+            } while (myArr[myArr.length - 1] !== null);
+            // myArr.length = myArr.length - 1;   // тоже работает
+            myArr.pop();
+            alert(myArr);
+            console.log(myArr);
         };
-        // break;
+            break;
 
 
         case 7: {
             // Сделайте предыдущее задание, не используя push, а обращаясь к элементам по индексу.
+
+            let myArr = [];
+            do {
+                myArr[myArr.length] = prompt(`Введите значение ${myArr.length}-го элемента массива:`);
+            } while (myArr[myArr.length - 1] !== null);
+            myArr.length = myArr.length - 1;
+            // myArr.pop();  // тоже работает
+            alert(myArr);
+            console.log(myArr);
         };
-        // break;
+            break;
 
 
         case 8: {
-            // Создайте бесконечный цикл, который прерывается с помощью конструкции break, когда Math.random() > 0.9.Код должен подсчитывать количество итераций и вывести это число с помощью alert.
+            // Создайте бесконечный цикл, который прерывается с помощью конструкции break, когда Math.random() > 0.9.
+            // Код должен подсчитывать количество итераций и вывести это число с помощью alert.
+
+            let i = k = 0;
+            do {
+                debugger;
+                k = Math.random();
+                if (k > 0.9) break;
+                i++;
+            } while (true);
+            alert(`Последнее число: ${k}\nЧисло итераций: ${i} +1 последняя`);
+
         };
-        // break;
+            break;
 
 
         case 9: {
-            // Сделайте цикл с prompt, который прерывается по нажатию OK и продолжается по нажатию "Отмена" c пустым телом цикла.
+            // Сделайте цикл с prompt, который прерывается по нажатию OK и
+            //  продолжается по нажатию "Отмена" c пустым телом цикла.
+
+            while ((!(a = prompt())) || (!(a="")))    { };
+
         };
-        // break;
+            break;
 
 
         case 10: {
