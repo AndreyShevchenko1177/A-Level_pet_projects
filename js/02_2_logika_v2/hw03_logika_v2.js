@@ -244,7 +244,12 @@ function hw03_logika_v2() {
 
         };
             break;
-        //     case "currency calc": { ; }; break;  --- буду делать real data
+
+
+        case 10: {
+            window.open("./curensy.html", "_self");
+        };
+            break;
 
 
         case 11: {

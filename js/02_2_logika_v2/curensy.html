@@ -1,0 +1,52 @@
+<html lang="en">
+
+
+<body>
+    <div>
+        <span>Из какой валюты:</span>
+        <select id="rates"></select>
+    </div>
+    <div>
+        <input type="number" id="amount" value="0">
+        <p></p>
+
+    </div>
+    <div>
+        <span>В какую валюту:</span>
+        <select id="rates2"></select>
+    </div>
+    <div>
+        <p>результат</p>
+        <input type="number" id="result2" value="0">
+    </div>
+    <h1 id="result"></h1>
+    <button value="Refresh Page" onClick='location.href="./index.html"'>Назад на главную</button>
+    <script>
+        fetch('https://api.exchangeratesapi.io/latest')
+            .then(res => res.json())
+            .then(d => {
+                console.log(d)
+                // тут у нас есть данные 
+                //и ниже с ними можно работать
+                //нигде кроме этой функции (этих фигурных скобок) переменной d нет
+                d.rates["EUR"] = 1;
+                console.log(d)
+
+                let str = "";
+                for (let currency in d.rates) {
+                    // console.log(currency, d.rates[currency])
+                    str += `<option value="${d.rates[currency]}">${currency}</option>`
+                }
+                rates2.innerHTML = rates.innerHTML = str
+            })
+        rates.onchange = rates2.onchange = amount.oninput = () => {
+            console.log(amount.value, rates.value, rates2.value)
+            result2.value = result.innerHTML = amount.value / rates.value * rates2.value
+        }
+
+
+
+    </script>
+</body>
+
+</html>

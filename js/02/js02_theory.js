@@ -15,19 +15,20 @@ let plainKhakovRio = {
 
 
 var age = +prompt("Сколько вам лет?", "");
-
-if ((age <= 18) && (age >= 0)) { alert("школьник или еще меньше"); }
+if (age < 0) { alert("похоже вы еще не родились :))") }
 else {
-    if (age > 18 && age < 30) { alert("молодежь") }
+    if (age < 18) { alert("школьник или еще меньше") }
     else {
-        if (age > 30 && age < 45) { alert("зрелость"); }
+        if (age < 30) { alert("молодежь") }
         else {
-            if (age > 45 && age < 60) { alert("закат"); }
+            if (age < 45) { alert("зрелость") }
             else {
-                if (age > 60) { alert("как пенсия?"); }
+                if (age < 60) { alert("закат") }
                 else {
-                    if (age < 0) { alert("похоже вы еще не родились :))"); }
-                    else { alert("то ли киборг, то ли ошибка"); }
+                    if (age < 100) { alert("как пенсия?") }
+                    else {
+                        alert("то ли киборг, то ли ошибка")
+                    }
                 }
             }
         }
