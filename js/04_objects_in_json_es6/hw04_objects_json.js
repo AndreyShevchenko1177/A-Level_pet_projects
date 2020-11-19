@@ -72,14 +72,18 @@ function hw04_json(task) {
             // Проверку делайте по typeof или in в if.
 
             hw04_json(2);
-            debugger
+
             for (person in myObjArr) {
-                for (keyi in myObjArr[person])
-                    if (keyi in mustHaveKeys) { alert(keyi) }
+                let strTemp = "";
+                for (keyi in myObjArr[person]) {
+                    if (!mustHaveKeys.includes(keyi)) { strTemp += keyi + ", " }
+                }
+                console.log(strTemp);
+                if (strTemp !== "") {
+                    alert(`В ${person}-м обьекте такие необязательные поля: \n${strTemp}`);
+                } else { alert(`В ${person}-м обьекте необязательных полей нет.`) }
             }
 
-
-            ;
         } //case #
             break;
 
