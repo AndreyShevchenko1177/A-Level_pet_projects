@@ -8,7 +8,7 @@ let taskList = (`
 7 loop of loop of values
 8 fullName
 9 serialize - JSON-строку из persons
-10
+10 deserialize
 `)
 
 let a = {};
@@ -34,6 +34,8 @@ function showAllObjects() {
 
 
 function hw04_json(task) {
+
+
     if (task === undefined) {
         task = +(prompt("Что? Новый хозяин! надо???  Введите номер задания:\n" + taskList, "Напечь за меня пирогов!").toLowerCase());
     }
@@ -202,9 +204,63 @@ function hw04_json(task) {
             // serialize
             // Создайте JSON - строку из persons
 
+            hw04_json(8);
+            showAllObjects();
+            let jsonStr = JSON.stringify(myObjArr);
+            console.log(jsonStr);
+
+        } //case #
+            break;
+
+
+        case 10: {
+            // deserialize
+            // Создайте ассоциативный массив с одной персоной из JSON - строки.
+            // Добавьте её в persons
+
+            hw04_json(8);
+            showAllObjects();
+            let jsonStr = `{"name":"JsonName","surname":"JsonSurname","age":2020,"fullName":"JsonName JsonSurname"}`;
+            let jsonObj = JSON.parse(jsonStr);
+            myObjArr.push(jsonObj);
+            console.log(myObjArr);
+            showAllObjects();
+
+        } //case #
+            break;
+
+
+
+        case 0: {
+
             ;
         } //case #
             break;
+
+
+
+        case 0: {
+
+            ;
+        } //case #
+            break;
+
+
+
+        case 0: {
+
+            ;
+        } //case #
+            break;
+
+
+
+        case 0: {
+
+            ;
+        } //case #
+            break;
+
 
 
         case 0: {
