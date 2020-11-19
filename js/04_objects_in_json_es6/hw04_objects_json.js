@@ -3,6 +3,12 @@ let taskList = (`
 2 different fields
 3 fields check
 4 array of persons
+5 loop of persons
+6 loop of name and surname
+7 loop of loop of values
+8 fullName
+9
+10
 `)
 
 let a = {};
@@ -10,6 +16,22 @@ let b = {};
 let c = {};
 let myObjArr = [a, b, c];
 mustHaveKeys = ["name", "surname"];
+
+
+
+function showAllObjects() {
+    let strTemp = "";
+    for (i in myObjArr) {
+        for (key in myObjArr[i]) {
+            strTemp += myObjArr[i][key] + "  "
+        }
+        console.log(strTemp);
+        strTemp = "";
+    }
+    alert("Загляни в консоль...");
+}
+
+
 
 function hw04_json(task) {
     if (task === undefined) {
@@ -25,15 +47,14 @@ function hw04_json(task) {
             // в каждом из которых должны быть поля name и surname.
 
 
-            function insFullname(obj, count) {
-                obj["name"] = prompt(`Объект ${count}.["name"] =  ?`, "a");
-                obj["surname"] = prompt(`Объект ${count}.["surname"] =  ?`, "Aa");
+            function insFullname(obj, objName, i) {
+                obj["name"] = prompt(`Объект ${objName}.["name"] =  ?`, `Name_${i}`);
+                obj["surname"] = prompt(`Объект ${objName}.["surname"] =  ?`, `Surname_${i}`);
             }
 
             let myStr = 'abc';
             for (i = 0; i <= 2; i++) {
-                insFullname(
-                    myObjArr[i], myStr[i]);
+                insFullname(myObjArr[i], myStr[i], i);
             }
             console.log(a)
             console.log(b)
@@ -52,9 +73,9 @@ function hw04_json(task) {
             hw04_json(1);
 
             a["age"] = +prompt(`Введите age объекта "а":`, 1);
-            a["fathername"] = prompt(`Введите fathername объекта "а":`, "aa");
-            b["fathername"] = prompt(`Введите fathername объекта "b":`, "bb");
-            b["sex"] = prompt(`Введите sex объекта "b": (m/w)`, "m").toLowerCase;
+            a["fathername"] = prompt(`Введите fathername объекта "а":`, "FathernameA");
+            b["fathername"] = prompt(`Введите fathername объекта "b":`, "FathernameB");
+            b["sex"] = ((prompt(`Введите sex объекта "b": (m/w)`, "m")).toLowerCase());
             c["age"] = +prompt(`Введите возраст объекта "c":`, 3);
 
             console.log(a)
@@ -97,12 +118,81 @@ function hw04_json(task) {
             // Получится обычный массив с элементами - ассоциативными массивами с персонами.
 
             hw04_json(2);
+
             myObjArr[3] = {
-                name: "q",
-                surname: "qq",
+                name: "NameQ",
+                surname: "SurnameQ",
                 sex: "w"
             }
             console.log(myObjArr);
+
+        } //case #
+            break;
+
+
+        case 5: {
+            // loop of persons
+            // Сделайте цикл, который выводит весь массив persons
+            // в форме объектов console.log(persons[i])
+
+            hw04_json(4);
+
+            for (i in myObjArr) { console.log(myObjArr[i]) };
+            alert("Загляни в консоль...");
+
+        } //case #
+            break;
+
+
+        case 6: {
+            // loop of name and surname
+            // Сделайте цикл, который выводит весь массив persons,
+            // но только Имя и Фамилию каждой персоны.
+
+            hw04_json(4);
+
+            let strTemp;
+            for (i in myObjArr) {
+                strTemp = myObjArr[i].name + " " + myObjArr[i].surname;  //можно и без промежуточной 
+                console.log(strTemp);                                   // строки сразу в консоль
+            }
+
+            alert("Загляни в консоль...");
+
+        } //case #
+            break;
+
+
+        case 7: {
+            // loop of loop of values
+            // Сделайте цикл, который выводит весь массив persons,
+            // но только значения всех полей из объектов.
+            // Используйте вложенный цикл
+
+            hw04_json(4);
+
+            showAllObjects()
+
+        } //case #
+            break;
+
+
+        case 8: {
+            // fullName
+            // Сделайте цикл, которых добавляет поле fullName в каждый объект,
+            // содержащий ФИО.
+            // Учтите, что поле fathername не является обязательным.
+
+            hw04_json(4);
+
+            for (i in myObjArr) {
+                myObjArr[i]["fullName"] =
+                    myObjArr[i].name + " " + myObjArr[i].surname +
+                    (((myObjArr[i].fathername) && (" " + myObjArr[i].fathername)) || "")
+            }
+
+            showAllObjects();
+
 
         } //case #
             break;
