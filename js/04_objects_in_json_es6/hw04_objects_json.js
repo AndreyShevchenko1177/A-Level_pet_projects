@@ -1,11 +1,14 @@
 let taskList = (`
 1 3-persons
 2 different fields
+3 fields check
 `)
 
 let a = {};
 let b = {};
 let c = {};
+let myObjArr = [a, b, c];
+mustHaveKeys = ["name", "surname"];
 
 function hw04_json(task) {
     if (task === undefined) {
@@ -26,10 +29,10 @@ function hw04_json(task) {
                 obj["surname"] = prompt(`Объект ${count}.["surname"] =  ?`, "");
             }
 
-            let myObj = [a, b, c];
             let myStr = 'abc';
             for (i = 0; i <= 2; i++) {
-                insFullname(myObj[i], myStr[i]);
+                insFullname(
+                    myObjArr[i], myStr[i]);
             }
             console.log(a)
             console.log(b)
@@ -40,12 +43,10 @@ function hw04_json(task) {
             break;
 
 
-
         case 2: {
             // different fields
             // Добавьте некоторые другие поля(например age, fathername, sex(пол)) так,
             // что бы набор полей отличался у разных объектов
-            debugger
 
             hw04_json(1);
 
@@ -64,7 +65,19 @@ function hw04_json(task) {
             break;
 
 
-        case 0: {
+        case 3: {
+            // fields check
+            // Проверьте наличие необязательных полей у каждого из этих массивов.
+            // Если поле найдено, выведите его с помощью alert.
+            // Проверку делайте по typeof или in в if.
+
+            hw04_json(2);
+            debugger
+            for (person in myObjArr) {
+                for (keyi in myObjArr[person])
+                    if (keyi in mustHaveKeys) { alert(keyi) }
+            }
+
 
             ;
         } //case #
