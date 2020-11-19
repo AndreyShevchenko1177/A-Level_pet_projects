@@ -7,7 +7,7 @@ let taskList = (`
 6 loop of name and surname
 7 loop of loop of values
 8 fullName
-9
+9 serialize - JSON-строку из persons
 10
 `)
 
@@ -198,7 +198,9 @@ function hw04_json(task) {
             break;
 
 
-        case 0: {
+        case 9: {
+            // serialize
+            // Создайте JSON - строку из persons
 
             ;
         } //case #
