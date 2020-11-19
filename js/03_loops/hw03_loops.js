@@ -276,7 +276,7 @@ function hw03_loops() {
 
             let i = k = 0;
             do {
-                debugger;
+                // debugger;
                 k = Math.random();
                 if (k > 0.9) break;
                 i++;
@@ -500,29 +500,69 @@ function hw03_loops() {
             //         а выводит предполагаемый вариант в консоль, скрытую от пользователя.
 
             let predictArray = [];
-            let history = [];
-            let a;
-            for (i = 0; i < 4; i++) {
-                history[i] = prompt("Введи 1 или 0", 1);
-                gad = (Math.round(Math.random()));
-                (!!gad) && !alert(`${gad} - BINGO !!!`) || alert(`${gad} - Uuups...`);
-                predictArray[i] = [];
-                for (j = 0; j < 4; j++) {
-                    predictArray[i][j] = [];
-                    for (k = 0; k < 4; k++) {
-                        predictArray[i][j][k] = [];
-                        for (l = 0; l < 4; l++) {
-                            predictArray[i][j][k][l] = (-1);
-                        }
+            let history = Array(4).fill(1);
+            let userAnswer = myAnswer = countOfTry = guess = trueGuess = 0;
+            let alertStr = "";
+            let isMyRandom = false;
 
-                    }
-                }
-            }
-            // еще не доделал
+            // for (i = 0; i < 2; i++) {
+            //     predictArray[i] = [];
+            //     for (j = 0; j < 2; j++) {
+            //         predictArray[i][j] = [];
+            //         for (k = 0; k < 2; k++) {
+            //             predictArray[i][j][k] = [];
+            //             for (l = 0; l < 2; l++) {
+            //                 predictArray[i][j][k][l] = (-1);
+            //             }
+
+            //         }
+            //     }
+            // }
+
+            //Вместо этих 4-х вложенных циклов можно одной строкой
+
+            predictArray = Array.from(Array(2), () => Array.from(Array(2), () => Array.from(Array(2), () => Array.from(Array(2), () => -1))));
+
+            // если надо развернуть в линию многомерный массив
+
+            // predictArray.reduce(function (a, b) {
+            //     return a.concat(b);
+            // }).reduce(function (a, b) {
+            //     return a.concat(b);
+            // }).reduce(function (a, b) {
+            //     return a.concat(b);
+            // })
             debugger;
-            while ((a = prompt("Введи 1 или 0")) !== "0") {
+            while (((userAnswer = +prompt(`Задумай число "0" или "1":`)) === 0) || userAnswer === 1) {
 
+                countOfTry++;
+                alertStr = "";
+                myAnswer = predictArray[history[0]][history[1]][history[2]][history[3]];
+                if (myAnswer === -1) {
+                    myAnswer = Math.round(Math.random());
+                    isMyRandom = true;
+                } else {
+                    isMyRandom = false;
+                }
+
+
+                if (myAnswer === userAnswer) {
+                    guess++;
+                    alertStr = `  ${alertStr} ${Math.round(trueGuess / countOfTry * 10000) / 100}%   ${Math.round(guess / countOfTry * 10000) / 100}%`;
+                    if (isMyRandom) {
+                        alertStr = alertStr + "\n...почти ";
+                    } else {
+                        trueGuess++;
+                    }
+                    alert(`Я вижу тебя насквозь!!! ${alertStr}`)
+                } else alert("Обманщик ((...");
+                predictArray[history[0]][history[1]][history[2]][history[3]] = userAnswer;
+                history.shift();
+                history.push(userAnswer);
             }
+
+
+
 
         };
             break;
