@@ -77,7 +77,6 @@ function hw03_loops() {
                             {
                                 tagName: "input",
                                 attrs: [
-
                                     {
                                         atrName: "type",
                                         atrVol: "text"
@@ -100,13 +99,13 @@ function hw03_loops() {
                         subTags: [
                             {
                                 tagName: "button",
-                                attrs: [],
-                                subTags: [
+                                attrs: [
                                     {
                                         atrName: "id",
                                         atrVol: "ok"
                                     }
                                 ],
+                                subTags: [],
                                 text: "OK",
                             },
                             {
