@@ -273,6 +273,6 @@ function hw04_json(task) {
 
 
 
-        default: { alert("Такого мы еще не умеем...!!!") };
+        default: { alert("Такого мы еще не умеем...!!! ") };
     }
 }
