@@ -25,8 +25,8 @@ function hw04_json(task) {
 
 
             function insFullname(obj, count) {
-                obj["name"] = prompt(`Объект ${count}.["name"] =  ?`, "");
-                obj["surname"] = prompt(`Объект ${count}.["surname"] =  ?`, "");
+                obj["name"] = prompt(`Объект ${count}.["name"] =  ?`, "A");
+                obj["surname"] = prompt(`Объект ${count}.["surname"] =  ?`, "Aa");
             }
 
             let myStr = 'abc';
@@ -50,11 +50,11 @@ function hw04_json(task) {
 
             hw04_json(1);
 
-            a["age"] = +prompt(`Введите age объекта "а":`, 0);
-            a["fathername"] = prompt(`Введите fathername объекта "а":`, "");
-            b["fathername"] = prompt(`Введите fathername объекта "b":`, "");
+            a["age"] = +prompt(`Введите age объекта "а":`, 1);
+            a["fathername"] = prompt(`Введите fathername объекта "а":`, "Aaa");
+            b["fathername"] = prompt(`Введите fathername объекта "b":`, "Bbb");
             b["sex"] = prompt(`Введите sex объекта "b": (m/w)`, "m").toLowerCase;
-            c["age"] = +prompt(`Введите возраст объекта "c":`, 0);
+            c["age"] = +prompt(`Введите возраст объекта "c":`, 3);
 
             console.log(a)
             console.log(b)
