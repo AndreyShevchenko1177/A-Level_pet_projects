@@ -68,6 +68,9 @@ function hw04_json(task) {
             for (i = 0; i <= 2; i++) {
                 insFullname(myObjArr[i], myStr[i], i);
             }
+
+            normaliseAllObjects();
+
             console.log(a)
             console.log(b)
             console.log(c)
@@ -87,8 +90,10 @@ function hw04_json(task) {
             a["age"] = +prompt(`Введите age объекта "а":`, 1);
             a["fathername"] = prompt(`Введите fathername объекта "а":`, "FathernameA");
             b["fathername"] = prompt(`Введите fathername объекта "b":`, "FathernameB");
-            b["sex"] = ((prompt(`Введите sex объекта "b": (m/w)`, "m")).toLowerCase());
+            b["sex"] = ((prompt(`Введите sex объекта "b": (m/w)`, "m")));
             c["age"] = +prompt(`Введите возраст объекта "c":`, 3);
+
+            normaliseAllObjects();
 
             console.log(a)
             console.log(b)
@@ -199,12 +204,11 @@ function hw04_json(task) {
             normaliseAllObjects();
 
             for (i in myObjArr) {
-                if (true) { // надо как-то проверить на пустую cтроку, а то лишние пробелы появляются
-                    myObjArr[i]["fullName"] =
-                        myObjArr[i].name + " " + myObjArr[i].surname +
-                        (((myObjArr[i].fathername) && (" " + myObjArr[i].fathername)) || "")
-                }
+                myObjArr[i]["fullName"] = myObjArr[i].name;
+                if (myObjArr[i].surname !== "") { myObjArr[i]["fullName"] += " " + myObjArr[i].surname }
+                myObjArr[i]["fullName"] += (((myObjArr[i].fathername) && (" " + myObjArr[i].fathername)) || "")
             }
+
 
             showAllObjects();
 
