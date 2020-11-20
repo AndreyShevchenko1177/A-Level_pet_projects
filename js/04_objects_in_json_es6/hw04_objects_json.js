@@ -10,6 +10,7 @@ let taskList = (`
 9 serialize - JSON-строку из persons
 10 deserialize
 11 HTML
+12 HTML optional fields
 `)
 
 let a = {};
@@ -240,7 +241,7 @@ function hw04_json(task) {
             hw04_json(10);
 
             let strHtml = `<table border="1" align="center">`;
-            strHtml += `<tr><td>Name</td><td>Surame</td></tr>`;
+            strHtml += `<tr><td>name</td><td>surame</td></tr>`;
             for (i in myObjArr) {
                 strHtml += `<tr><td>${myObjArr[i].name}</td><td>${myObjArr[i].surname}</td></tr>`;
             };
@@ -252,9 +253,42 @@ function hw04_json(task) {
 
 
 
-        case 0: {
+        case 12: {
+            // HTML optional fields
+            // Сделайте цикл, который выводит весь массив persons, в форме HTML - таблицы.
+            // Имя и Фамилия, а так же другие поля при наличии.
+            // Колонки: поля, строки таблицы - персоны.
 
-            ;
+            hw04_json(10);
+
+            // создаем массив всех ключей из всех объектов без повторений
+            let arrOfKeys = [];
+            for (i in myObjArr) {
+                for (key in myObjArr[i]) {
+                    if (!(arrOfKeys.includes(key))) { arrOfKeys.push(key) };
+                }
+            } //---------------
+
+
+            // первая строка с именами колонок
+            let strHtml = `<table border="1" align="center"><tr>`;
+            for (i in arrOfKeys) { strHtml += `<td>${arrOfKeys[i]}</td>`; };
+            strHtml += `</tr>`;
+
+
+            for (i in myObjArr) {
+                strHtml += `<tr>`;
+                for (key in arrOfKeys) {
+                    strHtml += `<td>`;
+                    if (arrOfKeys[key] in myObjArr[i]) { strHtml += myObjArr[i][arrOfKeys[key]] };
+                    strHtml += `</td>`;
+                };
+                strHtml += `</tr>`;
+            }
+
+            strHtml += `</table>`;
+            document.write(strHtml);
+
         } //case #
             break;
 
