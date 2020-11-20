@@ -11,6 +11,8 @@ let taskList = (`
 10 deserialize
 11 HTML
 12 HTML optional fields
+13 HTML tr color
+14 HTML th optional = 13
 `)
 
 let a = {};
@@ -232,7 +234,6 @@ function hw04_json(task) {
             break;
 
 
-
         case 11: {
             // HTML
             // Сделайте цикл, который выводит весь массив persons в форме HTML - таблицы.
@@ -293,17 +294,60 @@ function hw04_json(task) {
             break;
 
 
+        case 13: {
+            // HTML tr color
+            // Добавьте к предыдущему примеру раскраску через строчку
+            // используя другой стиль тэга tr.
 
-        case 0: {
+            hw04_json(10);
 
-            ;
+            // создаем массив всех ключей из всех объектов без повторений
+            let arrOfKeys = [];
+            for (i in myObjArr) {
+                for (key in myObjArr[i]) {
+                    if (!(arrOfKeys.includes(key))) { arrOfKeys.push(key) };
+                }
+            } //---------------
+
+
+            // первая строка с именами колонок
+            let strHtml = `<table border="1" align="center"><tr bgcolor="#42ecff">`;
+            for (i in arrOfKeys) { strHtml += `<th>${arrOfKeys[i]}</th>`; };
+            strHtml += `</tr>`;
+
+            let colorGray = true;
+
+            for (i in myObjArr) {
+                colorGray = !colorGray;
+                if (colorGray) { strHtml += `<tr bgcolor="#B0B0B0">`; } else { strHtml += `<tr>`; };
+                for (key in arrOfKeys) {
+                    strHtml += `<td>`;
+                    if (arrOfKeys[key] in myObjArr[i]) { strHtml += myObjArr[i][arrOfKeys[key]] };
+                    strHtml += `</td>`;
+                };
+                strHtml += `</tr>`;
+            }
+
+            strHtml += `</table>`;
+            document.write(strHtml);
+
         } //case #
             break;
 
 
+        case 14: {
+            // HTML th optional
+            // Переработайте вывод persons в HTML с поиском всех возможных колонок во всех записях,
+            // выводом названий колонок в заголовок HTML - таблицы.
+            // Для решения этой задачи вначале узнайте множество полей(ключей) во всех записях(они не совпадают),
+            // выведите HTML - заголовок используя тэги < th >, а потом выводите все записи.
+            // Ниже выведите все персоны построчно.Следите за корректностью колонок.
+            // Для этого вам нужно итерировать общий набор колонок, а не каждую персону,
+            // колонки из которой могут отличаться от предыдущей.
 
-        case 0: {
 
+            // Я это уже сделал в 13 пункте
+            hw04_json(13);
             ;
         } //case #
             break;
