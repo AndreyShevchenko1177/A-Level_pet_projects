@@ -9,6 +9,7 @@ let taskList = (`
 8 fullName
 9 serialize - JSON-строку из persons
 10 deserialize
+11 HTML
 `)
 
 let a = {};
@@ -231,9 +232,21 @@ function hw04_json(task) {
 
 
 
-        case 0: {
+        case 11: {
+            // HTML
+            // Сделайте цикл, который выводит весь массив persons в форме HTML - таблицы.
+            // Имя и Фамилия - колонки.
 
-            ;
+            hw04_json(10);
+
+            let strHtml = `<table border="1" align="center">`;
+            strHtml += `<tr><td>Name</td><td>Surame</td></tr>`;
+            for (i in myObjArr) {
+                strHtml += `<tr><td>${myObjArr[i].name}</td><td>${myObjArr[i].surname}</td></tr>`;
+            };
+            strHtml += `</table>`;
+            document.write(strHtml);
+
         } //case #
             break;
 
@@ -273,6 +286,6 @@ function hw04_json(task) {
 
 
 
-        default: { alert("Такого мы еще не умеем...!!! ") };
+        default: { alert("Такого мы еще не умеем...!!!") };
     }
 }
