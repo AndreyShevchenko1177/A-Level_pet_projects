@@ -21,7 +21,13 @@ let c = {};
 let myObjArr = [a, b, c];
 mustHaveKeys = ["name", "surname"];
 
-
+function normaliseAllObjects() {
+    for (i in myObjArr) {
+        for (key in myObjArr[i]) {
+            if (myObjArr[i][key] === null) { myObjArr[i][key] = '' }
+        }
+    }
+}
 
 function showAllObjects() {
     let strTemp = "";
@@ -190,11 +196,14 @@ function hw04_json(task) {
             // Учтите, что поле fathername не является обязательным.
 
             hw04_json(4);
+            normaliseAllObjects();
 
             for (i in myObjArr) {
-                myObjArr[i]["fullName"] =
-                    myObjArr[i].name + " " + myObjArr[i].surname +
-                    (((myObjArr[i].fathername) && (" " + myObjArr[i].fathername)) || "")
+                if (true) { // надо как-то проверить на пустую cтроку, а то лишние пробелы появляются
+                    myObjArr[i]["fullName"] =
+                        myObjArr[i].name + " " + myObjArr[i].surname +
+                        (((myObjArr[i].fathername) && (" " + myObjArr[i].fathername)) || "")
+                }
             }
 
             showAllObjects();
