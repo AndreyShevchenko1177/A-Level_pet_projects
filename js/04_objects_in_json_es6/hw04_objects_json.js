@@ -451,7 +451,7 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
                 },
             };
 
-            // функция для конструкции таблиц 
+            // функция для конструкции таблиц (и не только таблиц)
             // с любым числом колонок и строк
             // с любым набором атрибутов
             function tableConstructor(item) {
@@ -594,6 +594,45 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
             // //сдвигаем историю
 
 
+            // сделаем чуть по другому (да простит меня Мастер): 
+            // будем хранить не истоию из четырех вводов, а всю историю
+            // на сколько это позволит RAM
+            // почти самообучающаяся гадалка
+            let predictArray = {};
+            let newValue = myPredict = "";
+            let history = prompt(`\nВведите 1-й свой вариант без моих предсказаний:`);
+
+            do {    // while
+                myPredict = "Не могу предсказать...";
+                for (key in predictArray) {
+                    if (key === history) {
+                        (myPredict = predictArray[history]);
+                        break;
+                    }
+                }
+
+                //if (!(Object.keys(predictArray).length)) myPredict = "Не могу предсказать... ((";
+
+                console.log(history + " Мне кажется это будет - ... " + myPredict);
+
+                newValue = prompt(`\nВаш новый вариант?`)
+
+                if (myPredict !== "Не могу предсказать...") {
+                    if (myPredict === newValue) {
+                        myPredict += " - ТЫ ПРЕДСКАЗУЕМ !!!";
+                    } else {
+                        myPredict = "Мне казалось, что это будет ... " + myPredict;
+                    }
+                }
+
+                alert(`\n${myPredict}`);
+
+                predictArray[history] = newValue; // можно и массив объектов организовать и push-ить туда новые значения
+                // но тогда надо переписать цикл перебора истории, а он уже есть и работает
+
+                history = newValue;
+
+            } while (newValue);
 
 
 
