@@ -13,6 +13,7 @@ let taskList = (`
 12 HTML optional fields
 13 HTML tr color
 14 HTML th optional = 13
+15 Задание на синий пояс. HTML-конструктор
 `)
 
 let a = {};
@@ -38,7 +39,7 @@ function showAllObjects() {
         console.log(strTemp);
         strTemp = "";
     }
-    alert("Загляни в консоль...");
+    // alert("Загляни в консоль...");
 }
 
 
@@ -361,6 +362,131 @@ function hw04_json(task) {
 
             // Я это уже сделал в 13 пункте
             hw04_json(13);
+            ;
+        } //case #
+            break;
+
+
+
+        case 15: {
+            // Задание на синий пояс.
+            // Сделать HTML - конструктор из деревянной структуры, которая была на прошлом занятии:
+
+            let someTree = {
+                tagName: "table", //html tag
+                subTags: [ //вложенные тэги
+                    {
+                        tagName: "tr",
+                        subTags: [
+                            {
+                                tagName: "td",
+                                text: "some text",
+                            },
+                            {
+                                tagName: "td",
+                                text: "some text 2",
+                            }
+                        ]
+                    },
+                    {
+                        tagName: "tr",
+                        subTags: [
+                            {
+                                tagName: "td",
+                                text: "some text 3",
+                            },
+                            {
+                                tagName: "td",
+                                text: "some text 4",
+                            }
+                        ],
+                        attrs:
+                        {
+                            bgcolor: "#42ecff",
+                        },
+                    },
+                ],
+                attrs:
+                {
+                    border: 1,
+                },
+            };
+
+            function tableConstructor(item) {
+                str += "<";
+                for (key in item) {
+
+                    switch (key) {
+
+                        case "tagname": {
+                            str += "<" + item[key];
+                        }
+                            break; //case "tagname"
+
+
+                        case "attrs": {
+                            for (attrKey in item[key]) {
+                                str += " " + attrKey + "=" + item[key][attrKey];
+                            }
+                        }
+                            break; //case "attrs"
+
+
+                        case "subTags": {
+                            for (i in subTags) { tableConstructor(item[key].subTags); }
+                        }
+                            break; // case "subTags"
+
+
+                        default: alert("Непредвиденный синтаксис!");
+
+                    } //switch (key)
+
+
+                };
+
+
+
+
+
+
+
+
+                ;
+            }
+
+
+
+
+            let str = ""
+            tableConstructor(myTree);
+            console.write(str);
+
+
+            ;
+        } //case #
+            break;
+
+
+
+        case 0: {
+
+            ;
+        } //case #
+            break;
+
+
+
+        case 0: {
+
+            ;
+        } //case #
+            break;
+
+
+
+        case 0: {
+
             ;
         } //case #
             break;
