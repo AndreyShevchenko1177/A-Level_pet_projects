@@ -385,7 +385,19 @@ function hw04_json(task) {
                             {
                                 tagName: "td",
                                 text: "some text 2",
-                            }
+                                attrs:
+                                {
+                                    bgcolor: "red"
+                                }
+                            },
+                            {
+                                tagName: "th",
+                                text: "some text right1",
+                                attrs:
+                                {
+                                    bgcolor: "gray"
+                                }
+                            },
                         ]
                     },
                     {
@@ -398,70 +410,78 @@ function hw04_json(task) {
                             {
                                 tagName: "td",
                                 text: "some text 4",
-                            }
+                            },
+                            {
+                                tagName: "td",
+                                text: "some text right 2",
+                            },
                         ],
                         attrs:
                         {
                             bgcolor: "#42ecff",
                         },
                     },
+                    {
+                        tagName: "tr",
+                        subTags: [
+                            {
+                                tagName: "td",
+                                text: "some text 5",
+                            },
+                            {
+                                tagName: "td",
+                                text: "some text 6",
+                            },
+                            {
+                                tagName: "td",
+                                text: "some text right 3",
+                            },
+                        ],
+                        attrs:
+                        {
+                            bgcolor: "#00FF00",
+                        },
+                    },
                 ],
                 attrs:
                 {
                     border: 1,
+                    align: "center",
                 },
             };
 
+            // функция для конструкции таблиц 
+            // с любым числом колонок и строк
+            // с любым набором атрибутов
             function tableConstructor(item) {
-                str += "<";
-                for (key in item) {
 
-                    switch (key) {
+                str += "<" + item.tagName;
 
-                        case "tagname": {
-                            str += "<" + item[key];
-                        }
-                            break; //case "tagname"
+                if ("attrs" in item) {
+                    for (attrKey in item.attrs) {
+                        str += " " + attrKey + `="` + item.attrs[attrKey] + `"`;
+                    }
+                }
+                str += ">";
 
-
-                        case "attrs": {
-                            for (attrKey in item[key]) {
-                                str += " " + attrKey + "=" + item[key][attrKey];
-                            }
-                        }
-                            break; //case "attrs"
-
-
-                        case "subTags": {
-                            for (i in subTags) { tableConstructor(item[key].subTags); }
-                        }
-                            break; // case "subTags"
-
-
-                        default: alert("Непредвиденный синтаксис!");
-
-                    } //switch (key)
-
-
+                if ("subTags" in item) {
+                    for (i in item.subTags) { tableConstructor(item.subTags[i]); }
                 };
 
-
-
-
-
-
-
-
+                if ("text" in item) {
+                    str += item.text;
+                };
+                str += "</" + item.tagName + ">";
                 ;
-            }
-
+            }; //function tableConstructor
 
 
 
             let str = ""
-            tableConstructor(myTree);
-            console.write(str);
-
+            tableConstructor(someTree);
+            console.log(someTree);
+            console.log(str);
+            document.write(str);
 
             ;
         } //case #
