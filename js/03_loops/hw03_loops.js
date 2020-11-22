@@ -91,8 +91,7 @@ function hw03_loops() {
                                 tagName: "button",
                                 attrs:
                                 {
-                                    atrName: "id",
-                                    atrVol: "ok"
+                                    "id": "ok",
                                 },
                                 subTags: [],
                                 text: "OK",
@@ -101,8 +100,7 @@ function hw03_loops() {
                                 tagName: "button",
                                 attrs:
                                 {
-                                    atrName: "id",
-                                    atrVol: "cansel"
+                                    "id": "cansel"
                                 },
                                 subTags: [],
                                 text: "Cansel",
