@@ -14,6 +14,9 @@ let taskList = (`
 13 HTML tr color
 14 HTML th optional = 13
 15 Задание на синий пояс. HTML-конструктор
+16 destruct array
+17 destruct string
+18 destruct 2
 `)
 
 let a = {};
@@ -489,7 +492,23 @@ function hw04_json(task) {
 
 
 
-        case 0: {
+        case 16: {
+            // destruct array
+            // напишите код, который используя деструктуризацию положит:
+            // четные числа в переменные even1, even2,
+            //     нечетные в odd1, odd2, odd3,
+            //         буквы в отдельный массив
+
+            let arr = [1, 2, 3, 4, 5, "a", "b", "c"];
+            console.log(arr);
+
+            let [odd1, even1, odd2, even2, odd3, ...charArr] = arr;
+            console.log(odd1);
+            console.log(odd2);
+            console.log(odd3);
+            console.log(even1);
+            console.log(even2);
+            console.log(charArr);
 
             ;
         } //case #
@@ -497,7 +516,23 @@ function hw04_json(task) {
 
 
 
-        case 0: {
+        case 17: {
+            // destruct string
+            // напишите код, который используя деструктуризацию положит:
+            // число в переменную number
+            // букву a в переменную s1
+            // букву b в переменную s2
+            // букву c в переменную s3
+
+            let arr = [1, "abc"];
+            console.log(arr);
+
+            let [number, [s1, s2, s3]] = arr;
+
+            console.log("number " + number);
+            console.log("s1 " + s1);
+            console.log("s2 " + s2);
+            console.log("s3 " + s3);
 
             ;
         } //case #
@@ -505,9 +540,24 @@ function hw04_json(task) {
 
 
 
-        case 0: {
+        case 18: {
+            // destruct 2
+            // извлеките используя деструктуризацию имена детей в переменные name1 и name2
 
-            ;
+            let obj = {
+                name: 'Ivan',
+                surname: 'Petrov',
+                children: [{ name: 'Maria' }, { name: 'Nikolay' }]
+            }
+
+
+
+
+
+
+
+
+                ;
         } //case #
             break;
 
