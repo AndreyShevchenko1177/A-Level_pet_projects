@@ -17,6 +17,7 @@ let taskList = (`
 16 destruct array
 17 destruct string
 18 destruct 2
+19 destruct 3
 `)
 
 let a = {};
@@ -571,8 +572,14 @@ function hw04_json(task) {
             // и длину массива в переменные a, b и length
 
 
-            let arr = [1, 2, 3, 4, 5, 6, 7, 10];
+            let arr = [77, 25, 3, 4, 5, 6, 7, 10];
+            console.log(arr);
 
+            let { length: length, [0]: a, [1]: b, } = arr;
+
+            console.log('length ' + length);
+            console.log('a ' + a);
+            console.log('b ' + b);
 
 
             ;
