@@ -550,20 +550,57 @@ function hw04_json(task) {
                 children: [{ name: 'Maria' }, { name: 'Nikolay' }]
             }
 
+            // let { children } = obj;
+            // let [{ name: name1 }, { name: name2 }] = children;
+
+            let { children: [{ name: name1 }, { name: name2 }] } = obj;
+
+            console.log(obj);
+            console.log(`name1 - ${name1}     name2 - ${name2}`);
+
+            ;
+        } //case #
+            break;
 
 
 
+        case 19: {
+            // desctruct 3
+            // let arr = [1, 2, 3, 4, 5, 6, 7, 10]
+            // извлеките используя деструктуризацию объектов два первых элемента
+            // и длину массива в переменные a, b и length
+
+
+            let arr = [1, 2, 3, 4, 5, 6, 7, 10];
 
 
 
-
-                ;
+            ;
         } //case #
             break;
 
 
 
         case 0: {
+
+
+            ;
+        } //case #
+            break;
+
+
+
+        case 0: {
+
+
+            ;
+        } //case #
+            break;
+
+
+
+        case 0: {
+
 
             ;
         } //case #

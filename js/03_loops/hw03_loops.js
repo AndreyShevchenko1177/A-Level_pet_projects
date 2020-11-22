@@ -41,52 +41,42 @@ function hw03_loops() {
 
             let tree = {
                 tagName: "body",
-                attrs: [],
+                attrs: {},
                 subTags: [
                     {
                         tagName: "div",
-                        attrs: [],
+                        attrs: {},
                         subTags: [
                             {
                                 tagName: "span",
-                                attrs: [],
-                                subTags: {},
+                                attrs: {},
+                                subTags: [],
                                 text: "Enter a data please:",
                             },
                             {
                                 tagName: "br/",
-                                attrs: [],
-                                subTags: {},
+                                attrs: {},
+                                subTags: [],
                                 text: "",
                             },
                             {
                                 tagName: "input",
-                                attrs: [
-                                    {
-                                        atrName: "type",
-                                        atrVol: "text"
-                                    },
-                                    {
-                                        atrName: "id",
-                                        atrVol: "name"
-                                    }
-                                ],
-                                subTags: {},
+                                attrs:
+                                {
+                                    "type": "text",
+                                    "id": "name",
+                                },
+                                subTags: [],
                                 text: "",
                             },
                             {
                                 tagName: "input",
-                                attrs: [
-                                    {
-                                        atrName: "type",
-                                        atrVol: "text"
-                                    },
-                                    {
-                                        atrName: "id",
-                                        atrVol: "surname"
-                                    }
-                                ],
-                                subTags: {},
+                                attrs:
+                                {
+                                    "type": "text",
+                                    "id": "surname",
+                                },
+                                subTags: [],
                                 text: "",
                             },
 
@@ -95,27 +85,25 @@ function hw03_loops() {
                     },
                     {
                         tagName: "div",
-                        attrs: [],
+                        attrs: {},
                         subTags: [
                             {
                                 tagName: "button",
-                                attrs: [
-                                    {
-                                        atrName: "id",
-                                        atrVol: "ok"
-                                    }
-                                ],
+                                attrs:
+                                {
+                                    atrName: "id",
+                                    atrVol: "ok"
+                                },
                                 subTags: [],
                                 text: "OK",
                             },
                             {
                                 tagName: "button",
-                                attrs: [
-                                    {
-                                        atrName: "id",
-                                        atrVol: "cansel"
-                                    }
-                                ],
+                                attrs:
+                                {
+                                    atrName: "id",
+                                    atrVol: "cansel"
+                                },
                                 subTags: [],
                                 text: "Cansel",
                             }
@@ -132,7 +120,7 @@ function hw03_loops() {
             console.log(tree.subTags[1].subTags[1].text);
 
             // Выведите значение атрибута id во втором input, используя.и[].
-            console.log(tree.subTags[0].subTags[3].attrs[1].atrVol);
+            console.log(tree.subTags[0].subTags[3].attrs.id)
 
         };
             break;
