@@ -18,6 +18,7 @@ let taskList = (`
 17 destruct string
 18 destruct 2
 19 destruct 3
+20 черный пояс - ассоциативная гадалка
 `)
 
 let a = {};
@@ -48,15 +49,13 @@ function showAllObjects() {
 
 
 
-function hw04_json(task) {
-
-
-    if (task === undefined) {
-        task = +(prompt("Что? Новый хозяин! надо???  Введите номер задания:\n" + taskList, "Напечь за меня пирогов!").toLowerCase());
-    }
+function hw04_json(task = +(prompt("Что? Новый хозяин! надо???  Введите номер задания:\n" + taskList, "Напечь за меня пирогов!"))) {
 
 
     switch (task) {
+
+        case 0: { ; }; break;
+
 
         case 1: {
             // 3 persons
@@ -65,8 +64,8 @@ function hw04_json(task) {
 
 
             function insFullname(obj, objName, i) {
-                obj["name"] = prompt(`Объект ${objName}.["name"] =  ?`, `Name_${i}`);
-                obj["surname"] = prompt(`Объект ${objName}.["surname"] =  ?`, `Surname_${i}`);
+                obj["name"] = (prompt(`Объект ${objName}.["name"] =  ?`, `Name_${i}`)) || "";
+                obj["surname"] = (prompt(`Объект ${objName}.["surname"] =  ?`, `Surname_${i}`)) || "";
             }
 
             let myStr = 'abc';
@@ -262,14 +261,13 @@ function hw04_json(task) {
             let strHtml = `<table border="1" align="center">`;
             strHtml += `<tr><td>name</td><td>surame</td></tr>`;
             for (i in myObjArr) {
-                strHtml += `<tr><td>${myObjArr[i].name}</td><td>${myObjArr[i].surname}</td></tr>`;
+                strHtml += `<tr><td>${(myObjArr[i].name) || ""}</td><td>${(myObjArr[i].surname) || ""}</td></tr>`;
             };
             strHtml += `</table>`;
             document.write(strHtml);
 
         } //case #
             break;
-
 
 
         case 12: {
@@ -369,7 +367,6 @@ function hw04_json(task) {
             ;
         } //case #
             break;
-
 
 
         case 15: {
@@ -492,7 +489,6 @@ function hw04_json(task) {
             break;
 
 
-
         case 16: {
             // destruct array
             // напишите код, который используя деструктуризацию положит:
@@ -514,7 +510,6 @@ function hw04_json(task) {
             ;
         } //case #
             break;
-
 
 
         case 17: {
@@ -540,7 +535,6 @@ function hw04_json(task) {
             break;
 
 
-
         case 18: {
             // destruct 2
             // извлеките используя деструктуризацию имена детей в переменные name1 и name2
@@ -562,7 +556,6 @@ function hw04_json(task) {
             ;
         } //case #
             break;
-
 
 
         case 19: {
@@ -587,26 +580,24 @@ function hw04_json(task) {
             break;
 
 
-
-        case 0: {
-
-
-            ;
-        } //case #
-            break;
-
-
-
-        case 0: {
-
-
-            ;
-        } //case #
-            break;
+        case 20: {
+            // Задание на черный пояс
+            // Сделать предыдущее задание на черный пояс в упрощенном виде:
+            // не использовать четырехмерный массив для хранения истории,
+            // а использовать ассоциативный массив:
+            // Например, если пользователь ввел 1212 за последние четыре хода,
+            // то мы ищем то, что было введено последний раз после такой последовательности:
+            // var history = "1212"
+            // var predictValue = predictArray[history] // в predictValue то, что ввел последний раз пользователь после нажатий 1212
+            // var newValue = prompt("введите 1 или 2", "");
+            // predictArray[history] = newValue         //сохраняем новый ввод
+            // //сдвигаем историю
 
 
 
-        case 0: {
+
+
+
 
 
             ;

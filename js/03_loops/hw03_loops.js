@@ -305,7 +305,7 @@ function hw03_loops() {
             let leng;
             let str = str1 = "";
             leng = +prompt("Какую длину строки формировать?", 10);
-            for (let i = 0; i < leng; i += 2) {
+            for (let i = 0; i < leng; i += 2) { // это явно избыточно в 2 раза, но нам же не жалко ;)
                 str = str + " #";
             }
             str1 = str.slice(0, leng);
