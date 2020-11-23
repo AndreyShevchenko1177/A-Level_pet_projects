@@ -259,7 +259,7 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
             hw04_json(10);
 
             let strHtml = `<table border="1" align="center">`;
-            strHtml += `<tr><td>name</td><td>surame</td></tr>`;
+            strHtml += `<tr><td>name</td><td>surname</td></tr>`;
             for (i in myObjArr) {
                 strHtml += `<tr><td>${(myObjArr[i].name) || ""}</td><td>${(myObjArr[i].surname) || ""}</td></tr>`;
             };
@@ -598,6 +598,9 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
             // будем хранить не истоию из четырех вводов, а всю историю
             // на сколько это позволит RAM
             // почти самообучающаяся гадалка
+
+            // не верно понял задание и алгоритм - надо переделать
+
             let predictArray = {};
             let newValue = myPredict = "";
             let history = prompt(`\nВведите 1-й свой вариант без моих предсказаний:`);
