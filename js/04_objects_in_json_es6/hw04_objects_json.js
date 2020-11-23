@@ -593,49 +593,67 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
             // predictArray[history] = newValue         //сохраняем новый ввод
             // //сдвигаем историю
 
+            // не верно понял задание и алгоритм - надо переделать
 
-            // сделаем чуть по другому (да простит меня Мастер): 
+            let history = ["1", "2", "1", "2"];
+            let predictArray = [];
+            let predictValue = {};
+            let yourMove = '1';
+            do {
+                predictValue = predictArray[history];
+                console.log(`Я предсказываю - ${predictValue}`);
+                yourMove = prompt(`твое число 1 или 2 ?`)
+                if (predictValue === yourMove) { alert('BINGO!!!') } else { alert(`Uuuups...`) };
+                predictArray[history] = yourMove;
+                history.push(yourMove);
+                history.shift();
+            } while (yourMove);
+
+
+
+
+
+            // ---------РАБОТАЕТ но по неправильному алгоритму --------------------
+            // ---------сравнивает не последовательность четырех ходов, а ищет последний такой же ход
+            // сделаем чуть по другому : 
             // будем хранить не истоию из четырех вводов, а всю историю
             // на сколько это позволит RAM
             // почти самообучающаяся гадалка
+            // let predictArray = {};
+            // let newValue = myPredict = "";
+            // let history = prompt(`\nВведите 1-й свой вариант без моих предсказаний:`);
 
-            // не верно понял задание и алгоритм - надо переделать
+            // do {    // while
+            //     myPredict = "Не могу предсказать...";
+            //     for (key in predictArray) {
+            //         if (key === history) {
+            //             (myPredict = predictArray[history]);
+            //             break;
+            //         }
+            //     }
 
-            let predictArray = {};
-            let newValue = myPredict = "";
-            let history = prompt(`\nВведите 1-й свой вариант без моих предсказаний:`);
+            //     //if (!(Object.keys(predictArray).length)) myPredict = "Не могу предсказать... ((";
 
-            do {    // while
-                myPredict = "Не могу предсказать...";
-                for (key in predictArray) {
-                    if (key === history) {
-                        (myPredict = predictArray[history]);
-                        break;
-                    }
-                }
+            //     console.log(history + " Мне кажется это будет - ... " + myPredict);
 
-                //if (!(Object.keys(predictArray).length)) myPredict = "Не могу предсказать... ((";
+            //     newValue = prompt(`\nВаш новый вариант?`)
 
-                console.log(history + " Мне кажется это будет - ... " + myPredict);
+            //     if (myPredict !== "Не могу предсказать...") {
+            //         if (myPredict === newValue) {
+            //             myPredict += " - ТЫ ПРЕДСКАЗУЕМ !!!";
+            //         } else {
+            //             myPredict = "Мне казалось, что это будет ... " + myPredict;
+            //         }
+            //     }
 
-                newValue = prompt(`\nВаш новый вариант?`)
+            //     alert(`\n${myPredict}`);
 
-                if (myPredict !== "Не могу предсказать...") {
-                    if (myPredict === newValue) {
-                        myPredict += " - ТЫ ПРЕДСКАЗУЕМ !!!";
-                    } else {
-                        myPredict = "Мне казалось, что это будет ... " + myPredict;
-                    }
-                }
+            //     predictArray[history] = newValue; // можно и массив объектов организовать и push-ить туда новые значения
+            //     // но тогда надо переписать цикл перебора истории, а он уже есть и работает
 
-                alert(`\n${myPredict}`);
+            //     history = newValue;
 
-                predictArray[history] = newValue; // можно и массив объектов организовать и push-ить туда новые значения
-                // но тогда надо переписать цикл перебора истории, а он уже есть и работает
-
-                history = newValue;
-
-            } while (newValue);
+            // } while (newValue);
 
 
 
