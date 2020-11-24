@@ -413,7 +413,7 @@ function hw03_loops() {
 
             let n = m = 10;
             let str = "";
-            var masMultip = [];
+            let masMultip = [];
             for (var i = 1; i <= m; i++) {
                 masMultip[i] = [];
                 str = "";
@@ -456,25 +456,27 @@ function hw03_loops() {
 
 
 
-            let n = m = 10;
-            let str = "";
-            var masMultip = [];
-            for (var i = 1; i <= m; i++) {
+            let xRow = yRow = 10;
+            let masMultip = [];
+            for (let i = 0; i <= xRow; i++) {
                 masMultip[i] = [];
-                str = "";
-                for (var j = 1; j <= n; j++) {
+                for (let j = 0; j <= yRow; j++) {
                     masMultip[i][j] = i * j;
-                    if (masMultip[i][j] < 10) { str = str + "0" }
-                    str = str + masMultip[i][j] + " ";
                 }
-                str = "<div>" + str + "</div>";
             }
-            
-            let tablStr = `<table border="1" align="center">`;
-            
-            
-            
-            
+            debugger
+            let str = `<table border="1" align="center">`;
+            for (let i = 0; i < masMultip.length; i++) {
+                str += `<tr>`;
+                for (let k = 0; k < masMultip[i].length; k++) { 
+                    str += `<td align="center">` + masMultip[i][k] + `</td>`;
+                }
+                str += `</tr>`;
+            };
+            str = str + `</table>`;
+
+            console.log(str);
+            document.write(str); 
             
             
         };
