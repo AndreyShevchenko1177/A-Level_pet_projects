@@ -73,8 +73,8 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
                 insFullname(myObjArr[i], myStr[i], i);
             }
 
-            normaliseAllObjects();
-
+            normaliseAllObjects(); // после добавления в "insFullname(obj, objName, i)" проверки ... || ""...
+            // можно и не делать normaliseAllObjects() в этом задании
             console.log(a)
             console.log(b)
             console.log(c)
@@ -143,7 +143,7 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
             myObjArr[3] = {
                 name: "NameQ",
                 surname: "SurnameQ",
-                sex: "w"
+                sex: "f"
             }
             console.log(myObjArr);
 
@@ -210,9 +210,9 @@ function hw04_json(task = +(prompt("Что? Новый хозяин! надо???
             for (i in myObjArr) {
                 myObjArr[i]["fullName"] = myObjArr[i].name;
                 if (myObjArr[i].surname !== "") { myObjArr[i]["fullName"] += " " + myObjArr[i].surname }
-                myObjArr[i]["fullName"] += (((myObjArr[i].fathername) && (" " + myObjArr[i].fathername)) || "")
-            }
-
+                myObjArr[i]["fullName"] += (((myObjArr[i].fathername) && (" " + myObjArr[i].fathername)) || "") // после normaliseAllObjects();
+            }                                                                                       // проверка (..||"") здесь лишняя
+            ;                                                                                      // но лучше "пере.." чем "недо.." ))
 
             showAllObjects();
 
