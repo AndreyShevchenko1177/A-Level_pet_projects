@@ -435,20 +435,48 @@ function hw03_loops() {
             //     Т.е.если в нём использовать результат работы предыдущего задания,
             //         то получится таблица умножения в HTML(Таблица Пифагора)
 
+
+
+            // --------- Не верный вариант - этот код на лету формирует 2мерный масив и 
+            // --------- параллельно строит HTML таблицу
+            // let n = m = 10;
+            // let str1 = str = `<table border="1" align="center">`;
+            // var masMultip = [];
+            // for (var i = 1; i <= m; i++) {
+            //     masMultip[i] = [];
+            //     str1 = ``;
+            //     for (var j = 1; j <= n; j++) {
+            //         masMultip[i][j] = i * j;
+            //         str1 = str1 + `<td align="center">` + masMultip[i][j] + `</td>`;
+            //     }
+            //     str = str + `<tr>` + str1 + `</tr>`;
+            // }
+            // str = str + `</table>`
+            // document.write(str);
+
+
+
             let n = m = 10;
-            let str1 = str = `<table border="1" align="center">`;
+            let str = "";
             var masMultip = [];
             for (var i = 1; i <= m; i++) {
                 masMultip[i] = [];
-                str1 = ``;
+                str = "";
                 for (var j = 1; j <= n; j++) {
                     masMultip[i][j] = i * j;
-                    str1 = str1 + `<td align="center">` + masMultip[i][j] + `</td>`;
+                    if (masMultip[i][j] < 10) { str = str + "0" }
+                    str = str + masMultip[i][j] + " ";
                 }
-                str = str + `<tr>` + str1 + `</tr>`;
+                str = "<div>" + str + "</div>";
             }
-            str = str + `</table>`
-            document.write(str);
+            
+            let tablStr = `<table border="1" align="center">`;
+            
+            
+            
+            
+            
+            
         };
             break;
 
