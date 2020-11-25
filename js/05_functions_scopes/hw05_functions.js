@@ -2,6 +2,10 @@
 // a
 // Напишите функцию a, которая просто является коротким именем для alert.
 
+// интересно, а такой вариант решения прокатит?:
+// a = alert;
+// The End.
+
 function a(message) {
     var res = alert(message)
     return res
@@ -15,6 +19,7 @@ a(`Привет!\n` + a)
 
 // cube
 // Напишите функцию cube, которая возвращает число в третьей степени:
+
 
 const cube = function (toCube) {
     var cubeIs = toCube * toCube * toCube;
