@@ -29,6 +29,14 @@ alert(`Your number in cube iz: ` + cube(+prompt("Input number:")));
 // avg2
 // Напишите функцию avg2, которая рассчитывает среднюю для двух чисел:
 
-const avg2 = ([a = 0, b = 0]) => (a + (b || a)) / 2;
+// const avg2 = ([a = 0, b = 0]) => (a + (b || a)) / 2;
 
-alert(`The mean is: ` + avg2((prompt(`Введите два числа через пробел:`) || "0").split(' ').filter(a => !isNaN(a)).map(a => +a)));
+// alert(`The mean is: ` + avg2((prompt(`Введите два числа через пробел:`) || "0").split(' ').filter(a => !isNaN(a)).map(a => +a)));
+
+
+const avg2 = () => {
+    [a = 0, b = 0] = (prompt(`Введите два числа через пробел:`) || "0").split(' ').filter(a => !isNaN(a)).map(a => +a);
+    return (a + (b || a)) / 2;
+};
+
+alert(`The mean is: ` + avg2());
