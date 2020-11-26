@@ -206,7 +206,6 @@ function hw05_functions_union(task = (prompt("Введите название з
 // Union declarative
 // Используйте ассоциативный массив вместо switch
 
-// оставил на завтра...
 
 unDeclObg = {
 
