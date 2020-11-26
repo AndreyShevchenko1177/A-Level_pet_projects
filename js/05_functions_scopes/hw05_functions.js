@@ -31,7 +31,7 @@ const cube = function (toCube) {
 // avg2
 // Напишите функцию avg2, которая рассчитывает среднюю для двух чисел:
 
-// const avg2 = ([a = 0, b = 0]) => (a + (b || a)) / 2;
+// const avg2 = ([a = 0, b = 0]) => (a + b) / 2;
 // alert(`The mean is: ` + avg2((prompt(`Введите два числа через пробел:`) || "0").split(' ').filter(a => !isNaN(a)).map(a => +a)));
 
 const avg2 = () => {
@@ -115,7 +115,7 @@ function greetAll() {
 // и for для итерирования по нему
 
 function sum() {
-    total = 0;
+    var total = 0;
     for (let item of arguments) { total += +item };
     return total;
 }
@@ -129,7 +129,7 @@ function sum() {
 // которые вызывайте в switch по имени задания:
 
 let taskList = (`
-a-alert
+a_alert
 cube
 avg2
 sum3
@@ -138,14 +138,14 @@ greetAll
 sum
 `)
 
-function hw05_functions_union(task = (prompt("Введите название задания:\n" + taskList, '')).toLowerCase()) {
+function hw05_functions_union(task = (prompt("Введите название задания:\n" + taskList, '') || "0").toLowerCase()) {
 
     switch (task) {
 
-        case 0: { ; }; break;
+        case "0": { ; }; break;
 
 
-        case "a-alert": {
+        case "a_alert": {
             a(`Привет!\n` + a);
         }; break;
 
@@ -194,6 +194,8 @@ function hw05_functions_union(task = (prompt("Введите название з
             alert(`1+2+3+4 = ` + sum(1, 2, 3, 4));
         }; break;
 
+
+        default: alert('Такой задачи нет')
     }
 };
 
@@ -205,3 +207,57 @@ function hw05_functions_union(task = (prompt("Введите название з
 // Используйте ассоциативный массив вместо switch
 
 // оставил на завтра...
+
+unDeclObg = {
+
+    byby: () => alert('Byby...'),
+
+    a_alert: () => a(`Привет!\n` + a),
+
+    cube: () => alert(`Your number in cube iz: ` + cube(+prompt("Input number:"))),
+
+    avg2: () => alert(`The mean is: ` + avg2()),
+
+    sum3: () => alert('Сумма всех чисел = ' + arrSum(inpNumberArr())),
+
+    intrandom: () => {
+        alert(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
+        console.log(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`)
+        //результат может быть и не такой как в предыдущей строке alert)))
+
+
+        alert(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`);
+        console.log(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`)
+
+
+        alert(`Случайноее число в диапазоне {3} ${intRandom(3)}`);
+        console.log(`Случайноее число в диапазоне {3} ${intRandom(3)}`)
+
+        alert(`Случайноее число в диапазоне {} ${intRandom()}`);
+        console.log(`Случайноее число в диапазоне {} ${intRandom()}`);
+    },
+
+    greetall: function () {
+        greetAll("Superman")
+        greetAll("Superman", "SpiderMan")
+        greetAll("Superman", "SpiderMan", "Captain Obvious")
+    },
+
+
+    sum: () => alert(`1+2+3+4 = ` + sum(1, 2, 3, 4)),
+
+    init() {
+        try {
+            this[(prompt("Введите название задания:\n" + taskList, 'byby').toLowerCase())]();
+        } catch (exept) {
+            unDeclObg.byby()
+            // console.log(exept)
+        }
+
+    },
+
+}
+
+
+
+
