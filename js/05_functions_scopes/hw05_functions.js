@@ -116,7 +116,7 @@ function greetAll() {
 
 function sum() {
     total = 0;
-    for (item of arguments) { total += +item };
+    for (let item of arguments) { total += +item };
     return total;
 }
 
@@ -138,7 +138,7 @@ greetAll
 sum
 `)
 
-function hw05_functions_union(task = (prompt("Введите название задания:\n" + taskList, ''))) {
+function hw05_functions_union(task = (prompt("Введите название задания:\n" + taskList, '')).toLowerCase()) {
 
     switch (task) {
 
@@ -165,7 +165,7 @@ function hw05_functions_union(task = (prompt("Введите название з
         }; break;
 
 
-        case "intRandom": {
+        case "intrandom": {
             alert(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
             console.log(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`)
             //результат может быть и не такой как в предыдущей строке alert)))
@@ -183,7 +183,7 @@ function hw05_functions_union(task = (prompt("Введите название з
         }; break;
 
 
-        case "greetAll": {
+        case "greetall": {
             greetAll("Superman")
             greetAll("Superman", "SpiderMan")
             greetAll("Superman", "SpiderMan", "Captain Obvious")
@@ -195,4 +195,13 @@ function hw05_functions_union(task = (prompt("Введите название з
         }; break;
 
     }
-}
+};
+
+
+
+
+//--------------------- UNION Declarative---------------------------
+// Union declarative
+// Используйте ассоциативный массив вместо switch
+
+// оставил на завтра...
