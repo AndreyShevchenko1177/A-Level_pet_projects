@@ -78,8 +78,7 @@ function arrSum(arr) { return arr.reduce((ar1, ar2) => ar1 + ar2) }
 
 const intRandom = function (...sumArr) {
 
-    if (sumArr[0] === sumArr[1]) return sumArr[0];
-
+    if ((sumArr[0] === sumArr[1])&&(sumArr[0]!==undefined)) return sumArr[0];
     for (let i = 0; i < 2; i++) { if (!(i in sumArr)) sumArr[i] = 0 };
     if ((sumArr[0] === 0) && (sumArr[1] === 0)) sumArr[1] = 1;
     // теперь при вызове функции вообще без параметров будет работать просто как random 0/1
