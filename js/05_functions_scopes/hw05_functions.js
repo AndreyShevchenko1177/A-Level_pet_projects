@@ -119,5 +119,5 @@ console.log(`Случайноее число в диапазоне {} ${intRando
 // Сделайтей функцию, которая приветствует всех, кто передан в качестве параметров.
 // Вам поможет arguments и for
 
-
+function greetAll() { for (item of arguments) console.log(`Hi, ${item}!`); }
 
