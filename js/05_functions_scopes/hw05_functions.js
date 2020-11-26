@@ -11,8 +11,6 @@ function a(message) {
     return res
 };
 
-a(`Привет!\n` + a);
-
 
 
 
@@ -20,13 +18,11 @@ a(`Привет!\n` + a);
 // cube
 // Напишите функцию cube, которая возвращает число в третьей степени:
 
-
 const cube = function (toCube) {
     var cubeIs = toCube * toCube * toCube;   //  Math.pow(toCube, 3);
     return cubeIs
 };
 
-alert(`Your number in cube iz: ` + cube(+prompt("Input number:")));
 
 
 
@@ -36,16 +32,12 @@ alert(`Your number in cube iz: ` + cube(+prompt("Input number:")));
 // Напишите функцию avg2, которая рассчитывает среднюю для двух чисел:
 
 // const avg2 = ([a = 0, b = 0]) => (a + (b || a)) / 2;
-
 // alert(`The mean is: ` + avg2((prompt(`Введите два числа через пробел:`) || "0").split(' ').filter(a => !isNaN(a)).map(a => +a)));
-
 
 const avg2 = () => {
     [x1 = 0, x2 = 0] = (prompt(`Введите два числа через пробел:`) || "0").split(' ').filter(a => !isNaN(a)).map(a => +a);
     return (x1 + (x2 || x1)) / 2;
 };
-
-alert(`The mean is: ` + avg2());
 
 
 
@@ -70,8 +62,6 @@ function inpNumberArr() {
 }
 
 function arrSum(arr) { return arr.reduce((ar1, ar2) => ar1 + ar2) }
-
-alert('Сумма всех чисел = ' + arrSum(inpNumberArr()));
 
 
 
@@ -98,22 +88,6 @@ const intRandom = function (...sumArr) {
 
 
 
-alert(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
-console.log(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`)
-//результат может быть и не такой как в предыдущей строке alert)))
-
-
-alert(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`);
-console.log(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`)
-
-
-alert(`Случайноее число в диапазоне {3} ${intRandom(3)}`);
-console.log(`Случайноее число в диапазоне {3} ${intRandom(3)}`)
-
-alert(`Случайноее число в диапазоне {} ${intRandom()}`);
-console.log(`Случайноее число в диапазоне {} ${intRandom()}`)
-
-
 
 
 
@@ -121,7 +95,15 @@ console.log(`Случайноее число в диапазоне {} ${intRando
 // Сделайтей функцию, которая приветствует всех, кто передан в качестве параметров.
 // Вам поможет arguments и for
 
-function greetAll() { for (item of arguments) console.log(`Hi, ${item}!`); }
+function greetAll() {
+    all = '';
+    for (item of arguments) all += ' ' + item + ",";
+    all = all.slice(0, -1);
+    if (all) {
+        console.log(`Hi,${all}!`);
+        alert(`Hi,${all}!`);
+    }
+}
 
 
 
@@ -138,4 +120,79 @@ function sum() {
     return total;
 }
 
-alert(sum(1, 2, 3, 4));
+
+
+
+//--------------------- UNION ---------------------------
+// Union
+// Всё предыдущие функции и примеры с ними объедините в функции,
+// которые вызывайте в switch по имени задания:
+
+let taskList = (`
+a-alert
+cube
+avg2
+sum3
+intRandom
+greetAll
+sum
+`)
+
+function hw05_functions_union(task = (prompt("Введите название задания:\n" + taskList, ''))) {
+
+    switch (task) {
+
+        case 0: { ; }; break;
+
+
+        case "a-alert": {
+            a(`Привет!\n` + a);
+        }; break;
+
+
+        case "cube": {
+            alert(`Your number in cube iz: ` + cube(+prompt("Input number:")));
+        }; break;
+
+
+        case "avg2": {
+            alert(`The mean is: ` + avg2());
+        }; break;
+
+
+        case "sum3": {
+            alert('Сумма всех чисел = ' + arrSum(inpNumberArr()));
+        }; break;
+
+
+        case "intRandom": {
+            alert(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
+            console.log(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`)
+            //результат может быть и не такой как в предыдущей строке alert)))
+
+
+            alert(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`);
+            console.log(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`)
+
+
+            alert(`Случайноее число в диапазоне {3} ${intRandom(3)}`);
+            console.log(`Случайноее число в диапазоне {3} ${intRandom(3)}`)
+
+            alert(`Случайноее число в диапазоне {} ${intRandom()}`);
+            console.log(`Случайноее число в диапазоне {} ${intRandom()}`);
+        }; break;
+
+
+        case "greetAll": {
+            greetAll("Superman")
+            greetAll("Superman", "SpiderMan")
+            greetAll("Superman", "SpiderMan", "Captain Obvious")
+        }; break;
+
+
+        case "sum": {
+            alert(`1+2+3+4 = ` + sum(1, 2, 3, 4));
+        }; break;
+
+    }
+}
