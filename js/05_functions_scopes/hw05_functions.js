@@ -69,7 +69,9 @@ function inpNumberArr() {
     return term;
 }
 
-alert('Сумма всех чисел = ' + inpNumberArr().reduce((ar1, ar2) => ar1 + ar2));
+function arrSum(arr) { return arr.reduce((ar1, ar2) => ar1 + ar2) }
+
+alert('Сумма всех чисел = ' + arrSum(inpNumberArr()));
 
 
 
@@ -121,3 +123,19 @@ console.log(`Случайноее число в диапазоне {} ${intRando
 
 function greetAll() { for (item of arguments) console.log(`Hi, ${item}!`); }
 
+
+
+
+
+// sum
+// Напишите функцию sum, которая сумирует любое количество параметров:
+// Используйте псевдомассив arguments для получения всех параметров,
+// и for для итерирования по нему
+
+function sum() {
+    total = 0;
+    for (item of arguments) { total += +item };
+    return total;
+}
+
+alert(sum(1, 2, 3, 4));
