@@ -67,6 +67,7 @@ function arrSum(arr) {
 // }
 //
 
+
 // ----------------------------------------------------------
 
 // intRandom
@@ -212,7 +213,7 @@ function hw05_functions_union(
 // Используйте ассоциативный массив вместо switch
 
 unDeclObg = {
-  byebye: () => alert("Byby..."),
+  byebye: () => alert("Bye bye..."),
 
   a_alert: () => a(`Привет!\n` + a),
 
@@ -252,7 +253,7 @@ unDeclObg = {
         prompt("Введите название задания:\n" + taskList, "byebye").toLowerCase()
       ]();
     } catch (exept) {
-      unDeclObg.byby();
+      unDeclObg.byebye();
       // console.log(exept)
     }
   },
