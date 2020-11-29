@@ -79,6 +79,8 @@ function arrSum(arr) {
 // Используйте умножение для расширения значения встроенной функции Math.random c диапозона 1,
 // сложениe для смещения результата на первый параметр, и Math.round для округления результата
 
+
+
 const intRandom = function (...sumArr) {
   if (sumArr[0] === sumArr[1] && sumArr[0] !== undefined) return sumArr[0];
   for (let i = 0; i < 2; i++) {
