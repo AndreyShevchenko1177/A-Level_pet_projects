@@ -67,6 +67,8 @@ function arrSum(arr) {
 // }
 //
 
+
+
 // ----------------------------------------------------------
 
 // intRandom
@@ -78,17 +80,28 @@ function arrSum(arr) {
 // Используйте умножение для расширения значения встроенной функции Math.random c диапозона 1,
 // сложениe для смещения результата на первый параметр, и Math.round для округления результата
 
-const intRandom = function (...sumArr) {
-    if (sumArr[0] === sumArr[1] && sumArr[0] !== undefined) return sumArr[0];
-    for (let i = 0; i < 2; i++) {
-        if (!(i in sumArr)) sumArr[i] = 0;
-    }
-    if (sumArr[0] === 0 && sumArr[1] === 0) sumArr[1] = 1;
-    // теперь при вызове функции вообще без параметров будет работать просто как random 0/1
 
-    sumArr.sort((a, b) => a - b);
-    return sumArr[0] + Math.round(Math.random() * (sumArr[1] - sumArr[0]));
+// Дальше идет РАБОЧИЙ вариант, но навороченный, т.е. некрасивый
+// const intRandom = function (...sumArr) {
+//     if (sumArr[0] === sumArr[1] && sumArr[0] !== undefined) return sumArr[0];
+//     for (let i = 0; i < 2; i++) {
+//         if (!(i in sumArr)) sumArr[i] = 0;
+//     }
+//     if (sumArr[0] === 0 && sumArr[1] === 0) sumArr[1] = 1;
+//     // теперь при вызове функции вообще без параметров будет работать просто как random 0/1
+
+//     sumArr.sort((a, b) => a - b);
+//     return sumArr[0] + Math.round(Math.random() * (sumArr[1] - sumArr[0]));
+// };
+
+
+// А теперь простой и красивый (и без переданных параметров тоже будет работать 0/1)
+// и нам все равно на каком месте передадут максимальный и минимальный параметр
+const intRandom = function (min = 1, max = 0) {
+    return min + Math.round(Math.random() * (max - min));
 };
+
+
 
 // ----------------------------------------------------------
 
