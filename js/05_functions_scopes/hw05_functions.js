@@ -6,7 +6,7 @@
 // The End.
 
 function a(message) {
-  return alert(message);
+    return alert(message);
 }
 
 // ----------------------------------------------------------
@@ -15,8 +15,8 @@ function a(message) {
 // Напишите функцию cube, которая возвращает число в третьей степени:
 
 const cube = function (toCube) {
-  if (isNaN(toCube)) return 0;
-  return toCube * toCube * toCube; //  Math.pow(toCube, 3);
+    if (isNaN(toCube)) return 0;
+    return toCube * toCube * toCube; //  Math.pow(toCube, 3);
 };
 
 // ----------------------------------------------------------
@@ -29,7 +29,7 @@ const cube = function (toCube) {
 
 // среднее арифметическое для любого количества аргументов
 function avg2(...argArr) {
-  return argArr.reduce((a, b) => a + b) / argArr.length;
+    return argArr.reduce((a, b) => a + b) / argArr.length;
 }
 
 // ----------------------------------------------------------
@@ -43,20 +43,20 @@ function avg2(...argArr) {
 
 // формирование массива ЧИСЕЛ
 function inpNumberArr() {
-  var term = [];
-  var inp;
+    var term = [];
+    var inp;
 
-  do {
-    inp = prompt("Введите число.\nДля завершения нажмите 'Cansel'");
-    if (!isNaN(inp) && inp !== null && inp !== "") {
-      term.push(+inp);
-    }
-  } while (inp !== null);
-  return term;
+    do {
+        inp = prompt("Введите число.\nДля завершения нажмите 'Cansel'");
+        if (!isNaN(inp) && inp !== null && inp !== "") {
+            term.push(+inp);
+        }
+    } while (inp !== null);
+    return term;
 }
 
 function arrSum(arr) {
-  return arr.reduce((ar1, ar2) => ar1 + ar2);
+    return arr.reduce((ar1, ar2) => ar1 + ar2);
 } // написали функцию дя замены reduce, но в ней использовали reduce... смешно)))
 
 // Если без reduce, но корректно будет работать только с массивом чисел
@@ -66,7 +66,6 @@ function arrSum(arr) {
 //   return sum;
 // }
 //
-
 
 // ----------------------------------------------------------
 
@@ -79,18 +78,16 @@ function arrSum(arr) {
 // Используйте умножение для расширения значения встроенной функции Math.random c диапозона 1,
 // сложениe для смещения результата на первый параметр, и Math.round для округления результата
 
-
-
 const intRandom = function (...sumArr) {
-  if (sumArr[0] === sumArr[1] && sumArr[0] !== undefined) return sumArr[0];
-  for (let i = 0; i < 2; i++) {
-    if (!(i in sumArr)) sumArr[i] = 0;
-  }
-  if (sumArr[0] === 0 && sumArr[1] === 0) sumArr[1] = 1;
-  // теперь при вызове функции вообще без параметров будет работать просто как random 0/1
+    if (sumArr[0] === sumArr[1] && sumArr[0] !== undefined) return sumArr[0];
+    for (let i = 0; i < 2; i++) {
+        if (!(i in sumArr)) sumArr[i] = 0;
+    }
+    if (sumArr[0] === 0 && sumArr[1] === 0) sumArr[1] = 1;
+    // теперь при вызове функции вообще без параметров будет работать просто как random 0/1
 
-  sumArr.sort((a, b) => a - b);
-  return sumArr[0] + Math.round(Math.random() * (sumArr[1] - sumArr[0]));
+    sumArr.sort((a, b) => a - b);
+    return sumArr[0] + Math.round(Math.random() * (sumArr[1] - sumArr[0]));
 };
 
 // ----------------------------------------------------------
@@ -100,13 +97,13 @@ const intRandom = function (...sumArr) {
 // Вам поможет arguments и for
 
 function greetAll() {
-  all = "";
-  for (item of arguments) all += " " + item + ",";
-  all = all.slice(0, -1);
-  if (all) {
-    console.log(`Hi,${all}!`);
-    alert(`Hi,${all}!`);
-  }
+    all = "";
+    for (item of arguments) all += " " + item + ",";
+    all = all.slice(0, -1);
+    if (all) {
+        console.log(`Hi,${all}!`);
+        alert(`Hi,${all}!`);
+    }
 }
 
 // ----------------------------------------------------------
@@ -117,11 +114,11 @@ function greetAll() {
 // и for для итерирования по нему
 
 function sum() {
-  var total = 0;
-  for (let item of arguments) {
-    total += +item;
-  }
-  return total;
+    var total = 0;
+    for (let item of arguments) {
+        total += +item;
+    }
+    return total;
 }
 
 //--------------------- UNION ---------------------------
@@ -140,42 +137,101 @@ sum
 `;
 
 function hw05_functions_union(
-  task = (
-    prompt("Введите название задания:\n" + taskList, "") || "0"
-  ).toLowerCase()
+    task = (
+        prompt("Введите название задания:\n" + taskList, "") || "0"
+    ).toLowerCase()
 ) {
-  switch (task) {
-    case "0":
-      {
-      }
-      break;
+    switch (task) {
+        case "0":
+            {
+            }
+            break;
 
-    case "a_alert":
-      {
-        a(`Привет!\n` + a);
-      }
-      break;
+        case "a_alert":
+            {
+                a(`Привет!\n` + a);
+            }
+            break;
 
-    case "cube":
-      {
-        alert(`Your number in cube iz: ` + cube(+prompt("Input number:")));
-      }
-      break;
+        case "cube":
+            {
+                alert(
+                    `Your number in cube iz: ` + cube(+prompt("Input number:"))
+                );
+            }
+            break;
 
-    case "avg2":
-      {
-        alert(`Среднее значение: ` + avg2(inpNumberArr()));
-      }
-      break;
+        case "avg2":
+            {
+                alert(`Среднее значение: ` + avg2(inpNumberArr()));
+            }
+            break;
 
-    case "sum3":
-      {
-        alert("Сумма всех чисел = " + arrSum(inpNumberArr()));
-      }
-      break;
+        case "sum3":
+            {
+                alert("Сумма всех чисел = " + arrSum(inpNumberArr()));
+            }
+            break;
 
-    case "intrandom":
-      {
+        case "intrandom":
+            {
+                alert(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
+                console.log(
+                    `Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`
+                );
+                //результат может быть и не такой как в предыдущей строке alert)))
+
+                alert(
+                    `Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`
+                );
+                console.log(
+                    `Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`
+                );
+
+                alert(`Случайноее число в диапазоне {3} ${intRandom(3)}`);
+                console.log(`Случайноее число в диапазоне {3} ${intRandom(3)}`);
+
+                alert(`Случайноее число в диапазоне {} ${intRandom()}`);
+                console.log(`Случайноее число в диапазоне {} ${intRandom()}`);
+            }
+            break;
+
+        case "greetall":
+            {
+                greetAll("Superman");
+                greetAll("Superman", "SpiderMan");
+                greetAll("Superman", "SpiderMan", "Captain Obvious");
+            }
+            break;
+
+        case "sum":
+            {
+                alert(`1+2+3+4 = ` + sum(1, 2, 3, 4));
+            }
+            break;
+
+        default:
+            alert("Такой задачи нет");
+    }
+}
+
+//--------------------- UNION Declarative---------------------------
+// Union declarative
+// Используйте ассоциативный массив вместо switch
+
+unDeclObg = {
+    byebye: () => alert("Bye bye..."),
+
+    a_alert: () => a(`Привет!\n` + a),
+
+    cube: () =>
+        alert(`Your number in cube iz: ` + cube(+prompt("Input number:"))),
+
+    avg2: () => alert(`Среднее значение: ` + avg2(inpNumberArr())),
+
+    sum3: () => alert("Сумма всех чисел = " + arrSum(inpNumberArr())),
+
+    intrandom: () => {
         alert(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
         console.log(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
         //результат может быть и не такой как в предыдущей строке alert)))
@@ -188,75 +244,27 @@ function hw05_functions_union(
 
         alert(`Случайноее число в диапазоне {} ${intRandom()}`);
         console.log(`Случайноее число в диапазоне {} ${intRandom()}`);
-      }
-      break;
+    },
 
-    case "greetall":
-      {
+    greetall: function () {
         greetAll("Superman");
         greetAll("Superman", "SpiderMan");
         greetAll("Superman", "SpiderMan", "Captain Obvious");
-      }
-      break;
+    },
 
-    case "sum":
-      {
-        alert(`1+2+3+4 = ` + sum(1, 2, 3, 4));
-      }
-      break;
+    sum: () => alert(`1+2+3+4 = ` + sum(1, 2, 3, 4)),
 
-    default:
-      alert("Такой задачи нет");
-  }
-}
-
-//--------------------- UNION Declarative---------------------------
-// Union declarative
-// Используйте ассоциативный массив вместо switch
-
-unDeclObg = {
-  byebye: () => alert("Bye bye..."),
-
-  a_alert: () => a(`Привет!\n` + a),
-
-  cube: () =>
-    alert(`Your number in cube iz: ` + cube(+prompt("Input number:"))),
-
-  avg2: () => alert(`Среднее значение: ` + avg2(inpNumberArr())),
-
-  sum3: () => alert("Сумма всех чисел = " + arrSum(inpNumberArr())),
-
-  intrandom: () => {
-    alert(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
-    console.log(`Случайноее число в диапазоне {2,3} ${intRandom(2, 3)}`);
-    //результат может быть и не такой как в предыдущей строке alert)))
-
-    alert(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`);
-    console.log(`Случайноее число в диапазоне {1,-2} ${intRandom(1, -2)}`);
-
-    alert(`Случайноее число в диапазоне {3} ${intRandom(3)}`);
-    console.log(`Случайноее число в диапазоне {3} ${intRandom(3)}`);
-
-    alert(`Случайноее число в диапазоне {} ${intRandom()}`);
-    console.log(`Случайноее число в диапазоне {} ${intRandom()}`);
-  },
-
-  greetall: function () {
-    greetAll("Superman");
-    greetAll("Superman", "SpiderMan");
-    greetAll("Superman", "SpiderMan", "Captain Obvious");
-  },
-
-  sum: () => alert(`1+2+3+4 = ` + sum(1, 2, 3, 4)),
-
-  init() {
-    try {
-      this[
-        prompt("Введите название задания:\n" + taskList, "byebye").toLowerCase()
-      ]();
-    } catch (exept) {
-      unDeclObg.byebye();
-      // console.log(exept)
-    }
-  },
+    init() {
+        try {
+            this[
+                prompt(
+                    "Введите название задания:\n" + taskList,
+                    "byebye"
+                ).toLowerCase()
+            ]();
+        } catch (exept) {
+            unDeclObg.byebye();
+            // console.log(exept)
+        }
+    },
 };
