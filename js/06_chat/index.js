@@ -5,29 +5,37 @@ const cors = require('cors')
 
 app.use(cors())
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
   console.log('an user connected with id', socket.id);
-  socket.on('msg', function(msg){
-      if (msg && msg.message && msg.nick){
-          io.emit('msg', msg)
-      }
-      else {
-          console.log('WRONG MESSAGE', msg)
-      }
+
+  io.emit('msg', {
+    nick: '--Администрация--',
+    message: `у нас новенький (socket.id: ${socket.id})`,
   })
-  socket.on('disconnect', function(){
-    console.log('user disconnected '+ socket.id);
+
+  socket.on('msg', function (msg) {
+    if (msg && msg.message && msg.nick) {
+      io.emit('msg', msg)
+    }
+    else {
+      console.log('WRONG MESSAGE', msg)
+    }
+  })
+
+  socket.on('disconnect', function () {
+    console.log('user disconnected ' + socket.id);
+
     io.emit('msg', {
       nick: '--Администрация--',
       message: `пользователь покинул чат (socket.id: ${socket.id})`,
-  })
+    })
   });
 });
 
-http.listen(4000, function(){
+http.listen(4000, function () {
   console.log('listening on *:4000');
 });

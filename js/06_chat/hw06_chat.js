@@ -29,6 +29,7 @@ function reciveMsg(msg) {
 
 const socket = io("http://localhost:4000");
 socket.on("msg", (msg) => reciveMsg(msg));
+
 sendId.onclick = () => {
     socket.emit("msg", {
         nick: nickId.value,
