@@ -16,6 +16,7 @@ body {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 50px);
+    max-height: calc(100vh - 50px);
     min-width: 600px;
 }
 
@@ -28,7 +29,7 @@ body {
     flex-grow: 1;
 }
 
-.chatPlusNick :nth-child(n) {
+.chatPlusNick div:nth-child(-n + 2) {
     margin: 5px;
     border: 1px solid rgb(137, 0, 0);
     color: rgb(137, 0, 0);
@@ -37,11 +38,15 @@ body {
 .chatClass {
     background-color: rgb(255, 190, 200);
     flex-grow: 1;
+    overflow: auto;
+    max-height: calc(100vh - 110px);
 }
 
 .nicksPresent {
     background-color: rgb(255, 190, 200);
-    width: 200px;
+    width: 250px;
+    overflow: auto;
+    max-height: calc(100vh - 110px);
 }
 
 .nickName {

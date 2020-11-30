@@ -14,8 +14,10 @@
         <div id="formContainer"></div>
         <div class="allWindow">
             <div class="chatPlusNick">
-                <div class="chatClass">Собственно сам чат</div>
-                <div class="nicksPresent">Кто у нас тут в чате:</div>
+                <div class="chatClass" id="chatWindow">Собственно сам чат</div>
+                <div class="nicksPresent" id="whoIsHere">
+                    Кто у нас тут в чате:
+                </div>
             </div>
             <div class="controlPanel">
                 <span class="nickName">Твой ник:</span>
@@ -25,15 +27,6 @@
             </div>
         </div>
 
-        <script>
-            const socket = io("http://192.168.1.20:5000/");
-            socket.on("msg", msg => console.log(msg));
-            sendId.onclick = () => {
-                socket.emit("msg", {
-                    nick: nickId.value,
-                    message: msgId.value,
-                });
-            };
-        </script>
+        <script src="./hw06_chat.js"></script>
     </body>
 </html>
