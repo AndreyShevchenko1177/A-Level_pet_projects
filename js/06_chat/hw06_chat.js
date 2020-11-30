@@ -1,4 +1,4 @@
-users = [];
+users = [];  // кто тут в чате
 
 // отправка сообщения в чат при нажатии Enter в поле ввода сообщения
 msgId.addEventListener('keydown', function (e) {
@@ -10,14 +10,16 @@ msgId.addEventListener('keydown', function (e) {
 function reciveMsg(msg) {
     console.log(msg);
     chatWindow.innerHTML += '<br/><b>' + msg.nick + ':</b>  ' + msg.message;
-    chatWindow.scrollTop += 100;
+    chatWindow.scrollTop = chatWindow.scrollHeight; // прокрутка скрола чата
+
     if (!~users.indexOf(msg.nick)) {
         users.push(msg.nick);
         users.sort((a, b) => (a < b) && -1 || 1);
         whoIsHere.innerHTML = 'Кто у нас тут в чате:';
         for (i of users) {
             whoIsHere.innerHTML += '<br/><b>' + i + '</b>';
-        }
+        };
+        // whoIsHere.scrollTop = whoIsHere.scrollHeight;
     }
 }
 
