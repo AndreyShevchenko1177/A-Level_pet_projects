@@ -893,7 +893,7 @@ let smileObj = {
 function smilify(message) {
     const wwwConstStr = `<img src="https://www.webfx.com/tools/emoji-cheat-sheet/`;
     for (key in smileObj) {
-        key += "";
+        // key += "";  // если раскомментировать, то можно ниже обращаться через точку
         while (
             message !==
             message.replace(
@@ -958,7 +958,7 @@ socket.on("msg", (msg) => reciveMsg(msg));
 sendId.onclick = () => {
     socket.emit("msg", {
         nick: nickId.value,
-        message: msgId.value,
+        message: smilify(msgId.value),
     });
     msgId.value = "";
 };
