@@ -1,0 +1,83 @@
+/* Andrey Shevchenko. FEA-23. Home work 7 */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: rgb(255, 159, 175);
+    padding: 10px;
+    /* margin: 0; */
+}
+
+.allWindow {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 50px);
+    max-height: calc(100vh - 50px);
+    min-width: 600px;
+}
+
+.allwindow :nth-child(n) {
+    margin: 50px;
+}
+
+.chatPlusNick {
+    display: flex;
+    flex-grow: 1;
+}
+
+.chatPlusNick div:nth-child(-n + 2) {
+    margin: 5px;
+    border: 1px solid rgb(137, 0, 0);
+    color: rgb(137, 0, 0);
+}
+
+.chatClass {
+    background-color: rgb(255, 190, 200);
+    flex-grow: 1;
+    overflow: auto;
+    max-height: calc(100vh - 110px);
+}
+
+.nicksPresent {
+    background-color: rgb(255, 190, 200);
+    width: 250px;
+    overflow: auto;
+    max-height: calc(100vh - 110px);
+}
+
+.nickName {
+    font-weight: 700;
+    min-width: 80px;
+}
+
+.controlPanel {
+    display: flex;
+    align-items: baseline;
+    width: calc(100vw - 320px);
+}
+
+.controlPanel :nth-child(n) {
+    margin: 5px;
+    color: rgb(137, 0, 0);
+    height: 30px;
+    /* border: 2px solid red; */
+}
+
+.nickValueClass {
+    width: 150px;
+    /* height: 30px; */
+    text-align: left;
+}
+
+.msgClass {
+    /* height: 30px; */
+    flex-grow: 1;
+}
+
+.sendBtn {
+    min-width: 90px;
+}
