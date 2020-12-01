@@ -1,4 +1,5 @@
 const socket = io("http://localhost:4000");
+// const socket = io("http://192.168.1.217:4000/");
 users = []; // кто тут в чате
 
 let nick;
