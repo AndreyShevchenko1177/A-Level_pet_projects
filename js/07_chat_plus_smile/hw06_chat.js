@@ -891,19 +891,20 @@ let smileObj = {
 };
 
 function smilify(message) {
-    const wwwConstStr = `<img src="https://www.webfx.com/tools/emoji-cheat-sheet/`;
+    const wwwConstStrFirst = `<img src="https://www.webfx.com/tools/emoji-cheat-sheet/`;
+    const wwwConstStrLast = `" width="20"></img>`;
     for (key in smileObj) {
         // key += "";  // если раскомментировать, то можно ниже обращаться через точку
         while (
             message !==
             message.replace(
                 `:${key}:`,
-                wwwConstStr + smileObj[key] + `" width="20"></img>`
+                wwwConstStrFirst + smileObj[key] + wwwConstStrLast
             )
         ) {
             message = message.replace(
                 `:${key}:`,
-                wwwConstStr + smileObj[key] + `" width="20"></img>`
+                wwwConstStrFirst + smileObj[key] + wwwConstStrLast
             );
         }
     }
