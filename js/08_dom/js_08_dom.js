@@ -47,7 +47,7 @@ function createTable() {
 
 // -------------- Подсветить ячейку в таблице номер №---------------
 
-function lightCell(tableNumber = "") {
+function lightCell(tableNumber = "1") {
     let cells = document.querySelectorAll(".cellTitle" + tableNumber);
 
     for (let node of cells) {
@@ -66,14 +66,14 @@ function lightCell(tableNumber = "") {
             this.style.background = "skyblue";
         };
         node.onmouseout = function () {
-            this.style.background = "#fff";
+            this.removeAttribute("style");
         };
     }
 }
 
 // --------------Подсветить строку и столбец в таблице №---------------
 
-function lightCross(tableNumber = "") {
+function lightCross(tableNumber = "1") {
     let cells = document.querySelectorAll(".cell" + tableNumber);
 
     for (let node of cells) {
@@ -98,7 +98,7 @@ function lightCross(tableNumber = "") {
             // --- а можно так ---
             element = this;
             element = element.parentElement.parentElement;
-            for (rows of element.children) {
+            for (let rows of element.children) {
                 if (rows.rowIndex !== this.parentElement.rowIndex) {
                     rows.children[cellNumber].style.background = "peru";
                 }
@@ -107,17 +107,17 @@ function lightCross(tableNumber = "") {
         };
 
         node.onmouseout = function () {
-            cellNumber = this.cellIndex;
+            let cellNumber = this.cellIndex;
             let element = this;
 
             element = element.parentElement;
-            for (cells of element.children) {
+            for (let cells of element.children) {
                 cells.style.background = "#fff";
             }
             element.children[0].style.background = "lightgray";
 
             element = element.parentElement;
-            for (rows of element.children) {
+            for (let rows of element.children) {
                 rows.children[cellNumber].style.background = "#fff";
             }
             element.children[0].children[cellNumber].style.background = "lightgray";
@@ -125,15 +125,51 @@ function lightCross(tableNumber = "") {
     }
 }
 
+// --------------Подсветить строку и столбец в таблице №  (версия 2)---------------
+
+function lightCrossV2(tableNumber = "1") {
+    let tableID = "myTableID" + tableNumber;
+    let el = document.getElementById(tableID);
+    for (let tr of el.children) {
+        for (let td of tr.children) {
+            td.onmousemove = function () {
+                if (this.parentElement.rowIndex) {
+                    td.parentElement.style.background = "peru";
+                }
+                for (let tr1 of el.children) {
+                    if (this.cellIndex) {
+                        tr1.children[this.cellIndex].style.background = "peru";
+                    }
+                }
+                this.style.background = "pink";
+                el.children[0].children[this.cellIndex].style.background = "limegreen";
+                this.parentElement.children[0].style.background = "limegreen";
+            };
+
+            td.onmouseout = function () {
+                if (this.parentElement.rowIndex) {
+                    td.parentElement.removeAttribute("style");
+                }
+                for (let tr1 of el.children) {
+                    if (this.cellIndex) {
+                        tr1.children[this.cellIndex].removeAttribute("style");
+                    } else el.children[0].children[0].style.background = "lightgray";
+                }
+
+                this.parentElement.children[0].style.background = "lightgray";
+            };
+        }
+    }
+}
+
 // --------------Убрать любые подсветки из таблицы №---------------
 
-function lightsOff(tableNumber = "") {
-    tableID = "myTableID" + tableNumber;
-    let elInner = (el = document.getElementById(tableID));
-    for (tr of el.children) {
+function lightsOff(tableNumber = "1") {
+    let tableID = "myTableID" + tableNumber;
+    let el = document.getElementById(tableID);
+    for (let tr of el.children) {
         tr.onmousemove = tr.onmouseout = null;
-        elInner = tr;
-        for (td of tr.children) {
+        for (let td of tr.children) {
             td.onmousemove = td.onmouseout = null;
         }
     }
@@ -170,7 +206,7 @@ p.appendChild(btn1);
 let btn2 = document.createElement("button");
 btn2.innerHTML = `Подсветка Cros.ver2`;
 btn2.onclick = () => {
-    lightCross("1");
+    lightCrossV2("1");
 
     btn2.setAttribute("disabled", "disabled");
     btn2.style = "color: red;";
@@ -207,3 +243,5 @@ createTable();
 lightCell("2");
 
 lightCross("3");
+
+// let pCalk = docu
