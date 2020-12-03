@@ -23,7 +23,7 @@ function createTable() {
     for (yAxis = 0; yAxis < 10; yAxis++) {
         multiTable[yAxis] = [];
         var trLine = document.createElement("tr");
-        trLine.setAttribute("height", "30px");
+        trLine.setAttribute("height", "25px");
         myTable.appendChild(trLine);
         if (yAxis === 0) trLine.style = titleStyle;
 
@@ -32,7 +32,7 @@ function createTable() {
 
             var tdCell = document.createElement("td");
             tdCell.setAttribute("align", "center");
-            tdCell.setAttribute("width", "30px");
+            tdCell.setAttribute("width", "25px");
 
             let className = xAxis * yAxis === 0 ? "cellTitle" : "cell";
             className += tableNumber;
@@ -52,7 +52,7 @@ function lightCell(tableNumber = "") {
 
     for (let node of cells) {
         node.onmousemove = function () {
-            this.style.background = "green";
+            this.style.background = "limegreen";
         };
         node.onmouseout = function () {
             this.style.background = "lightgray";
@@ -88,7 +88,7 @@ function lightCross(tableNumber = "") {
                 element = element.previousElementSibling;
             }
             do {
-                element.style.background = ~element.getAttribute("class").indexOf("cellTitle") ? "green" : "peru";
+                element.style.background = ~element.getAttribute("class").indexOf("cellTitle") ? "limegreen" : "peru";
                 if (element.cellIndex === cellNumber) {
                     element.style.background = "pink";
                 }
@@ -103,7 +103,7 @@ function lightCross(tableNumber = "") {
                     rows.children[cellNumber].style.background = "peru";
                 }
             }
-            element.children[0].children[cellNumber].style.background = "green";
+            element.children[0].children[cellNumber].style.background = "limegreen";
         };
 
         node.onmouseout = function () {
@@ -125,9 +125,82 @@ function lightCross(tableNumber = "") {
     }
 }
 
+// --------------Убрать любые подсветки из таблицы №---------------
+
+function lightsOff(tableNumber = "") {
+    tableID = "myTableID" + tableNumber;
+    let elInner = (el = document.getElementById(tableID));
+    for (tr of el.children) {
+        tr.onmousemove = tr.onmouseout = null;
+        elInner = tr;
+        for (td of tr.children) {
+            td.onmousemove = td.onmouseout = null;
+        }
+    }
+}
+
 // ---------------------- Запуск на выполнение всех задач --------------------
 
 createTable();
+
+let p = document.createElement("p");
+p.style = "text-align: center; margin: 20px;";
+document.body.appendChild(p);
+
+let title1 = document.createElement("div");
+title1.innerHTML = "Кнопки для верхней таблицы<br>";
+p.appendChild(title1);
+
+let btn1 = document.createElement("button");
+btn1.innerHTML = `Подсветка Cell`;
+btn1.onclick = () => {
+    lightCell("1");
+
+    btn1.setAttribute("disabled", "disabled");
+    btn1.style = "color: red;";
+
+    btn2.removeAttribute("disabled");
+    btn2.style = "";
+
+    btn3.removeAttribute("disabled");
+    btn3.style = "";
+};
+p.appendChild(btn1);
+
+let btn2 = document.createElement("button");
+btn2.innerHTML = `Подсветка Cros.ver2`;
+btn2.onclick = () => {
+    lightCross("1");
+
+    btn2.setAttribute("disabled", "disabled");
+    btn2.style = "color: red;";
+
+    btn1.removeAttribute("disabled");
+    btn1.style = "";
+
+    btn3.removeAttribute("disabled");
+    btn3.style = "";
+};
+p.appendChild(btn2);
+
+let btn3 = document.createElement("button");
+btn3.innerHTML = `Подсветка OFF`;
+btn3.onclick = () => {
+    lightsOff("1");
+
+    btn3.setAttribute("disabled", "disabled");
+    btn3.style = "color: red;";
+
+    btn2.removeAttribute("disabled");
+    btn2.style = "";
+
+    btn1.removeAttribute("disabled");
+    btn1.style = "";
+};
+p.appendChild(btn3);
+
+btn3.onclick();
+
 createTable();
 createTable();
 
