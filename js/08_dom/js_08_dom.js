@@ -244,4 +244,70 @@ lightCell("2");
 
 lightCross("3");
 
-// let pCalk = docu
+//------------------------Калькулятор---------------------------
+
+let divCalc = document.createElement("div");
+divCalc.style = "text-align: center; margin: 20px;";
+document.body.appendChild(divCalc);
+
+let question = document.createElement("span");
+question.innerHTML = "Сколько лет Вам исполнилось или исполнится в этом году?</br>";
+divCalc.appendChild(question);
+
+let inp = document.createElement("input");
+inp.setAttribute("type", "number");
+inp.setAttribute("value", "30");
+divCalc.appendChild(inp);
+
+let buttonArrea = document.createElement("div");
+buttonArrea.style = "text-align: center; margin: 20px;";
+divCalc.appendChild(buttonArrea);
+
+let check = document.createElement("input");
+check.setAttribute("type", "checkbox");
+check.setAttribute("id", "checkId");
+check.setAttribute("checked", "checked");
+buttonArrea.appendChild(check);
+
+let checkTitle = document.createElement("span");
+checkTitle.innerText = " <-- живой калькулятор. Или нажми, чтобы получить результат --> ";
+buttonArrea.appendChild(checkTitle);
+
+let btnAlive = document.createElement("button");
+// btnAlive.setAttribute("disabled", "disabled");
+btnAlive.innerText = "Нажми";
+btnAlive.style = "text-align: center;";
+buttonArrea.appendChild(btnAlive);
+
+let answerArea = document.createElement("div");
+answerArea.style = "text-align: center;";
+divCalc.appendChild(answerArea);
+
+let answerTitle = document.createElement("span");
+answerTitle.innerHTML = "Год Вашего рождения: ";
+answerArea.appendChild(answerTitle);
+
+let currYear = new Date().getFullYear();
+
+let answer = document.createElement("span");
+answer.innerText = currYear - inp.value;
+answerArea.appendChild(answer);
+
+const letsCulc = function () {
+    answer.innerText = currYear - inp.value;
+};
+
+btnAlive.onclick = letsCulc;
+
+const checkFunc = function () {
+    if (check.checked) {
+        btnAlive.setAttribute("disabled", "disabled");
+        inp.oninput = letsCulc;
+    } else {
+        btnAlive.removeAttribute("disabled");
+        inp.oninput = null;
+    }
+};
+
+check.onclick = checkFunc;
+checkFunc();
