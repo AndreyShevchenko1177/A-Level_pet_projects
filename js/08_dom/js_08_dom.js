@@ -256,6 +256,7 @@ divCalc.appendChild(question);
 
 let inp = document.createElement("input");
 inp.setAttribute("type", "number");
+inp.setAttribute("id", "inpId");
 inp.setAttribute("value", "30");
 divCalc.appendChild(inp);
 
@@ -274,7 +275,7 @@ checkTitle.innerText = " <-- живой калькулятор. Или нажм�
 buttonArrea.appendChild(checkTitle);
 
 let btnAlive = document.createElement("button");
-// btnAlive.setAttribute("disabled", "disabled");
+btnAlive.setAttribute("id", "btnAliveId");
 btnAlive.innerText = "Нажми";
 btnAlive.style = "text-align: center;";
 buttonArrea.appendChild(btnAlive);
@@ -290,24 +291,25 @@ answerArea.appendChild(answerTitle);
 let currYear = new Date().getFullYear();
 
 let answer = document.createElement("span");
+answer.setAttribute("id", "answerId");
 answer.innerText = currYear - inp.value;
 answerArea.appendChild(answer);
 
 const letsCulc = function () {
-    answer.innerText = currYear - inp.value;
+    answerId.innerText = currYear - inpId.value;
 };
 
-btnAlive.onclick = letsCulc;
+btnAliveId.onclick = letsCulc;
 
 const checkFunc = function () {
-    if (check.checked) {
-        btnAlive.setAttribute("disabled", "disabled");
-        inp.oninput = letsCulc;
+    if (checkId.checked) {
+        btnAliveId.setAttribute("disabled", "disabled");
+        inpId.oninput = letsCulc;
     } else {
-        btnAlive.removeAttribute("disabled");
-        inp.oninput = null;
+        btnAliveId.removeAttribute("disabled");
+        inpId.oninput = null;
     }
 };
 
-check.onclick = checkFunc;
+checkId.onclick = checkFunc;
 checkFunc();
