@@ -2,13 +2,15 @@
 
 var titleStyle = `background-color: lightgray;`;
 var globalTableNumber = 1;
+document.body.style.textAlign = "center";
 
 // --------------Построение таблицы с присвоением ей номера---------------
 
 function createTable() {
     let tableNumber = globalTableNumber++;
     let di = document.createElement("div");
-    di.style = "margin: 20px";
+    di.style.display = "inline-block";
+    di.style.margin = "10px";
     document.body.appendChild(di);
 
     var myTable = document.createElement("table");
@@ -175,12 +177,24 @@ function lightsOff(tableNumber = "1") {
     }
 }
 
+//-------------------------------------------------------------
+
+//---------Включить кнопку в группе, остальные выключить-------
+function buttonToggle(btnId, btnGroup) {
+    for (i of document.querySelectorAll("." + btnGroup)) {
+        i.style.color = "";
+        i.removeAttribute("disabled");
+    }
+    document.getElementById(btnId).style.color = "red";
+    document.getElementById(btnId).setAttribute("disabled", "disabled");
+}
+
 // ---------------------- Запуск на выполнение всех задач --------------------
 
 createTable();
 
 let p = document.createElement("p");
-p.style = "text-align: center; margin: 20px;";
+p.style = "text-align: center; margin: 10px;";
 document.body.appendChild(p);
 
 let title1 = document.createElement("div");
@@ -188,52 +202,50 @@ title1.innerHTML = "Кнопки для верхней таблицы<br>";
 p.appendChild(title1);
 
 let btn1 = document.createElement("button");
+btn1.setAttribute("id", "btn1");
+btn1.setAttribute("class", "btnGroup1");
 btn1.innerHTML = `Подсветка Cell`;
+btn1.style.margin = "5px";
 btn1.onclick = () => {
     lightCell("1");
-
-    btn1.setAttribute("disabled", "disabled");
-    btn1.style = "color: red;";
-
-    btn2.removeAttribute("disabled");
-    btn2.style = "";
-
-    btn3.removeAttribute("disabled");
-    btn3.style = "";
+    buttonToggle("btn1", "btnGroup1");
 };
 p.appendChild(btn1);
 
 let btn2 = document.createElement("button");
-btn2.innerHTML = `Подсветка Cros.ver2`;
+btn2.setAttribute("id", "btn2");
+btn2.setAttribute("class", "btnGroup1");
+btn2.style.margin = "5px";
+btn2.innerHTML = `Подсветка Cross.ver2`;
 btn2.onclick = () => {
     lightCrossV2("1");
-
-    btn2.setAttribute("disabled", "disabled");
-    btn2.style = "color: red;";
-
-    btn1.removeAttribute("disabled");
-    btn1.style = "";
-
-    btn3.removeAttribute("disabled");
-    btn3.style = "";
+    buttonToggle("btn2", "btnGroup1");
 };
 p.appendChild(btn2);
 
+p.appendChild(document.createElement("br"));
+
 let btn3 = document.createElement("button");
+btn3.setAttribute("id", "btn3");
+btn3.setAttribute("class", "btnGroup1");
+btn3.style.margin = "5px";
 btn3.innerHTML = `Подсветка OFF`;
 btn3.onclick = () => {
     lightsOff("1");
-
-    btn3.setAttribute("disabled", "disabled");
-    btn3.style = "color: red;";
-
-    btn2.removeAttribute("disabled");
-    btn2.style = "";
-
-    btn1.removeAttribute("disabled");
-    btn1.style = "";
+    buttonToggle("btn3", "btnGroup1");
 };
 p.appendChild(btn3);
+
+let btn4 = document.createElement("button");
+btn4.setAttribute("id", "btn4");
+btn4.setAttribute("class", "btnGroup1");
+btn4.style.margin = "5px";
+btn4.innerHTML = `Подсветка Cross.ver3`;
+btn4.onclick = () => {
+    // lightsOff("1");
+    buttonToggle("btn4", "btnGroup1");
+};
+p.appendChild(btn4);
 
 btn3.onclick();
 
@@ -261,7 +273,7 @@ inp.setAttribute("value", "30");
 divCalc.appendChild(inp);
 
 let buttonArrea = document.createElement("div");
-buttonArrea.style = "text-align: center; margin: 20px;";
+buttonArrea.style = "text-align: center; margin: 10px;";
 divCalc.appendChild(buttonArrea);
 
 let check = document.createElement("input");
@@ -271,7 +283,7 @@ check.setAttribute("checked", "checked");
 buttonArrea.appendChild(check);
 
 let checkTitle = document.createElement("span");
-checkTitle.innerText = " <-- живой калькулятор. Или нажми, чтобы получить результат --> ";
+checkTitle.innerText = " <== живой калькулятор. Или нажми, чтобы получить результат ==> ";
 buttonArrea.appendChild(checkTitle);
 
 let btnAlive = document.createElement("button");
@@ -305,6 +317,7 @@ const checkFunc = function () {
     if (checkId.checked) {
         btnAliveId.setAttribute("disabled", "disabled");
         inpId.oninput = letsCulc;
+        letsCulc();
     } else {
         btnAliveId.removeAttribute("disabled");
         inpId.oninput = null;
