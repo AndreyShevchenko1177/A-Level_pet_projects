@@ -174,8 +174,6 @@ function lightCrossV3(tableNumber = "1") {
     let tableID = "myTableID" + tableNumber;
     let el = document.getElementById(tableID);
     for (let tr of el.children) {
-        tr.setAttribute("style", "");
-        tr.setAttribute("prevbkcolor", "magenta");
         for (let td of tr.children) {
             td.setAttribute("prevbkcolor", "magenta");
             td.setAttribute("style", "");
