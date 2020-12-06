@@ -5,10 +5,9 @@
 //
 
 try {
-  something;
+    something;
 } catch (e) {
-  window.location.href =
-    "http://stackoverflow.com/search?q=[js] + " + e.massage;
+    window.location.href = "http://stackoverflow.com/search?q=[js] + " + e.massage;
 }
 
 //
@@ -24,10 +23,10 @@ try {
 // например Object.entries(obj).sort((a, b) => a[0] - b[0]);.
 
 for (let i in persons) {
-  for (let [key, value] of Object.entries(persons[i])) {
-    console.log(`${key}: ${value}`);
-    str += `<tr><td>${key}</td><td>${value}</td></tr>`;
-  }
+    for (let [key, value] of Object.entries(persons[i])) {
+        console.log(`${key}: ${value}`);
+        str += `<tr><td>${key}</td><td>${value}</td></tr>`;
+    }
 }
 
 //
@@ -35,15 +34,15 @@ for (let i in persons) {
 //---------------------------- если надо развернуть в линию многомерный массив
 
 predictArray
-  .reduce(function (a, b) {
-    return a.concat(b);
-  })
-  .reduce(function (a, b) {
-    return a.concat(b);
-  })
-  .reduce(function (a, b) {
-    return a.concat(b);
-  });
+    .reduce(function (a, b) {
+        return a.concat(b);
+    })
+    .reduce(function (a, b) {
+        return a.concat(b);
+    })
+    .reduce(function (a, b) {
+        return a.concat(b);
+    });
 
 //
 
@@ -66,9 +65,7 @@ predictArray
 //Вместо этих 4-х вложенных циклов можно одной строкой
 
 predictArray = Array.from(Array(2), () =>
-  Array.from(Array(2), () =>
-    Array.from(Array(2), () => Array.from(Array(2), () => -1))
-  )
+    Array.from(Array(2), () => Array.from(Array(2), () => Array.from(Array(2), () => -1)))
 );
 //
 
@@ -78,7 +75,7 @@ predictArray = Array.from(Array(2), () =>
 let myArr = new Array(3);
 console.log(myArr);
 for (let key in myArr) {
-  myArr[key] = key;
+    myArr[key] = key;
 }
 console.log(myArr);
 //  (3) [empty × 3]
@@ -88,7 +85,7 @@ console.log(myArr);
 let myArr = [5, 6, 7];
 console.log(myArr);
 for (let key in myArr) {
-  myArr[key] = key;
+    myArr[key] = key;
 }
 console.log(myArr);
 // (3) [5, 6, 7]
@@ -119,18 +116,18 @@ new Date().getFullYear();
 
 // Пример использования параметра replacer
 var foo = {
-  foundation: "Mozilla",
-  model: "box",
-  week: 45,
-  transport: "car",
-  month: 7,
+    foundation: "Mozilla",
+    model: "box",
+    week: 45,
+    transport: "car",
+    month: 7,
 };
 
 JSON.stringify(foo, function (key, value) {
-  if (typeof value === "string") {
-    return undefined; // удаляем все строковые свойства
-  }
-  return value;
+    if (typeof value === "string") {
+        return undefined; // удаляем все строковые свойства
+    }
+    return value;
 }); // '{"week":45,"month":7}'
 
 JSON.stringify(foo, ["week", "month"]);
@@ -165,16 +162,16 @@ let [number, [s1, s2, s3]] = arr;
 // извлеките используя деструктуризацию имена детей в переменные name1 и name2
 
 let obj = {
-  name: "Ivan",
-  surname: "Petrov",
-  children: [{ name: "Maria" }, { name: "Nikolay" }],
+    name: "Ivan",
+    surname: "Petrov",
+    children: [{ name: "Maria" }, { name: "Nikolay" }],
 };
 
 // let { children } = obj;
 // let [{ name: name1 }, { name: name2 }] = children;
 
 let {
-  children: [{ name: name1 }, { name: name2 }],
+    children: [{ name: name1 }, { name: name2 }],
 } = obj;
 
 // desctruct 3
@@ -189,3 +186,35 @@ let { length: length, [0]: a, [1]: b } = arr;
 //
 
 // ---------------------------------------------------------
+
+// События mouseover/mouseout, relatedTarget
+// Событие mouseover происходит в момент, когда курсор оказывается над элементом, а событие mouseout – в момент, когда курсор уходит с элемента.
+// Эти события являются особенными, потому что у них имеется свойство relatedTarget. Оно «дополняет» target.
+// Когда мышь переходит с одного элемента на другой, то один из них будет target, а другой relatedTarget.
+
+// Для события mouseover:
+// event.target – это элемент, на который курсор перешёл.
+// event.relatedTarget – это элемент, с которого курсор ушёл (relatedTarget → target).
+// Для события mouseout наоборот:
+
+// event.target – это элемент, с которого курсор ушёл.
+// event.relatedTarget – это элемент, на который курсор перешёл (target → relatedTarget).
+
+// Событие mouseover, происходящее на потомке, всплывает. Поэтому если на родительском элементе есть такой обработчик, то оно его вызовет.
+
+//-------------------------------------------------------
+
+// События mouseenter и mouseleave
+// События mouseenter / mouseleave похожи на mouseover / mouseout.
+// Они тоже генерируются, когда курсор мыши переходит на элемент или покидает его.
+
+// Но есть и пара важных отличий:
+
+// Переходы внутри элемента, на его потомки и с них, не считаются.
+// События mouseenter/mouseleave не всплывают.
+// События mouseenter/mouseleave предельно просты и понятны.
+
+// Когда указатель появляется над элементом – генерируется mouseenter,
+//   причём не имеет значения, где именно указатель: на самом элементе или на его потомке.
+
+// Событие mouseleave происходит, когда курсор покидает элемент.

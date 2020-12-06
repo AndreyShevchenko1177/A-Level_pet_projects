@@ -50,6 +50,7 @@ function createTable() {
 // -------------- Подсветить ячейку в таблице номер №---------------
 
 function lightCell(tableNumber = "1") {
+    lightsOff(tableNumber);
     let cells = document.querySelectorAll(".cellTitle" + tableNumber);
 
     for (let node of cells) {
@@ -76,6 +77,7 @@ function lightCell(tableNumber = "1") {
 // --------------Подсветить строку и столбец в таблице №---------------
 
 function lightCross(tableNumber = "1") {
+    lightsOff(tableNumber);
     let cells = document.querySelectorAll(".cell" + tableNumber);
 
     for (let node of cells) {
@@ -130,6 +132,7 @@ function lightCross(tableNumber = "1") {
 // --------------Подсветить строку и столбец в таблице №  (версия 2)---------------
 
 function lightCrossV2(tableNumber = "1") {
+    lightsOff(tableNumber);
     let tableID = "myTableID" + tableNumber;
     let el = document.getElementById(tableID);
     for (let tr of el.children) {
@@ -164,15 +167,42 @@ function lightCrossV2(tableNumber = "1") {
     }
 }
 
+// --------------Подсветить строку и столбец в таблице №  (версия 3)---------------
+
+function lightCrossV3(tableNumber = "1") {
+    lightsOff(tableNumber);
+    let tableID = "myTableID" + tableNumber;
+    let el = document.getElementById(tableID);
+    for (let tr of el.children) {
+        tr.setAttribute("style", "");
+        tr.setAttribute("prevbkcolor", "magenta");
+        for (let td of tr.children) {
+            td.setAttribute("prevbkcolor", "magenta");
+            td.setAttribute("style", "");
+
+            td.onmouseover = td.onmouseout = function () {
+                let sell = this.cellIndex;
+                function change(el_) {
+                    let temp = el_.style.background || "";
+                    el_.style.background = el_.getAttribute("prevbkcolor");
+                    el_.setAttribute("prevbkcolor", temp);
+                }
+                for (i of this.parentElement.children) change(i);
+                for (i of this.parentElement.parentElement.children) change(i.children[sell]);
+            };
+        }
+    }
+}
+
 // --------------Убрать любые подсветки из таблицы №---------------
 
 function lightsOff(tableNumber = "1") {
     let tableID = "myTableID" + tableNumber;
     let el = document.getElementById(tableID);
     for (let tr of el.children) {
-        tr.onmousemove = tr.onmouseout = null;
+        tr.onmousemove = tr.onmouseout = tr.onmouseover = null;
         for (let td of tr.children) {
-            td.onmousemove = td.onmouseout = null;
+            td.onmousemove = td.onmouseout = td.onmouseover = null;
         }
     }
 }
@@ -207,8 +237,8 @@ btn1.setAttribute("class", "btnGroup1");
 btn1.innerHTML = `Подсветка Cell`;
 btn1.style.margin = "5px";
 btn1.onclick = () => {
-    lightCell("1");
     buttonToggle("btn1", "btnGroup1");
+    lightCell("1");
 };
 p.appendChild(btn1);
 
@@ -218,8 +248,8 @@ btn2.setAttribute("class", "btnGroup1");
 btn2.style.margin = "5px";
 btn2.innerHTML = `Подсветка Cross.ver2`;
 btn2.onclick = () => {
-    lightCrossV2("1");
     buttonToggle("btn2", "btnGroup1");
+    lightCrossV2("1");
 };
 p.appendChild(btn2);
 
@@ -231,8 +261,8 @@ btn3.setAttribute("class", "btnGroup1");
 btn3.style.margin = "5px";
 btn3.innerHTML = `Подсветка OFF`;
 btn3.onclick = () => {
-    lightsOff("1");
     buttonToggle("btn3", "btnGroup1");
+    lightsOff("1");
 };
 p.appendChild(btn3);
 
@@ -242,8 +272,8 @@ btn4.setAttribute("class", "btnGroup1");
 btn4.style.margin = "5px";
 btn4.innerHTML = `Подсветка Cross.ver3`;
 btn4.onclick = () => {
-    // lightsOff("1");
     buttonToggle("btn4", "btnGroup1");
+    lightCrossV3("1"); //++++++++++++++++++++++++++++++++++++++++++++++++++++
 };
 p.appendChild(btn4);
 

@@ -1,0 +1,8 @@
+/*  */
+
+/* стили для работы подсветки Cross.ver3 */
+
+#myTableID1 tr:first-child,
+#myTableID1 tr td:first-child {
+    background-color: lightgray;
+}
