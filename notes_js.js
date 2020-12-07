@@ -218,3 +218,85 @@ let { length: length, [0]: a, [1]: b } = arr;
 //   причём не имеет значения, где именно указатель: на самом элементе или на его потомке.
 
 // Событие mouseleave происходит, когда курсор покидает элемент.
+
+//-------------------------------------------------------
+
+// Object.keys, values, entries
+// Давайте отойдём от отдельных структур данных и поговорим об их переборе вообще.
+
+// В предыдущей главе мы видели методы map.keys(), map.values(), map.entries().
+
+// Это универсальные методы, и существует общее соглашение использовать их для структур данных.
+// Если бы мы делали собственную структуру данных, нам также следовало бы их реализовать.
+
+// Методы поддерживаются для структур:
+
+// Map
+// Set
+// Array
+// Простые объекты также можно перебирать похожими методами, но синтаксис немного отличается.
+
+// Object.keys, values, entries
+// Для простых объектов доступны следующие методы:
+
+// Object.keys(obj) – возвращает массив ключей.
+// Object.values(obj) – возвращает массив значений.
+// Object.entries(obj) – возвращает массив пар [ключ, значение].
+
+// Object.keys/values/entries игнорируют символьные свойства
+// Так же, как и цикл for..in, эти методы игнорируют свойства, использующие Symbol(...) в качестве ключей.
+
+// Обычно это удобно. Но если требуется учитывать и символьные ключи, то для этого существует отдельный метод
+// Object.getOwnPropertySymbols, возвращающий массив только символьных ключей.
+//     Также, существует метод Reflect.ownKeys(obj), который возвращает все ключи.
+
+let prices = {
+    banana: 1,
+    orange: 2,
+    meat: 4,
+};
+
+let doublePrices = Object.fromEntries(
+    // преобразовать в массив, затем map, затем fromEntries обратно объект
+    Object.entries(prices).map(([key, value]) => [key, value * 2])
+);
+
+alert(doublePrices.meat); // 8
+
+//-------------------------------------------------------
+
+
+Итого
+Методы для создания узлов:
+
+document.createElement(tag) – создаёт элемент с заданным тегом,
+document.createTextNode(value) – создаёт текстовый узел (редко используется),
+elem.cloneNode(deep) – клонирует элемент, если deep==true, то со всеми дочерними элементами.
+Вставка и удаление:
+
+node.append(...nodes or strings) – вставляет в node в конец,
+node.prepend(...nodes or strings) – вставляет в node в начало,
+node.before(...nodes or strings) – вставляет прямо перед node,
+node.after(...nodes or strings) – вставляет сразу после node,
+node.replaceWith(...nodes or strings) – заменяет node.
+node.remove() – удаляет node.
+Устаревшие методы:
+
+parent.appendChild(node)
+parent.insertBefore(node, nextSibling)
+parent.removeChild(node)
+parent.replaceChild(newElem, node)
+Все эти методы возвращают node.
+
+Если нужно вставить фрагмент HTML, то elem.insertAdjacentHTML(where, html) вставляет в зависимости от where:
+
+"beforebegin" – вставляет html прямо перед elem,
+"afterbegin" – вставляет html в elem в начало,
+"beforeend" – вставляет html в elem в конец,
+"afterend" – вставляет html сразу после elem.
+Также существуют похожие методы elem.insertAdjacentText и elem.insertAdjacentElement, они вставляют текстовые строки и элементы, но они редко используются.
+
+Чтобы добавить HTML на страницу до завершения её загрузки:
+
+document.write(html)
+После загрузки страницы такой вызов затирает документ. В основном встречается в старых скриптах.
