@@ -12,12 +12,13 @@ body {
 }
 
 .allWindow {
-    margin: 10px;
+    margin: 0px;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 50px);
-    max-height: calc(100vh - 50px);
+    height: calc(100vh - 190px);
+    /* max-height: calc(100vh - 180px); */
     min-width: 600px;
+    border: 2px solid green;
 }
 
 .allwindow :nth-child(n) {
@@ -39,14 +40,14 @@ body {
     background-color: rgb(255, 190, 200);
     flex-grow: 1;
     overflow: auto;
-    max-height: calc(100vh - 110px);
+    max-height: calc(100vh - 250px);
 }
 
 .nicksPresent {
     background-color: rgb(255, 190, 200);
-    width: 250px;
+    width: 300px;
     overflow: auto;
-    max-height: calc(100vh - 110px);
+    max-height: calc(100vh - 250px);
 }
 
 .nickName {
@@ -57,7 +58,7 @@ body {
 .controlPanel {
     display: flex;
     align-items: baseline;
-    width: calc(100vw - 320px);
+    width: calc(100vw - 350px);
 }
 
 .controlPanel :nth-child(n) {

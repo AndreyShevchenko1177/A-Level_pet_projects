@@ -900,8 +900,8 @@ function smilify(message) {
     return message;
 }
 
-let nick;
-while (!(nick = prompt("Введите свой ник:"))) {}
+let nick = "1";
+// while (!(nick = prompt("Введите свой ник:"))) {}
 nickId.value = nick;
 socket.emit("msg", {
     nick: nickId.value,
