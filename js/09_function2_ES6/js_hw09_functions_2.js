@@ -356,11 +356,19 @@ let testObj = map({ name: "Иван", age: 17 }, function (key, value) {
 // Напишите функцию, который будет считать сумму арифметической прогрессии рекурсивно.
 
 // В качестве параметров передаем 1-й элемент прогрессии, инкремент
-// и сколько элементов прогрессии надо просуммировать
+// и сколько всего элементов прогрессии должны быть просуммировано (включая первый)
 const sum = function (startValue, inc, numberOfElements) {
     if (numberOfElements < 1) return 0;
     if (numberOfElements === 1) return startValue;
     return startValue + sum(startValue + inc, inc, numberOfElements - 1);
+};
+
+// вариант 2
+// здесь передаем 1-й элемент прогрессии, инкремент
+// и не больше какого числа должен быть последний элемент
+const sum2 = function (startValue, inc, maxValue) {
+    if (startValue + inc > maxValue) return startValue;
+    return startValue + sum2(startValue + inc, inc, maxValue);
 };
 
 // ----------------------------------------------------------
