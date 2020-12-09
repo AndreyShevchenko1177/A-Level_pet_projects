@@ -274,7 +274,12 @@ sort = function (arr, key = undefined, direction = true) {
 // должно превратиться в
 // [1, {}, null, undefined, 500, 700]
 
-let arr = ["1", {}, null, undefined, "500", 700].map((item) => parseInt(item, 10) || item);
+let arr = ["1", {}, null, undefined, "500", 700].map((item) => parseInt(item, 10) || item); // - эта штука все же неверно сработает со строкой "0"
+
+["0", {}, null, undefined, "500", 700].map((item) => {
+    if (typeof item == "string") return +item;
+    return item;
+});
 
 // ----------------------------------------------------------
 
