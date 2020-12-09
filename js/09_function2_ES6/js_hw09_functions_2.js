@@ -468,7 +468,7 @@ const сonstructor = function (item) {
             node.append(сonstructor(item.subTags[i]));
         }
     }
-    debugger;
+
     if ("text" in item) {
         node.innerText = item.text;
     }

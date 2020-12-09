@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="conteiner">
+        <button id="btn1">Button-1: 0</button>
+        <button id="btn2">Button-2: 0</button>
+        <button id="btn3">Button-3: 0</button>
+        <button id="btn4">Button-4: 0</button>
+    </div>
+    <script>
+        function clickCounter(el) {
+            var count = 0;
+            el.onclick = function () {
+                this.innerText = this.innerText.slice(0, 10) + (++count)
+            }
+        }
+
+        ["btn1", "btn2", "btn3", "btn4"].forEach(el => clickCounter(window[el]))
+        // clickCounter(document.getElementById("btn1"))
+        // clickCounter(document.getElementById("btn2"))
+        // clickCounter(document.getElementById("btn3"))
+        // clickCounter(document.getElementById("btn4"))
+    </script>
+</body>
+
+</html>

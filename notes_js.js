@@ -272,6 +272,7 @@ alert(doublePrices.meat); // 8
 document.createElement(tag) – создаёт элемент с заданным тегом,
 document.createTextNode(value) – создаёт текстовый узел (редко используется),
 elem.cloneNode(deep) – клонирует элемент, если deep==true, то со всеми дочерними элементами.
+
 Вставка и удаление:
 
 node.append(...nodes or strings) – вставляет в node в конец,
@@ -280,12 +281,14 @@ node.before(...nodes or strings) – вставляет прямо перед no
 node.after(...nodes or strings) – вставляет сразу после node,
 node.replaceWith(...nodes or strings) – заменяет node.
 node.remove() – удаляет node.
+
 Устаревшие методы:
 
 parent.appendChild(node)
 parent.insertBefore(node, nextSibling)
 parent.removeChild(node)
 parent.replaceChild(newElem, node)
+
 Все эти методы возвращают node.
 
 Если нужно вставить фрагмент HTML, то elem.insertAdjacentHTML(where, html) вставляет в зависимости от where:
@@ -294,6 +297,7 @@ parent.replaceChild(newElem, node)
 "afterbegin" – вставляет html в elem в начало,
 "beforeend" – вставляет html в elem в конец,
 "afterend" – вставляет html сразу после elem.
+
 Также существуют похожие методы elem.insertAdjacentText и elem.insertAdjacentElement, они вставляют текстовые строки и элементы, но они редко используются.
 
 Чтобы добавить HTML на страницу до завершения её загрузки:

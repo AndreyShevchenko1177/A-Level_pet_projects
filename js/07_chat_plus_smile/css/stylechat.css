@@ -13,12 +13,13 @@ body {
 
 .allWindow {
     margin: 0px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     height: calc(100vh - 190px);
     /* max-height: calc(100vh - 180px); */
     min-width: 600px;
-    border: 2px solid green;
+    /* border: 2px solid green; */
 }
 
 .allwindow :nth-child(n) {
@@ -30,17 +31,20 @@ body {
     flex-grow: 1;
 }
 
-.chatPlusNick div:nth-child(-n + 2) {
+/* .chatPlusNick div:nth-child(-n + 2) {
     margin: 5px;
     border: 1px solid rgb(137, 0, 0);
     color: rgb(137, 0, 0);
-}
+} */
 
 .chatClass {
     background-color: rgb(255, 190, 200);
     flex-grow: 1;
     overflow: auto;
     max-height: calc(100vh - 250px);
+    margin: 5px;
+    border: 1px solid rgb(137, 0, 0);
+    color: rgb(137, 0, 0);
 }
 
 .nicksPresent {
@@ -48,6 +52,9 @@ body {
     width: 300px;
     overflow: auto;
     max-height: calc(100vh - 250px);
+    margin: 5px;
+    border: 1px solid rgb(137, 0, 0);
+    color: rgb(137, 0, 0);
 }
 
 .nickName {
@@ -58,14 +65,13 @@ body {
 .controlPanel {
     display: flex;
     align-items: baseline;
-    width: calc(100vw - 350px);
+    width: calc(100vw - 370px);
 }
 
 .controlPanel :nth-child(n) {
     margin: 5px;
     color: rgb(137, 0, 0);
     height: 30px;
-    /* border: 2px solid red; */
 }
 
 .nickValueClass {
@@ -81,4 +87,17 @@ body {
 
 .sendBtn {
     min-width: 90px;
+}
+
+.smileArea {
+    background-color: rgb(255, 190, 200);
+    max-height: 125px;
+    border: 1px solid rgb(137, 0, 0);
+    overflow: auto;
+    padding: 5px;
+}
+
+.nikInChat,
+.smile {
+    cursor: pointer;
 }

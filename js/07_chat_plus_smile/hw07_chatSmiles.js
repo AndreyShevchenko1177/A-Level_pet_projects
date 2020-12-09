@@ -888,9 +888,10 @@ let smileObj = {
     shipit: "graphics/emojis/shipit.png",
 };
 
+const wwwConstStrFirst = `<img src="https://www.webfx.com/tools/emoji-cheat-sheet/`;
+const wwwConstStrLast = `" width="25"></img>`;
+
 function smilify(message) {
-    const wwwConstStrFirst = `<img src="https://www.webfx.com/tools/emoji-cheat-sheet/`;
-    const wwwConstStrLast = `" width="20"></img>`;
     for (key in smileObj) {
         // key += "";  // если раскомментировать, то можно ниже обращаться через точку
         while (message !== message.replace(`:${key}:`, wwwConstStrFirst + smileObj[key] + wwwConstStrLast)) {
@@ -900,8 +901,8 @@ function smilify(message) {
     return message;
 }
 
-let nick = "1";
-// while (!(nick = prompt("Введите свой ник:"))) {}
+// let nick = "testnick";
+while (!(nick = prompt("Введите свой ник:"))) {}
 nickId.value = nick;
 socket.emit("msg", {
     nick: nickId.value,
@@ -910,16 +911,24 @@ socket.emit("msg", {
 nickId.setAttribute("readonly", "readonly");
 
 // отправка сообщения в чат при нажатии Enter в поле ввода сообщения
+// при нажатии стрелки вверх - повтор последнего собщения
 msgId.addEventListener("keydown", function (e) {
+    // console.log(e.keyCode);
     if (e.keyCode === 13) {
         sendId.onclick();
+    }
+
+    if (e.keyCode === 38) {
+        msgId.value = lastMsg;
     }
 });
 
 function reciveMsg(msg) {
     console.log(msg);
+    let p = document.createElement("div");
     if (msg.nick === "--Администрация--") {
-        chatWindow.innerHTML += "<br/>" + msg.nick + ":  " + msg.message;
+        p.append(msg.nick + ":  " + msg.message);
+        chatWindow.append(p);
         users.length = 0;
         socket.emit("msg", {
             nick: nickId.value,
@@ -927,7 +936,24 @@ function reciveMsg(msg) {
         });
     } else if (msg.message !== "$$_iAm_$$") {
         msg.message = smilify(msg.message);
-        chatWindow.innerHTML += "<br/><b>" + msg.nick + ":</b>  " + msg.message;
+        let msgNick = document.createElement("span");
+        msgNick.setAttribute("class", "nikInChat");
+
+        if (~msg.message.indexOf(`to_` + nick + ":")) {
+            // если пришло личное сообщение
+            p.setAttribute("style", `color: green`);
+        }
+
+        msgNick.insertAdjacentHTML("beforeend", "<b>" + msg.nick + ":</b>  ");
+
+        // кликабельный ник
+        msgNick.onclick = function () {
+            msgId.value = `to_` + msg.nick + `: ` + msgId.value;
+        };
+
+        p.append(msgNick);
+        p.insertAdjacentHTML("beforeend", msg.message);
+        chatWindow.append(p);
     }
 
     chatWindow.scrollTop = chatWindow.scrollHeight; // прокрутка скрола чата
@@ -936,19 +962,39 @@ function reciveMsg(msg) {
         users.push(msg.nick);
         users.sort((a, b) => (a < b && -1) || 1);
         whoIsHere.innerHTML = "Кто у нас тут в чате:";
-        for (i of users) {
-            whoIsHere.innerHTML += "<br/><b>" + i + "</b>";
+        for (let i of users) {
+            let p = document.createElement("div");
+            p.setAttribute("class", "nikInChat");
+            p.onclick = function () {
+                msgId.value = `to_` + i + `: ` + msgId.value; // еще замыкание !!!
+            };
+            p.insertAdjacentHTML("beforeend", "<b>" + i + "</b>");
+            whoIsHere.append(p);
         }
-        // whoIsHere.scrollTop = whoIsHere.scrollHeight;
     }
 }
 
 socket.on("msg", (msg) => reciveMsg(msg));
+
+var lastMsg;
 
 sendId.onclick = () => {
     socket.emit("msg", {
         nick: nickId.value,
         message: smilify(msgId.value),
     });
+    lastMsg = msgId.value;
     msgId.value = "";
 };
+
+// debugger;
+// построение поля смайликов
+for (let [key, value] of Object.entries(smileObj)) {
+    let smile = document.createElement("span");
+    smile.setAttribute("class", "smile");
+    smile.insertAdjacentHTML("beforeend", wwwConstStrFirst + value + wwwConstStrLast);
+    smile.onclick = function () {
+        msgId.value += ` :${key}: `; // походу это замыкание
+    };
+    smileArea.append(smile);
+}
