@@ -36,10 +36,15 @@ alert(`Время работы кода составило ${timer()} милис
 // Если же по каким - то причинам значение не понадобится, то Math.random даже не будет вызван
 
 const makeSaver = function (func) {
-    let memorizedValue = func();
-    console.log(`Вот это мы запомнили: ${memorizedValue}`);
+    let isFirst = true;
+    let rusult;
     return function () {
-        return memorizedValue;
+        if (isFirst) {
+            result = func();
+            console.log(`Запомнили: ${result}`);
+            isFirst = false;
+        }
+        return result;
     };
 };
 
@@ -47,17 +52,23 @@ var saver = makeSaver(Math.random);
 var value1 = saver();
 var value2 = saver();
 
-value1 === value2 ? alert(`value1 === value2   YAHOO!!!`) : alert(`value1 !== value2   :(`);
+value1 === value2
+    ? alert(`value1 === value2   YAHOO!!!`)
+    : alert(`value1 !== value2   :(`);
 
 var saver2 = makeSaver(
     () =>
         console.log("saved function called") ||
-        [null, undefined, false, "", 0, Math.random()][Math.ceil(Math.random() * 6)]
+        [null, undefined, false, "", 0, Math.random()][
+            Math.ceil(Math.random() * 6)
+        ]
 );
 var value3 = saver2();
 var value4 = saver2();
 
-value3 === value4 ? alert(`value3 === value4   YAHOO!!!`) : alert(`value3 !== value4   :(`);
+value3 === value4
+    ? alert(`value3 === value4   YAHOO!!!`)
+    : alert(`value3 !== value4   :(`);
 
 //======================================================
 
