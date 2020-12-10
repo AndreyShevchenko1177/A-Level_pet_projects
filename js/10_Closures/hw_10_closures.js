@@ -92,7 +92,7 @@ var finalCountdown2 = function (count, i = 0) {
     if (!i) i = count;
 
     let msg;
-    !count ? (msg = "GO!") : (msg = count);
+    msg = !count ? "GO!" : count;
     if (count >= 0) {
         setTimeout(() => console.log(msg), 1000 * (i - count));
         finalCountdown2(count - 1, i);
