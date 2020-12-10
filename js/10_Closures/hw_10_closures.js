@@ -36,10 +36,15 @@ alert(`Время работы кода составило ${timer()} милис
 // Если же по каким - то причинам значение не понадобится, то Math.random даже не будет вызван
 
 const makeSaver = function (func) {
-    let memorizedValue = func();
-    console.log(`Вот это мы запомнили: ${memorizedValue}`);
+    let isFirst = true;
+    let rusult;
     return function () {
-        return memorizedValue;
+        if (isFirst) {
+            result = func();
+            console.log(`Запомнили: ${result}`);
+            isFirst = false;
+        }
+        return result;
     };
 };
 
@@ -87,7 +92,7 @@ var finalCountdown2 = function (count, i = 0) {
     if (!i) i = count;
 
     let msg;
-    !count ? (msg = "GO!") : (msg = count);
+    msg = !count ? "GO!" : count;
     if (count >= 0) {
         setTimeout(() => console.log(msg), 1000 * (i - count));
         finalCountdown2(count - 1, i);
