@@ -91,6 +91,11 @@ finalCountdown(5);
 var finalCountdown2 = function (count, i = 0) {
     if (!i) i = count;
 
+    if (count < 0) {
+        console.log("Все уже давно закончилось. Вы опоздали...");
+        return;
+    }
+
     let msg = !count ? "GO!" : count;
     if (count >= 0) {
         setTimeout(() => console.log(msg), 1000 * (i - count));
@@ -132,8 +137,17 @@ function myBind(func, tempThis, tempArray) {
     };
 }
 
+function myBind_v2(func, tempThis, tempArray) {
+    return function (...arguments) {
+        let i = 0;
+        let newTempArray = tempArray.map((value) => (value === undefined ? arguments[i++] : value));
+
+        return func.apply(tempThis, newTempArray); //    call || apply - вот в чем вопрос...
+    };
+}
+
 var pow5 = myBind(Math.pow, Math, [undefined, 5]);
-var cube = myBind(Math.pow, Math, [undefined, 3]);
+var cube = myBind_v2(Math.pow, Math, [undefined, 3]);
 
 debugger;
 pow5(2); // => 32, вызывает Math.pow(2,5)
