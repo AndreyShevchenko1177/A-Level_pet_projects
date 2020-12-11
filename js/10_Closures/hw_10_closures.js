@@ -6,7 +6,7 @@
 makeProfileTimer = function () {
     let t1 = performance.now();
     return function () {
-        return t1 - performance.now();
+        return performance.now() - t1;
     };
 };
 
