@@ -108,17 +108,40 @@ finalCountdown2(5);
 // Изучите встроенную функцию bind, и сделайте свою версию,
 // которая позволит определить "значение по умолчанию" не только для первых параметров,
 // но для любых других, например для степени в Math.pow:
+// var pow5 = myBind(Math.pow, Math, [undefined, 5]) // первый параметр - функция для биндинга значений по умолчанию,
+//                                                   // второй - this для этой функции, третий - массив, в котором undefined означает
+//                                                   // параметры, которые должны передаваться при вызове,
+//                                                   // а другие значения являются значениями по умолчанию:
+// var cube = myBind(Math.pow, Math, [undefined, 3]) // cube возводит число в куб
 
-var animals = [
-    { species: "Лев", name: "Король" },
-    { species: "Кит", name: "Фэйл" },
-];
+// pow5(2) // => 32, вызывает Math.pow(2,5), соотнесите с [undefined, 5]
+// cube(3) // => 27
 
-for (var i = 0; i < animals.length; i++) {
-    (function (i) {
-        this.print = function () {
-            console.log("#" + i + " " + this.species + ": " + this.name);
-        };
-        this.print();
-    }.call(animals[i], i));
+// var chessMin = myBind(Math.min, Math, [undefined, 4, undefined, 5,undefined, 8,undefined, 9])
+// chessMin(-1,-5,3,15) // вызывает Math.min(-1, 4, -5, 5, 3, 8, 15, 9), результат -5
+
+// var zeroPrompt = myBind(prompt, window, [undefined, "0"]) // аналогично, только теперь задается "0" как текст по умолчанию в prompt,
+//                                                           // а текст приглашения пользователя задается при вызове zeroPrompt
+// var someNumber = zeroPrompt("Введите число")              // вызывает prompt("Введите число","0")
+
+function myBind(func, tempThis, tempArray) {
+    return function (...arguments) {
+        let i = 0;
+        let newTempArray = tempArray.map((value) => (value === undefined ? arguments[i++] : value));
+
+        return func.call(tempThis, ...newTempArray); //    call || apply - вот в чем вопрос...
+    };
 }
+
+var pow5 = myBind(Math.pow, Math, [undefined, 5]);
+var cube = myBind(Math.pow, Math, [undefined, 3]);
+
+debugger;
+pow5(2); // => 32, вызывает Math.pow(2,5)
+cube(3); // 27
+
+var chessMin = myBind(Math.min, Math, [undefined, 4, undefined, 5, undefined, 8, undefined, 9]);
+chessMin(-1, -5, 3, 15); // вызывает Math.min(-1, 4, -5, 5, 3, 8, 15, 9), результат -5
+
+var zeroPrompt = myBind(prompt, window, [undefined, "0"]);
+var someNumber = zeroPrompt("Введите число"); // вызывает prompt("Введите число","0")
