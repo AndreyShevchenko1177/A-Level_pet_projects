@@ -86,13 +86,12 @@ finalCountdown(5);
 
 //
 //
-//   Self Invoked !!! (не сразу, но сообразил как закрутить)
+//   Self Invoked !!! (не сразу, но сообразил как закрутить, чтобы не ждать в начале дополнительную секунду)
 
 var finalCountdown2 = function (count, i = 0) {
     if (!i) i = count;
 
-    let msg;
-    msg = !count ? "GO!" : count;
+    let msg = !count ? "GO!" : count;
     if (count >= 0) {
         setTimeout(() => console.log(msg), 1000 * (i - count));
         finalCountdown2(count - 1, i);

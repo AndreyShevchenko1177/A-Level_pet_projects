@@ -425,3 +425,16 @@ let wrapper = function() {
 
 // При вызове wrapper из внешнего кода его не отличить от вызова исходной функции.
 
+
+
+function starter (number) {
+
+        setTimeout(() => {         
+            if(number > 0){
+                console.log(number)
+                number = number-1
+                return starter(number)
+            } else {
+                return console.log("done")
+            }
+        }, 1000) 
