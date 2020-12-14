@@ -7,7 +7,7 @@
 // Когда Password в открытом режиме - второй инпут пропадат
 
 function LoginForm(parentMain) {
-    inputField = function (parent, open) {
+    inputField = function (parent, open = false) {
         inpWrapper = document.createElement("div");
         let inpEl = document.createElement("input");
         inpEl.setAttribute("type", open ? "text" : "password");
