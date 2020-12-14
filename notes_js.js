@@ -1,4 +1,4 @@
-//
+// prettier-ignore
 
 //
 
@@ -295,7 +295,7 @@ parent.replaceChild(newElem, node)
 
 "beforebegin" – вставляет html прямо перед elem,
 "afterbegin" – вставляет html в elem в начало,
-"beforeend" – вставляет html в elem в конец,
+"beforeEnd" – вставляет html в elem в конец,
 "afterend" – вставляет html сразу после elem.
 
 Также существуют похожие методы elem.insertAdjacentText и elem.insertAdjacentElement, они вставляют текстовые строки и элементы, но они редко используются.
