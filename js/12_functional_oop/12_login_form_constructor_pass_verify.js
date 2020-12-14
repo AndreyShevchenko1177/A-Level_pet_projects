@@ -5,19 +5,17 @@
 // С помощью Password сделайте пару инпутов, которые проверяют введеный пароль (в двух полях ввода) на совпадение. Кнопка должна активизироваться при совпадающих паролях. При открытом пароле второе поле вводы должно пропадать с экрана Таким образом:
 // Когда Password в скрытом режиме - появляется второй инпут (<input type='password'>) с паролем в скрытом режиме
 // Когда Password в открытом режиме - второй инпут пропадат
-function LoginForm() {
-    this.inputField = function (parent, open) {
-        let inpWrapper = document.createElement("div");
-        // parent.append(inpWrapper);
 
+function LoginForm(parentMain) {
+    inputField = function (parent, open) {
+        inpWrapper = document.createElement("div");
         let inpEl = document.createElement("input");
         inpEl.setAttribute("type", open ? "text" : "password");
         inpEl.setAttribute("placeholder", open ? "Login" : "Password");
         inpEl.setAttribute("style", "margin: 5px");
-
         inpWrapper.append(inpEl);
-
-        return inpWrapper;
+        parent.append(inpWrapper);
+        return inpEl;
     };
 
     let wrapper = document.createElement("div");
@@ -35,22 +33,80 @@ function LoginForm() {
     formEl.style.alignItems = "center";
     formEl.style.justifyContent = "space-around";
 
-    formEl.insertAdjacentHTML("beforeEnd", "LoginForm<br>");
+    formEl.insertAdjacentHTML("beforeEnd", "Registration<br>");
     wrapper.append(formEl);
 
-    let loginEl = this.inputField(formEl, true);
-    formEl.append(loginEl);
-    let passEl_1 = this.inputField(formEl, false);
-    formEl.append(passEl_1);
-    let passEl_2 = this.inputField(formEl, false);
-    formEl.append(passEl_2);
+    loginEl = inputField(formEl, true);
 
-    // //
+    passEl_1 = inputField(formEl, false);
+    formEl.append(passEl_1);
+
+    passEl_2 = inputField(formEl, false);
+    passEl_2.setAttribute("placeholder", "Repeat password");
+    passEl_2.parentElement.setAttribute("style", "min-height: 35px;");
+
+    checkEl = inputField(formEl, false);
+    checkEl.setAttribute("type", "checkbox");
+    checkEl.parentElement.append("See password");
+
+    let btnSend = document.createElement("button");
+    btnSend.append("Login");
+    btnSend.setAttribute("disabled", "disabled");
+    formEl.append(btnSend);
 
     //
 
-    return wrapper;
-}
+    // ------ методы -------
 
-let newLoginForm = new LoginForm();
-document.body.append(newLoginForm);
+    //
+
+    const check = function () {
+        if (checkEl.checked) {
+            passEl_1.setAttribute("type", "text");
+            passEl_2.style.display = "none";
+        } else {
+            passEl_1.setAttribute("type", "password");
+            passEl_2.style.display = "";
+        }
+    };
+
+    checkEl.onclick = () => check.call(this);
+
+    btnSend.onclick = () => {
+        let sendObj = {};
+        sendObj[loginEl.value] = passEl_1.value;
+        console.log(JSON.stringify(sendObj));
+    };
+
+    this.loginSet = function (data) {
+        loginEl.value = data;
+    };
+
+    this.passSet = function (data) {
+        passEl_1.value = data;
+        passEl_2.value = data;
+    };
+
+    this.getLogin = function () {
+        return loginEl.value;
+    };
+
+    this.getPass1 = function () {
+        // не уверен можно ли делать такой геттер в целях безопасности
+        return passEl_1.value;
+    };
+
+    this.getPass2 = function () {
+        return passEl_2.value;
+    };
+    //
+
+    //
+    parentMain.append(wrapper);
+} // function LoginForm()
+
+//
+
+//
+
+let fff = new LoginForm(document.body);

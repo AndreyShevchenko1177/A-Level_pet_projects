@@ -298,7 +298,8 @@ parent.replaceChild(newElem, node)
 "beforeEnd" – вставляет html в elem в конец,
 "afterend" – вставляет html сразу после elem.
 
-Также существуют похожие методы elem.insertAdjacentText и elem.insertAdjacentElement, они вставляют текстовые строки и элементы, но они редко используются.
+Также существуют похожие методы elem.insertAdjacentText и elem.insertAdjacentElement, они вставляют текстовые строки и элементы,
+    но они редко используются.
 
 Чтобы добавить HTML на страницу до завершения её загрузки:
 
