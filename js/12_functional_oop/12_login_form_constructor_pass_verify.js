@@ -54,11 +54,13 @@ function LoginForm(parentMain) {
     btnSend.setAttribute("disabled", "disabled");
     formEl.append(btnSend);
 
-    //
-
-    // ------ методы -------
-
-    //
+    const doSwitchButton = function (obj) {
+        if (!!obj.user && !!obj.pas1 && ("pas2" in obj ? obj.pas1 == obj.pas2 : true)) {
+            btnSend.removeAttribute("disabled");
+        } else {
+            btnSend.setAttribute("disabled", "disabled");
+        }
+    };
 
     const check = function () {
         if (checkEl.checked) {
@@ -67,24 +69,47 @@ function LoginForm(parentMain) {
         } else {
             passEl_1.setAttribute("type", "password");
             passEl_2.style.display = "";
+            passEl_2.value = "";
         }
+        loginEl.oninput();
     };
 
     checkEl.onclick = () => check.call(this);
+
+    loginEl.oninput = passEl_1.oninput = passEl_2.oninput = () => {
+        if (this.onChangeInForm) this.onChangeInForm();
+        let obj = {
+            user: loginEl.value,
+            pas1: passEl_1.value,
+        };
+        if (!checkEl.checked) obj.pas2 = passEl_2.value;
+        console.log(obj);
+        doSwitchButton(obj);
+        // + можно проверить валидность данных
+    };
 
     btnSend.onclick = () => {
         let sendObj = {};
         sendObj[loginEl.value] = passEl_1.value;
         console.log(JSON.stringify(sendObj));
+        alert(`Вы успешно зарегистрированы.\nЛогин: ${loginEl.value}\nПароль: ${passEl_1.value}`);
     };
+
+    //
+
+    // ------ методы -------
+
+    //
 
     this.loginSet = function (data) {
         loginEl.value = data;
+        loginEl.oninput();
     };
 
     this.passSet = function (data) {
         passEl_1.value = data;
         passEl_2.value = data;
+        loginEl.oninput();
     };
 
     this.getLogin = function () {
@@ -92,16 +117,16 @@ function LoginForm(parentMain) {
     };
 
     this.getPass1 = function () {
-        // не уверен можно ли делать такой геттер в целях безопасности
+        // не уверен можно ли делать такие геттеры в плане безопасности (секретности) данных
         return passEl_1.value;
     };
 
     this.getPass2 = function () {
         return passEl_2.value;
     };
-    //
 
-    //
+    this.onChangeInForm = () => {};
+
     parentMain.append(wrapper);
 } // function LoginForm()
 
@@ -110,3 +135,9 @@ function LoginForm(parentMain) {
 //
 
 let fff = new LoginForm(document.body);
+
+fff.loginSet("Qwerty");
+fff.passSet("123");
+console.log("Сейчас установлен логин: " + fff.getLogin());
+console.log("Сейчас установлен пароль1: " + fff.getPass1());
+console.log("Сейчас установлен пароль2: " + fff.getPass2());
