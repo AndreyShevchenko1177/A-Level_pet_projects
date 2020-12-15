@@ -81,7 +81,6 @@ function LoginForm(parentMain) {
     checkEl.onclick = () => check.call(this);
 
     loginEl.oninput = passEl_1.oninput = passEl_2.oninput = () => {
-        if (this.onChangeInForm) this.onChangeInForm(); // запуск колбека по изменению в форме
         let obj = {
             user: loginEl.value,
             pas1: passEl_1.value,
@@ -90,6 +89,7 @@ function LoginForm(parentMain) {
         console.log(obj);
         doSwitchButton(obj);
         // + можно проверить валидность данных
+        if (this.onChangeInForm) this.onChangeInForm(); // запуск колбека по изменению в форме
     };
 
     const sendDataOutside = function () {
