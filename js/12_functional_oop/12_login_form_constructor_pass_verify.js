@@ -54,6 +54,10 @@ function LoginForm(parentMain) {
     btnSend.setAttribute("disabled", "disabled");
     formEl.append(btnSend);
 
+    formEl.addEventListener("keydown", function (e) {
+        if (e.key == "Enter") sendDataOutside();
+    });
+
     const doSwitchButton = function (obj) {
         if (!!obj.user && !!obj.pas1 && ("pas2" in obj ? obj.pas1 == obj.pas2 : true)) {
             btnSend.removeAttribute("disabled");
@@ -77,7 +81,7 @@ function LoginForm(parentMain) {
     checkEl.onclick = () => check.call(this);
 
     loginEl.oninput = passEl_1.oninput = passEl_2.oninput = () => {
-        if (this.onChangeInForm) this.onChangeInForm();
+        if (this.onChangeInForm) this.onChangeInForm(); // запуск колбека по изменению в форме
         let obj = {
             user: loginEl.value,
             pas1: passEl_1.value,
@@ -88,12 +92,17 @@ function LoginForm(parentMain) {
         // + можно проверить валидность данных
     };
 
-    btnSend.onclick = () => {
-        let sendObj = {};
-        sendObj[loginEl.value] = passEl_1.value;
-        console.log(JSON.stringify(sendObj));
-        alert(`Вы успешно зарегистрированы.\nЛогин: ${loginEl.value}\nПароль: ${passEl_1.value}`);
+    const sendDataOutside = function () {
+        loginEl.oninput();
+        if (btnSend.getAttribute("disabled") !== "disabled") {
+            let sendObj = {};
+            sendObj[loginEl.value] = passEl_1.value;
+            console.log(JSON.stringify(sendObj));
+            alert(`Вы успешно зарегистрированы.\nЛогин: ${loginEl.value}\nПароль: ${passEl_1.value}`);
+        }
     };
+
+    btnSend.onclick = () => sendDataOutside.call(this);
 
     //
 
