@@ -277,7 +277,7 @@ sort = function (arr, key = undefined, direction = true) {
 let arr = ["1", {}, null, undefined, "500", 700].map((item) => parseInt(item, 10) || item); // - эта штука все же неверно сработает со строкой "0"
 
 ["0kijuib", "000", {}, null, undefined, "500", 700].map((item) => {
-    if (typeof item == "string") return parseInt(item, 10);
+    if (typeof item == "string") return isNaN(parseInt(item, 10)) ? item : parseInt(item, 10);
     return item;
 });
 
