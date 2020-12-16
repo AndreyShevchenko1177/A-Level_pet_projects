@@ -30,7 +30,7 @@ function Password(parent, open = false) {
     let inpEl = document.createElement("input");
     inpEl.setAttribute("type", open ? "text" : "password");
     inpEl.oninput = () => {
-        this.onChange(this.getValue());
+        this.onChange();
     };
 
     let checkEl = document.createElement("input");
@@ -45,11 +45,11 @@ function Password(parent, open = false) {
 
     checkEl.onclick = () => {
         check();
-        this.onOpenChange(checkEl.checked);
+        this.onOpenChange();
     };
 
     let descriptionEl = document.createElement("span");
-    descriptionEl.append(`- посмотреть пароль.   Родительский элемент: ${parent.tagName}, id="${parent.id}"`);
+    descriptionEl.append(`See password`);
 
     parent.append(inpEl);
     parent.append(checkEl);
@@ -87,12 +87,10 @@ function Password(parent, open = false) {
 }
 
 let p1 = new Password(divFirst, true);
-let p2 = new Password(divSecond, false);
 let p = new Password(document.body, true);
 
-p.onChange = (data) => console.log(data);
-p.onOpenChange = (open) => console.log(open);
-p2.onOpenChange = (open) => console.log(open);
+p.onChange = (data = "изменили input") => console.log(data);
+p.onOpenChange = (open = "нажали checkbox") => console.log(open);
 
 p.setValue("qwerty");
 console.log(`Значение поля  ${p.getValue()}`);

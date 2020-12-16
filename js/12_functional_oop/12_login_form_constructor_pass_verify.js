@@ -6,18 +6,18 @@
 // Когда Password в скрытом режиме - появляется второй инпут (<input type='password'>) с паролем в скрытом режиме
 // Когда Password в открытом режиме - второй инпут пропадат
 
-function LoginForm(parentMain) {
-    inputField = function (parent, open = false) {
-        inpWrapper = document.createElement("div");
-        let inpEl = document.createElement("input");
-        inpEl.setAttribute("type", open ? "text" : "password");
-        inpEl.setAttribute("placeholder", open ? "Login" : "Password");
-        inpEl.setAttribute("style", "margin: 5px");
-        inpWrapper.append(inpEl);
-        parent.append(inpWrapper);
-        return inpEl;
-    };
+function InputField(parent, open = false) {
+    inpWrapper = document.createElement("div");
+    this.inpEl = document.createElement("input");
+    this.inpEl.setAttribute("type", open ? "text" : "password");
+    this.inpEl.setAttribute("placeholder", open ? "Login" : "Password");
+    this.inpEl.setAttribute("style", "margin: 5px");
+    inpWrapper.append(this.inpEl);
+    parent.append(inpWrapper);
+    return this.inpEl;
+}
 
+function LoginForm(parentMain) {
     let wrapper = document.createElement("div");
     wrapper.style.display = "flex";
     wrapper.style.justifyContent = "space-around";
@@ -36,16 +36,16 @@ function LoginForm(parentMain) {
     formEl.insertAdjacentHTML("beforeEnd", "Registration<br>");
     wrapper.append(formEl);
 
-    loginEl = inputField(formEl, true);
+    let loginEl = new InputField(formEl, true);
 
-    passEl_1 = inputField(formEl, false);
+    let passEl_1 = new InputField(formEl, false);
     formEl.append(passEl_1);
 
-    passEl_2 = inputField(formEl, false);
+    let passEl_2 = new InputField(formEl, false);
     passEl_2.setAttribute("placeholder", "Repeat password");
     passEl_2.parentElement.setAttribute("style", "min-height: 35px;");
 
-    checkEl = inputField(formEl, false);
+    let checkEl = new InputField(formEl, false);
     checkEl.setAttribute("type", "checkbox");
     checkEl.parentElement.append("See password");
 
@@ -53,6 +53,10 @@ function LoginForm(parentMain) {
     btnSend.append("Login");
     btnSend.setAttribute("disabled", "disabled");
     formEl.append(btnSend);
+
+    formEl.addEventListener("keydown", function (e) {
+        if (e.key == "Enter") sendDataOutside();
+    });
 
     const doSwitchButton = function (obj) {
         if (!!obj.user && !!obj.pas1 && ("pas2" in obj ? obj.pas1 == obj.pas2 : true)) {
@@ -62,7 +66,7 @@ function LoginForm(parentMain) {
         }
     };
 
-    const check = function () {
+    checkEl.onclick = (isUser = true) => {
         if (checkEl.checked) {
             passEl_1.setAttribute("type", "text");
             passEl_2.style.display = "none";
@@ -71,29 +75,32 @@ function LoginForm(parentMain) {
             passEl_2.style.display = "";
             passEl_2.value = "";
         }
-        loginEl.oninput();
+        loginEl.oninput(isUser);
     };
 
-    checkEl.onclick = () => check.call(this);
-
-    loginEl.oninput = passEl_1.oninput = passEl_2.oninput = () => {
-        if (this.onChangeInForm) this.onChangeInForm();
+    loginEl.oninput = passEl_1.oninput = passEl_2.oninput = (isUser = true) => {
         let obj = {
             user: loginEl.value,
             pas1: passEl_1.value,
         };
         if (!checkEl.checked) obj.pas2 = passEl_2.value;
-        console.log(obj);
-        doSwitchButton(obj);
-        // + можно проверить валидность данных
+        doSwitchButton(obj); // + можно проверить валидность данных
+
+        // запуск колбека если изменения были внесены пользователем
+        if (isUser && this.onChangeInForm && typeof this.onChangeInForm === "function") this.onChangeInForm();
     };
 
-    btnSend.onclick = () => {
-        let sendObj = {};
-        sendObj[loginEl.value] = passEl_1.value;
-        console.log(JSON.stringify(sendObj));
-        alert(`Вы успешно зарегистрированы.\nЛогин: ${loginEl.value}\nПароль: ${passEl_1.value}`);
+    const sendDataOutside = function () {
+        loginEl.oninput();
+        if (btnSend.getAttribute("disabled") !== "disabled") {
+            let sendObj = {};
+            sendObj[loginEl.value] = passEl_1.value;
+            console.log(JSON.stringify(sendObj));
+            alert(`Вы успешно зарегистрированы.\nЛогин: ${loginEl.value}\nПароль: ${passEl_1.value}`);
+        }
     };
+
+    btnSend.onclick = () => sendDataOutside.call(this);
 
     //
 
@@ -101,15 +108,22 @@ function LoginForm(parentMain) {
 
     //
 
-    this.loginSet = function (data) {
+    this.setLogin = function (data) {
         loginEl.value = data;
-        loginEl.oninput();
+        loginEl.oninput(false);
+        // false - не надо никого ни о чем информировать - это код вносит изменения а не пользователь
     };
 
-    this.passSet = function (data) {
+    this.setPass = function (data) {
         passEl_1.value = data;
         passEl_2.value = data;
-        loginEl.oninput();
+        loginEl.oninput(false);
+        // false - не надо никого ни о чем информировать - это код вносит изменения а не пользователь
+    };
+
+    this.setSeeStatus = function (status = false) {
+        checkEl.checked = status;
+        checkEl.onclick(false);
     };
 
     this.getLogin = function () {
@@ -125,6 +139,10 @@ function LoginForm(parentMain) {
         return passEl_2.value;
     };
 
+    this.getSeeStatus = function () {
+        return checkEl.checked;
+    };
+
     this.onChangeInForm = () => {};
 
     parentMain.append(wrapper);
@@ -134,10 +152,12 @@ function LoginForm(parentMain) {
 
 //
 
-let fff = new LoginForm(document.body);
+let registrationForm = new LoginForm(document.body);
 
-fff.loginSet("Qwerty");
-fff.passSet("123");
-console.log("Сейчас установлен логин: " + fff.getLogin());
-console.log("Сейчас установлен пароль1: " + fff.getPass1());
-console.log("Сейчас установлен пароль2: " + fff.getPass2());
+registrationForm.setLogin("Qwerty");
+registrationForm.setPass("123");
+console.log("Сейчас установлен логин: " + registrationForm.getLogin());
+console.log("Сейчас установлен пароль1: " + registrationForm.getPass1());
+console.log("Сейчас установлен пароль2: " + registrationForm.getPass2());
+
+registrationForm.onChangeInForm = (data = "В форме произошли изменения") => console.log(data);
