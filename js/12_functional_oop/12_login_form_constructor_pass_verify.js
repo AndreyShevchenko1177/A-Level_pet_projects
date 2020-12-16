@@ -39,7 +39,6 @@ function LoginForm(parentMain) {
     let loginEl = new InputField(formEl, true);
 
     let passEl_1 = new InputField(formEl, false);
-    formEl.append(passEl_1);
 
     let passEl_2 = new InputField(formEl, false);
     passEl_2.setAttribute("placeholder", "Repeat password");
