@@ -114,11 +114,23 @@ audio.volume = 0;
 
 // ----------------------------------------------------------
 
+const setGradient = function () {
+    redGradient.style.background = `linear-gradient(to right, rgb(0,${greenControl.getValue()}, ${blueControl.getValue()}), 
+                                                            rgb(255, ${greenControl.getValue()}, ${blueControl.getValue()}))`;
+
+    greenGradient.style.background = `linear-gradient(to right, rgb(${redControl.getValue()}, 0, ${blueControl.getValue()}), 
+                                                            rgb(${redControl.getValue()}, 255, ${blueControl.getValue()}))`;
+
+    blueGradient.style.background = `linear-gradient(to right, rgb(${redControl.getValue()}, ${greenControl.getValue()}, 0), 
+                                                            rgb(${redControl.getValue()}, ${greenControl.getValue()}, 255))`;
+};
+
 const redControl = new Control(redDiv, { max: 255, maxAngle: 150, minAngle: -150 });
 redControl.onChange = (value) => {
     redDiv.setAttribute("style", `background : rgb(${value}, 0, 0)`);
     rgbDiv.setAttribute("style", `background : rgb(${value}, ${greenLevel.value}, ${blueLevel.value})`);
     redLevel.value = Math.round(value);
+    setGradient();
     console.log("RED", Math.round(value));
 };
 
@@ -129,6 +141,7 @@ redLevel.oninput = () => {
 
 redLevel.value = 0;
 redDiv.setAttribute("style", "background : rgb(0, 0, 0)");
+redGradient.style.background = "linear-gradient(to right, rgb(0,0,0), rgb(255,0,0))";
 
 // ----------------------------------------------------------
 
@@ -137,6 +150,7 @@ greenControl.onChange = (value) => {
     greenDiv.setAttribute("style", `background : rgb(0, ${value}, 0)`);
     rgbDiv.setAttribute("style", `background : rgb(${redLevel.value}, ${value}, ${blueLevel.value})`);
     greenLevel.value = Math.round(value);
+    setGradient();
     console.log("GREEN", Math.round(value));
 };
 
@@ -147,6 +161,7 @@ greenLevel.oninput = () => {
 
 greenLevel.value = 0;
 greenDiv.setAttribute("style", "background : rgb(0, 0, 0)");
+greenGradient.style.background = "linear-gradient(to right, rgb(0,0,0), rgb(0,255,0))";
 
 // ----------------------------------------------------------
 
@@ -155,6 +170,7 @@ blueControl.onChange = (value) => {
     blueDiv.setAttribute("style", `background : rgb(0, 0, ${value})`);
     rgbDiv.setAttribute("style", `background : rgb(${redLevel.value}, ${greenLevel.value}, ${value})`);
     blueLevel.value = Math.round(value);
+    setGradient();
     console.log("BLUE", Math.round(value));
 };
 
@@ -165,6 +181,7 @@ blueLevel.oninput = () => {
 
 blueLevel.value = 0;
 blueDiv.setAttribute("style", "background : rgb(0, 0, 0)");
+blueGradient.style.background = "linear-gradient(to right, rgb(0,0,0), rgb(0,0,255))";
 
 // ----------------------------------------------------------
 
