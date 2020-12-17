@@ -95,7 +95,8 @@ function Control(el, { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, 
 
 const audio = document.getElementById("myaudio");
 
-const volumeControl = new Control(volume, { max: 1, min: 0, step: 0.01 });
+// для пробы коррекции перехода через +-180 сделал крутилку на 2 оборота
+const volumeControl = new Control(volume, { max: 1, min: 0, step: 0.01, maxAngle: 720 });
 volumeControl.onChange = (value) => {
     audio.volume = value;
     volumeLevel.value = value;
