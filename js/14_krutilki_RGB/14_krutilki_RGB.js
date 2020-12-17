@@ -122,10 +122,8 @@ redControl.onChange = (value) => {
 };
 
 redLevel.oninput = () => {
-    rgbDiv.setAttribute("style", `background : rgb(${redLevel.value}, ${greenLevel.value}, ${blueLevel.value})`);
-    redDiv.setAttribute("style", `background : rgb(${redLevel.value}, 0, 0)`);
+    redControl.onChange(redLevel.value);
     redControl.setValue(Math.round(redLevel.value));
-    console.log("RED ", Math.round(redControl.getValue()));
 };
 
 redLevel.value = 0;
@@ -142,10 +140,8 @@ greenControl.onChange = (value) => {
 };
 
 greenLevel.oninput = () => {
-    rgbDiv.setAttribute("style", `background : rgb(${redLevel.value}, ${greenLevel.value}, ${blueLevel.value})`);
-    greenDiv.setAttribute("style", `background : rgb(0, ${greenLevel.value}, 0)`);
+    greenControl.onChange(greenLevel.value);
     greenControl.setValue(Math.round(greenLevel.value));
-    console.log("GREEN ", Math.round(greenControl.getValue()));
 };
 
 greenLevel.value = 0;
@@ -162,10 +158,8 @@ blueControl.onChange = (value) => {
 };
 
 blueLevel.oninput = () => {
-    rgbDiv.setAttribute("style", `background : rgb(${redLevel.value}, ${greenLevel.value}, ${blueLevel.value})`);
-    blueDiv.setAttribute("style", `background : rgb(0, 0, ${blueLevel.value})`);
+    blueControl.onChange(blueLevel.value);
     blueControl.setValue(Math.round(blueLevel.value));
-    console.log("BLUE ", Math.round(blueControl.getValue()));
 };
 
 blueLevel.value = 0;
