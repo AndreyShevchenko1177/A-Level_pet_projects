@@ -98,14 +98,14 @@ const audio = document.getElementById("myaudio");
 const volumeControl = new Control(volume, { max: 1, min: 0, step: 0.01 });
 volumeControl.onChange = (value) => {
     audio.volume = value;
-    volumeLevel.value = Math.round(value * 100);
+    volumeLevel.value = value;
     console.log("VOLUME ", volumeLevel.value);
 };
 
 volumeLevel.oninput = () => {
-    audio.volume = volumeLevel.value / 100;
+    audio.volume = volumeLevel.value;
     volumeControl.setValue(audio.volume);
-    console.log("VOLUME ", Math.round(volumeControl.getValue() * 100));
+    console.log("VOLUME ", volumeControl.getValue());
 };
 
 volumeLevel.value = 0;
