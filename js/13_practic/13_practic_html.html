@@ -67,7 +67,9 @@
                 img.onmousemove = (e) => {
                     if (startDragAngle !== undefined) {
                         const currentAngle = calcAngle(e);
-                        const deltaAngle = currentAngle - startDragAngle;
+                        console.log(currentAngle);
+                        const deltaAngle = (currentAngle - startDragAngle + 360) % 360;
+                        // console.log(deltaAngle, "  ", currentAngle, "  ", startDragAngle);
                         changeValue(deltaAngle / ratio, true);
                         startDragAngle = currentAngle;
                         e.preventDefault();
@@ -90,7 +92,13 @@
             const volumeControl = new Control(container1, { value: 50 });
 
             volumeControl.onChange = (value) => console.log("VOLUME", value);
-            const balanceControl = new Control(container2, { maxAngle: 90, minAngle: 0, min: -50, max: 50, value: 25 });
+            const balanceControl = new Control(container2, {
+                maxAngle: 90,
+                minAngle: -90,
+                min: -50,
+                max: 50,
+                value: 0,
+            });
 
             //
 
