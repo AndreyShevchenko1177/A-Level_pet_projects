@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>Другой тайтл ПРИВЕТ 17й</title>
+        <style></style>
+    </head>
+    <body>
+        <h1 id="title"></h1>
+        <div id="container1"></div>
+        <div id="container2"></div>
+        <script>
+            function Control(el, { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, minAngle = 0 } = {}) {
+                const img = document.createElement("img");
+                img.src = "1@3xNew.png";
+                img.width = "250";
+                el.append(img);
+
+                const ratio = (maxAngle - minAngle) / (max - min);
+
+                const value2Deg = () => ratio * (value - min) + minAngle;
+
+                const changeValue = (delta, fireEvent = false) => {
+                    let newValue = value + delta;
+                    if (newValue >= max) newValue = max;
+                    if (newValue <= min) newValue = min;
+
+                    value = newValue;
+
+                    //console.log(value)
+
+                    if (fireEvent && this.onChange && typeof this.onChange === "function") {
+                        this.onChange(value);
+                    }
+
+                    img.style.transform = `rotate(${value2Deg()}deg)`;
+                };
+
+                const { top, left } = img.getBoundingClientRect();
+
+                changeValue(0);
+
+                console.log(img.width, top, left);
+
+                // img.onclick = (e) => {
+                //     changeValue(e.clientX - left > img.width / 2 ? step : -step, true);
+                // };
+
+                img.onmousewheel = (e) => {
+                    changeValue((e.deltaY * step) / 25, true);
+                    e.preventDefault();
+                };
+
+                let startDragAngle;
+
+                const calcAngle = ({ layerX, layerY }) => {
+                    const deltaX = layerX - img.width / 2;
+                    const deltaY = layerY - img.height / 2;
+                    return (Math.atan2(deltaY, deltaX) / Math.PI) * 180;
+                };
+
+                img.onmousedown = (e) => {
+                    startDragAngle = calcAngle(e);
+                    e.preventDefault();
+                };
+
+                img.onmousemove = (e) => {
+                    if (startDragAngle !== undefined) {
+                        const currentAngle = calcAngle(e);
+                        let deltaAngle = currentAngle - startDragAngle;
+
+                        // дальше идет коррекция перехода через +-180 градусов
+                        // но из-за функции onclick осталось иногда подергивание
+                        // при выкручивании в крайние положения
+                        // onclick пришлось отключить
+                        if (Math.abs(deltaAngle) >= 180) {
+                            deltaAngle += deltaAngle < 0 ? 360 : -360;
+                        } else {
+                            deltaAngle += deltaAngle < 0 ? -360 : 360;
+                        }
+                        deltaAngle = deltaAngle % 360;
+
+                        changeValue(deltaAngle / ratio, true);
+                        startDragAngle = currentAngle;
+                        e.preventDefault();
+                    }
+                };
+
+                img.onmouseup = img.onmouseout = (e) => {
+                    if (startDragAngle) {
+                        startDragAngle = undefined;
+                        e.preventDefault();
+                    }
+                };
+
+                this.setValue = (v) => changeValue(v - value);
+                this.changeValue = changeValue;
+
+                this.getValue = () => value;
+            }
+
+            const volumeControl = new Control(container1, { value: 50 });
+            volumeControl.onChange = (value) => console.log("VOLUME", value);
+
+            const balanceControl = new Control(container2, {
+                maxAngle: 90,
+                minAngle: -90,
+                min: -50,
+                max: 50,
+                value: 0,
+            });
+            balanceControl.onChange = (value) => console.log("BALANCE", value);
+
+            //
+
+            //
+        </script>
+    </body>
+</html>
