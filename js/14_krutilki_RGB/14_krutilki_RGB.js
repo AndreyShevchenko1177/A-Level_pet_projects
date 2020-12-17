@@ -35,7 +35,7 @@ function Control(el, { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, 
     // };
 
     img.onmousewheel = (e) => {
-        changeValue((e.deltaY * step) / 25, true);
+        changeValue((e.deltaY * step) / 25, true); // "/25" - это для  лучшей чуствительности для мышки
         e.preventDefault();
     };
 
@@ -112,8 +112,6 @@ volumeLevel.value = 0;
 audio.volume = 0;
 
 // ----------------------------------------------------------
-
-const newColor = function (element, value) {};
 
 const redControl = new Control(redDiv, { max: 255, maxAngle: 150, minAngle: -150 });
 redControl.onChange = (value) => {
