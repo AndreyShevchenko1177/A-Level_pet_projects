@@ -28,7 +28,7 @@ function Control(el, { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, 
 
     changeValue(0);
 
-    console.log(img.width, top, left);
+    // console.log(img.width, top, left);
 
     // img.onclick = (e) => {
     //     changeValue(e.clientX - left > img.width / 2 ? step : -step, true);
@@ -127,7 +127,7 @@ const setGradient = function () {
 
 const redControl = new Control(redDiv, { max: 255, maxAngle: 150, minAngle: -150 });
 redControl.onChange = (value) => {
-    redDiv.setAttribute("style", `background : rgb(${value}, 0, 0)`);
+    redDiv.setAttribute("style", `background : rgba(255, 0, 0, ${value / 255}); border-radius: 50%;`);
     rgbDiv.setAttribute("style", `background : rgb(${value}, ${greenLevel.value}, ${blueLevel.value})`);
     redLevel.value = Math.round(value);
     setGradient();
@@ -140,14 +140,13 @@ redLevel.oninput = () => {
 };
 
 redLevel.value = 0;
-redDiv.setAttribute("style", "background : rgb(0, 0, 0)");
 redGradient.style.background = "linear-gradient(to right, rgb(0,0,0), rgb(255,0,0))";
 
 // ----------------------------------------------------------
 
 const greenControl = new Control(greenDiv, { max: 255, maxAngle: 150, minAngle: -150 });
 greenControl.onChange = (value) => {
-    greenDiv.setAttribute("style", `background : rgb(0, ${value}, 0)`);
+    greenDiv.setAttribute("style", `background : rgba(0, 255, 0, ${value / 255}); border-radius: 50%;`);
     rgbDiv.setAttribute("style", `background : rgb(${redLevel.value}, ${value}, ${blueLevel.value})`);
     greenLevel.value = Math.round(value);
     setGradient();
@@ -160,14 +159,13 @@ greenLevel.oninput = () => {
 };
 
 greenLevel.value = 0;
-greenDiv.setAttribute("style", "background : rgb(0, 0, 0)");
 greenGradient.style.background = "linear-gradient(to right, rgb(0,0,0), rgb(0,255,0))";
 
 // ----------------------------------------------------------
 
 const blueControl = new Control(blueDiv, { max: 255, maxAngle: 150, minAngle: -150 });
 blueControl.onChange = (value) => {
-    blueDiv.setAttribute("style", `background : rgb(0, 0, ${value})`);
+    blueDiv.setAttribute("style", `background : rgba(0, 0, 255, ${value / 255}); border-radius: 50%;`);
     rgbDiv.setAttribute("style", `background : rgb(${redLevel.value}, ${greenLevel.value}, ${value})`);
     blueLevel.value = Math.round(value);
     setGradient();
@@ -180,7 +178,6 @@ blueLevel.oninput = () => {
 };
 
 blueLevel.value = 0;
-blueDiv.setAttribute("style", "background : rgb(0, 0, 0)");
 blueGradient.style.background = "linear-gradient(to right, rgb(0,0,0), rgb(0,0,255))";
 
 // ----------------------------------------------------------
