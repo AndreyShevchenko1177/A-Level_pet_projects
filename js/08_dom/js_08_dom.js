@@ -175,7 +175,8 @@ function lightCrossV3(tableNumber = "1") {
     let el = document.getElementById(tableID);
     for (let tr of el.children) {
         for (let td of tr.children) {
-            td.setAttribute("prevbkcolor", "magenta");
+            td.setAttribute("prevbkcolor", "magenta"); // когда писал этот метод еще не был знаком с замыканием
+            // и мне показалась идея хранить что-то в DOMе вполне нормальной идеей ))
             td.setAttribute("style", "");
 
             td.onmouseover = td.onmouseout = function () {

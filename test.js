@@ -1,97 +1,213 @@
-let wrapper = function (func, ...bondArg) {};
-return function (...arg) {
-    return func.call(this, ...bondArg, ...arg);
-};
-
-//
-
-//
-
-let mult = function (a, b) {
-    return a + b;
-};
-
-let plus2 = mult.bind(null, 2);
-
-plus2(5);
-
-// let mult = mult.bind(null, 2);
-
-mult(5); // ==7
-
-// let plus2 = mult.bind(null, 2);
-
-mult(5); // ==4
-
-//
-
-//// +++++++=+==+=+=+=+=5651651
-
-fetch("https://raw.githubusercontent.com/russ666/all-countries-and-cities-json/master/countries.json")
-    .then((res) => res.json())
-    .then((data) => {
-        console.log(data);
-    });
-console.log(1);
-
-let someTree = {
-    tagName: "table", //html tag
-    subTags: [
-        //вложенные тэги
+let HTMltree = {
+    tagName: "table",
+    subTegs: [
         {
             tagName: "tr",
-            subTags: [
+            subTegs: [
+                {
+                    tagName: "th",
+                    text: "name",
+                },
+                {
+                    tagName: "th",
+                    text: "surename",
+                },
+                {
+                    tagName: "th",
+                    text: "age",
+                },
+                {
+                    tagName: "th",
+                    text: "name",
+                },
+                {
+                    tagName: "th",
+                    text: "fullname",
+                },
+                {
+                    tagName: "th",
+                    text: "fathername",
+                },
+                {
+                    tagName: "th",
+                    text: "sex",
+                },
+                {
+                    tagName: "th",
+                    text: "marriage",
+                },
+                {
+                    tagName: "th",
+                    text: "pet",
+                },
+            ],
+        },
+        {
+            tagName: "tr",
+            subTegs: [
                 {
                     tagName: "td",
-                    text: "some text",
+                    text: "Bruno",
                 },
                 {
                     tagName: "td",
-                    text: "some text 2",
+                    text: "Lee",
+                },
+                {
+                    tagName: "td",
+                    text: 35,
+                },
+                {
+                    tagName: "td",
+                    text: "Bruno Lee",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+            ],
+        },
+        {
+            tagName: "tr",
+            subTegs: [
+                {
+                    tagName: "td",
+                    text: "Nestor",
+                },
+                {
+                    tagName: "td",
+                    text: "Roberts",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                    text: "Nestor Roberts",
+                },
+                {
+                    tagName: "td",
+                    text: "Johnson",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+            ],
+        },
+        {
+            tagName: "tr",
+            subTegs: [
+                {
+                    tagName: "td",
+                    text: "Philip",
+                },
+                {
+                    tagName: "td",
+                    text: "Bailey",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                    text: "Philip Bailey",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                    text: "mail",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+            ],
+        },
+        {
+            tagName: "tr",
+            subTegs: [
+                {
+                    tagName: "td",
+                    text: "Ellema",
+                },
+                {
+                    tagName: "td",
+                    text: "Keef",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                    text: "Ellema Keef",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                    text: true,
+                },
+                {
+                    tagName: "td",
+                },
+            ],
+            tagName: "tr",
+            subTegs: [
+                {
+                    tagName: "td",
+                    text: "Adam",
+                },
+                {
+                    tagName: "td",
+                    text: "Sendler",
+                },
+                {
+                    tagName: "td",
+                    text: 35,
+                },
+                {
+                    tagName: "td",
+                    text: "Adam Sendler",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                },
+                {
+                    tagName: "td",
+                    text: "dog",
                 },
             ],
         },
     ],
-    attrs: {
-        border: 1,
-    },
 };
-
-let drawSomeTree = "";
-
-drawSomeTree += "<" + someTree.tagName;
-if ("attrs" in someTree) {
-    drawSomeTree += someTree.attrs;
-}
-drawSomeTree += ">";
-if ("subTags" in someTree) {
-    for (let i of someTree.subTags) {
-        if ("tagName" in i) {
-            drawSomeTree += "<" + i.tagName;
-        }
-        if ("attrs" in i) {
-            drawSomeTree += i.attrs;
-        }
-        drawSomeTree += ">";
-        if ("subTags" in i) {
-            for (let j of i.subTags) {
-                if ("tagName" in j) {
-                    drawSomeTree += "<" + j.tagName;
-                }
-                if ("attrs" in j) {
-                    drawSomeTree += j.attrs;
-                }
-                drawSomeTree += ">";
-                if ("text" in j) {
-                    drawSomeTree += j.text;
-                }
-                drawSomeTree += "</" + j.tagName + ">";
-            }
-        }
-        drawSomeTree += "</" + i.tagName + ">";
-    }
-}
-drawSomeTree += "</" + someTree.tagName + ">";
-
-console.log(drawSomeTree);
-document.write(drawSomeTree);
