@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>16_XMLHttpRequest</title>
+    </head>
+    <body>
+        <select name="country" id="country" style="min-width: 100px"></select>
+        <select name="city" id="city" style="min-width: 100px"></select>
+        <button id="queryBtn">Запросить данные</button>
+        <script>
+            let xhr = new XMLHttpRequest();
+
+            queryBtn.onclick = () => {
+                xhr.open(
+                    "GEt",
+                    "https://raw.githubusercontent.com/David-Haim/CountriesToCitiesJSON/master/countriesToCities.json",
+                    true
+                );
+                queryBtn.disabled = true;
+                xhr.send();
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == XMLHttpRequest.UNSENT) {
+                        queryBtn.innerText = "Начальное состояние";
+                        console.log("Начальное состояние");
+                        return;
+                    }
+
+                    if (xhr.readyState == XMLHttpRequest.OPENED) {
+                        queryBtn.innerText = "Вызван open";
+                        console.log("Вызван open");
+                        return;
+                    }
+
+                    if (xhr.readyState == XMLHttpRequest.HEADERS_RECEIVED) {
+                        queryBtn.innerText = "Получены заголовки";
+                        console.log("Получены заголовки");
+                        return;
+                    }
+
+                    if (xhr.readyState == XMLHttpRequest.LOADING) {
+                        queryBtn.innerText = "Загрузка...";
+                        console.log("Загрузка...");
+                        return;
+                    }
+
+                    // if (xhr.readyState != XMLHttpRequest.DONE) return;
+
+                    // console.log(xhr.responseText);
+                    let data = JSON.parse(xhr.responseText);
+                    console.log(data);
+                    queryBtn.innerText = "Готово";
+                    setTimeout(() => {
+                        queryBtn.innerText = "Еще раз запросить";
+                        queryBtn.disabled = false;
+                    }, 10000);
+
+                    haveData(data);
+                };
+            }; // queryBtn.onclick = () => {
+
+            //
+
+            const haveData = function (data = {}) {
+                const newOption = function (item) {
+                    let option = document.createElement("option");
+                    option.setAttribute("value", item);
+                    option.append(item);
+                    return option;
+                };
+
+                const sortInput = function (sel) {
+                    var arr = Array.from(sel.children).sort((x, y) => {
+                        return x.text.localeCompare(y.text);
+                    });
+                    arr.forEach((x) => sel.appendChild(x));
+                    sel.selectedIndex = 0;
+                };
+
+                for (item in data) if (item) country.append(newOption(item));
+                sortInput(country);
+
+                country.onchange = function () {
+                    city.innerHTML = "";
+                    for (item of data[country.value]) if (item) city.append(newOption(item));
+                    sortInput(city);
+                };
+
+                country.onchange();
+            };
+            //
+        </script>
+    </body>
+</html>

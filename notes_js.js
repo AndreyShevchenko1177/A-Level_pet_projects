@@ -317,6 +317,16 @@ document.write(html)
 //
 
 
+=============== sort Input
+
+ sel - noda
+const sortInput = function (sel) {
+                    var arr = Array.from(sel.children).sort((x, y) => {
+                        return x.text.localeCompare(y.text);
+                    });
+                    arr.forEach((x) => sel.appendChild(x));
+                    sel.selectedIndex = 0;
+                };
 
 
 
