@@ -10,16 +10,16 @@
         <select name="city" id="city" style="min-width: 100px"></select>
         <button id="queryBtn">Запросить данные</button>
         <script>
-            let xhr = new XMLHttpRequest();
-
             queryBtn.onclick = () => {
+                let xhr = new XMLHttpRequest();
+
                 xhr.open(
                     "GEt",
                     "https://raw.githubusercontent.com/David-Haim/CountriesToCitiesJSON/master/countriesToCities.json",
                     true
                 );
+
                 queryBtn.disabled = true;
-                xhr.send();
 
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState == XMLHttpRequest.UNSENT) {
@@ -49,16 +49,29 @@
                     // if (xhr.readyState != XMLHttpRequest.DONE) return;
 
                     // console.log(xhr.responseText);
-                    let data = JSON.parse(xhr.responseText);
-                    console.log(data);
-                    queryBtn.innerText = "Готово";
-                    setTimeout(() => {
-                        queryBtn.innerText = "Еще раз запросить";
-                        queryBtn.disabled = false;
-                    }, 10000);
 
-                    haveData(data);
+                    if (xhr.status == 200) {
+                        let data = JSON.parse(xhr.responseText);
+                        console.log(data);
+                        queryBtn.innerText = "Готово";
+                        setTimeout(() => {
+                            queryBtn.innerText = "Еще раз запросить";
+                            queryBtn.disabled = false;
+                        }, 10000);
+
+                        haveData(data);
+                    } else {
+                        let error = new Error(xhr.statusText); // пока не пойму как это использовать...
+                        console.log(error);
+                        queryBtn.innerText = `Ошибка: ${xhr.status}`;
+                        setTimeout(() => {
+                            queryBtn.innerText = "Еще раз запросить";
+                            queryBtn.disabled = false;
+                        }, 5000);
+                    }
                 };
+
+                xhr.send();
             }; // queryBtn.onclick = () => {
 
             //

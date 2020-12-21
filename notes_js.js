@@ -443,4 +443,56 @@ let wrapper = function() {
 // При вызове wrapper из внешнего кода его не отличить от вызова исходной функции.
 
 
+// ===============================================================================================================================
 
+
+
+Итого
+Типовой код для GET-запроса при помощи XMLHttpRequest:
+
+var xhr = new XMLHttpRequest();
+
+xhr.open('GET', '/my/url', true);
+
+xhr.send();
+
+xhr.onreadystatechange = function() {
+  if (this.readyState != 4) return;
+
+  // по окончании запроса доступны:
+  // status, statusText
+  // responseText, responseXML (при content-type: text/xml)
+
+  if (this.status != 200) {
+    // обработать ошибку
+    alert( 'ошибка: ' + (this.status ? this.statusText : 'запрос не удался') );
+    return;
+  }
+
+  // получить результат из this.responseText или this.responseXML
+}
+Мы разобрали следующие методы XMLHttpRequest:
+
+open(method, url, async, user, password)
+send(body)
+abort()
+setRequestHeader(name, value)
+getResponseHeader(name)
+getAllResponseHeaders()
+Свойства XMLHttpRequest:
+
+timeout
+responseText
+responseXML
+status
+statusText
+События:
+
+onreadystatechange
+ontimeout
+onerror
+onload
+onprogress
+onabort
+onloadstart
+onloadend
