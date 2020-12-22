@@ -46,12 +46,7 @@
                     if (typeof person[item] == "string") {
                         if (person[item].startsWith(urlConst)) {
                             setBtn(td, person[item]);
-                        } else
-                            td.append(
-                                new Date(person[item]).toString() !== "Invalid Date"
-                                    ? new Date(person[item]).toDateString()
-                                    : person[item]
-                            );
+                        } else td.append(person[item]);
                     } else {
                         if (Array.isArray(person[item])) {
                             for (val of person[item]) {
