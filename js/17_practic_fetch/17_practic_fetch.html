@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Luke Skywalker</title>
+    </head>
+    <body>
+        <script>
+            let objectToDom = function (domElement, person) {
+                //
+                const urlConst = "http://swapi.dev/api/";
+
+                let setBtn = function (domEl, value) {
+                    let btn = document.createElement("button");
+                    btn.append(value.slice(urlConst.length));
+                    domEl.append(btn);
+                    btn.onclick = (value) => {};
+                };
+
+                let table = document.createElement("table");
+                table.setAttribute("border", "1");
+                domElement.append(table);
+                console.log(person);
+                for (item in person) {
+                    let tr = document.createElement("tr");
+                    table.append(tr);
+
+                    let th = document.createElement("th");
+                    tr.append(th);
+                    th.append(item);
+
+                    let td = document.createElement("td");
+                    tr.append(td);
+
+                    if (typeof person[item] == "string") {
+                        if (person[item].startsWith(urlConst)) {
+                            setBtn(td, person[item]);
+                        } else
+                            td.append(
+                                new Date(person[item]).toString() !== "Invalid Date"
+                                    ? new Date(person[item]).toDateString()
+                                    : person[item]
+                            );
+                    } else {
+                        if (Array.isArray(person[item])) {
+                            for (val of person[item]) {
+                                if (val.startsWith(urlConst)) {
+                                    setBtn(td, val);
+                                } else td.append(val);
+                            }
+                        }
+                    }
+                }
+            };
+
+            fetch("https://swapi.dev/api/people/1/")
+                .then((res) => res.json())
+                .then((luke) => objectToDom(document.body, luke));
+        </script>
+    </body>
+</html>
