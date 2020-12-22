@@ -22,6 +22,7 @@ function Control(el, { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, 
         }
 
         img.style.transform = `rotate(${value2Deg()}deg)`;
+        img.style.transformOrigin = `50% 50%`;
     };
 
     const { top, left } = img.getBoundingClientRect();
@@ -66,7 +67,7 @@ function Control(el, { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, 
             } else {
                 deltaAngle += deltaAngle < 0 ? -360 : 360;
             }
-            deltaAngle = deltaAngle % 360;
+            deltaAngle = Math.round(deltaAngle % 360);
 
             changeValue(deltaAngle / ratio, true);
             startDragAngle = currentAngle;

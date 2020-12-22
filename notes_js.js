@@ -496,3 +496,10 @@ onprogress
 onabort
 onloadstart
 onloadend
+
+
+Кросс-браузерно:
+
+var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
+var xhr = new XHR();
+Теперь в IE8,9 поддерживаются события onload, onerror и onprogress. Это именно для IE8,9. Для IE10 обычный XMLHttpRequest уже является полноценным.
