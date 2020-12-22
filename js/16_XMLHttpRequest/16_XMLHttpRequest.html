@@ -52,6 +52,7 @@
 
                     if (xhr.status == 200) {
                         let data = JSON.parse(xhr.responseText);
+                        // let data = xhr.response;
                         console.log(data);
                         queryBtn.innerText = "Готово";
                         setTimeout(() => {
@@ -60,6 +61,7 @@
                         }, 10000);
 
                         haveData(data);
+                        //
                     } else {
                         let error = new Error(xhr.statusText); // пока не пойму как это использовать...
                         console.log(error);
@@ -71,8 +73,9 @@
                     }
                 };
 
+                // xhr.responseType = "json";
                 xhr.send();
-            }; // queryBtn.onclick = () => {
+            }; // queryBtn.onclick - end
 
             //
 
