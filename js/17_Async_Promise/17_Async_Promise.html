@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>17_Async_Promise</title>
+    </head>
+    <body>
+        <div class="wrapper" style="display: inline-flex">
+            <div id="div1" style="margin: 10px; min-width: 400px; border: 2px solid red"></div>
+            <div id="div2" style="margin: 10px; border: 2px solid red"></div>
+        </div>
+        <script>
+            //
+
+            let objectToDom = function (domElement, person) {
+                //
+                const urlConst = "http://swapi.dev/api/";
+
+                let setBtn = function (domEl, value) {
+                    let btn = document.createElement("button");
+                    btn.append(value.slice(urlConst.length));
+                    domEl.append(btn);
+                    // debugger;
+                    btn.onclick = () => {
+                        div2.removeChild(div2.firstChild);
+                        fetch(value)
+                            .then((res) => res.json())
+                            .then((luke) => objectToDom(div2, luke));
+                    };
+                };
+
+                let table = document.createElement("table");
+                table.setAttribute("border", "1");
+                domElement.append(table);
+                // console.log(person);
+                for (item in person) {
+                    let tr = document.createElement("tr");
+                    table.append(tr);
+
+                    let th = document.createElement("th");
+                    tr.append(th);
+                    th.append(item);
+
+                    let td = document.createElement("td");
+                    tr.append(td);
+
+                    if (typeof person[item] == "string") {
+                        if (person[item].startsWith(urlConst)) {
+                            setBtn(td, person[item]);
+                        } else td.append(person[item]);
+                    } else {
+                        if (Array.isArray(person[item])) {
+                            for (val of person[item]) {
+                                if (val.startsWith(urlConst)) {
+                                    setBtn(td, val);
+                                } else td.append(val);
+                            }
+                        }
+                    }
+                }
+            };
+
+            fetch("https://swapi.dev/api/people/1/")
+                .then((res) => res.json())
+                .then((luke) => objectToDom(div1, luke));
+
+            fetch("https://swapi.dev/api/people/1/")
+                .then((res) => res.json())
+                .then((luke) => objectToDom(div2, luke));
+
+            //
+
+            //
+
+            // -------------------myfetch
+            // Используя XMLHTTPRequest, напишите промисифицированную функцию myfetch,
+            // т. е. функцию, которая возвращает промис, и работает схоже с fetch, только в один этап:
+
+            let myfetch = function (url) {
+                return new Promise(function (ok, fail) {
+                    let xhr = new XMLHttpRequest();
+                    xhr.open("GET", url, true);
+                    xhr.responseType = "json";
+
+                    xhr.onload = function () {
+                        if ((this.status = 200)) ok(this.response);
+                        else fail(new Error(`Ошибка. Статус ${this.status}: ${this.statusText}`));
+                    };
+
+                    // xhr.onerror = function (e) {
+                    //     fail(`Ошибка2 ${this.status}: ${this.statusText} +++ ${e}`);
+                    // };
+
+                    xhr.addEventListener("error", () => fail(new Error("Network error")));
+
+                    xhr.send(null);
+                });
+            };
+
+            myfetch("https://swa---------pi.dev/api/people/1/").then(
+                (luke) => console.log(luke),
+                (error) => alert(error)
+            );
+
+            myfetch("https://swapi.dev/api/people/1/").then(
+                (luke) => console.log(JSON.stringify(luke)),
+                (error) => alert(error)
+            );
+
+            //
+
+            // -------------------Promise.race
+            //Используя Promise.race запустите запрос на API (myfetch) параллельно с delay.
+            // По результату определите, что было быстрее, запрос по сети, или определенный
+            // интервал времени. Подберите параметр delay так, что бы результат был неизвестен изначально,
+            // и при многократных запусках быстрее был то delay, то myfetch.
+            //
+
+            document.body.insertAdjacentHTML("beforeEnd", "<br>60-65 ms  ");
+
+            let msInput = document.createElement("input");
+            msInput.type = "number";
+            msInput.placeholder = "задержка, ms";
+            document.body.append(msInput);
+
+            let btn = document.createElement("button");
+            btn.append("Race (смотри консоль)");
+            document.body.append(btn);
+
+            let faster = document.createElement("input");
+            faster.placeholder = "Кто быстрее?";
+            document.body.append(faster);
+
+            btn.onclick = function () {
+                let delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(`Delay ${ms} ms`), ms));
+                console.log("GO!");
+                Promise.race([delay(+msInput.value), myfetch("https://swapi.dev/api/people/1/")]).then(
+                    (ok) => {
+                        faster.value = ok;
+                        console.log(ok);
+                    },
+                    (error) => alert(error)
+                );
+            };
+
+            //
+            //
+            //
+        </script>
+    </body>
+</html>

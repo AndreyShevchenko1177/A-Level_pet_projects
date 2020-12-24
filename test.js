@@ -1,7 +1,42 @@
-let f = function ({ name = "vasya", surname = "petrov", age = 25 } = {}) {
-    console.log("name - " + name);
-    console.log("surname - " + surname);
-    console.log("age - " + age);
-};
+//
 
-f({ age: 100 });
+let del3000ms = new Promise(function (ok, fail) {
+    setTimeout(() => ok("vse super"), 3000);
+});
+
+//
+
+del3000ms
+    .then((res) => res.toUpperCase())
+    .then(
+        (res2) => console.log(res2),
+        (err) => console.log("Uuuups")
+    );
+
+//
+
+let delay = (ms) => new Promise((ok) => setTimeout(() => ok(ms), ms));
+
+delay(1000)
+    .then((ms) => console.log("wait " + ms))
+    .then(() => delay(2000))
+    .then((ms) => console.log("wait twice " + ms));
+
+let promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        // переведёт промис в состояние fulfilled с результатом "result"
+        resolve("result1111");
+    }, 3000);
+});
+
+// promise.then навешивает обработчики на успешный результат или ошибку
+promise.then(
+    (result) => {
+        // первая функция-обработчик - запустится при вызове resolve
+        alert("Fulfilled: " + result); // result - аргумент resolve
+    },
+    (error) => {
+        // вторая функция - запустится при вызове reject
+        alert("Rejected: " + error); // error - аргумент reject
+    }
+);

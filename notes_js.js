@@ -447,6 +447,15 @@ let wrapper = function() {
 
 
 
+
+
+
+
+
+
+
+
+
 Итого
 Типовой код для GET-запроса при помощи XMLHttpRequest:
 
@@ -497,9 +506,75 @@ onabort
 onloadstart
 onloadend
 
+xhr.onload = function() {
+  if (xhr.status != 200) { // анализируем HTTP-статус ответа, если статус не 200, то произошла ошибка
+    alert(`Ошибка ${xhr.status}: ${xhr.statusText}`); // Например, 404: Not Found
+  } else { // если всё прошло гладко, выводим результат
+    alert(`Готово, получили ${xhr.response.length} байт`); // response -- это ответ сервера
+  }
+};
 
-Кросс-браузерно:
+----------------Кросс-браузерно:-----------------------
 
 var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
 var xhr = new XHR();
 Теперь в IE8,9 поддерживаются события onload, onerror и onprogress. Это именно для IE8,9. Для IE10 обычный XMLHttpRequest уже является полноценным.
+
+
+
+
+
+
+
+
+
+
+
+
+
+=============   PROMISE   =========
+
+//
+
+let del3000ms = new Promise(function (ok, fail) {
+    setTimeout(() => ok("vse super"), 3000);
+});
+
+//
+
+del3000ms
+    .then((res) => res.toUpperCase())
+    .then(
+        (res2) => console.log(res2),
+        (err) => console.log("Uuuups")
+    );
+
+//
+
+let delay = (ms) => new Promise((ok) => setTimeout(() => ok(ms), ms));
+
+delay(1000)
+    .then(() => console.log("wait"))
+    .then(() => delay(2000))
+    .then(() => console.log("wait twice"));
+
+let promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        // переведёт промис в состояние fulfilled с результатом "result"
+        resolve("result1111");
+    }, 3000);
+});
+
+// promise.then навешивает обработчики на успешный результат или ошибку
+promise.then(
+    (result) => {
+        // первая функция-обработчик - запустится при вызове resolve
+        alert("Fulfilled: " + result); // result - аргумент resolve
+    },
+    (error) => {
+        // вторая функция - запустится при вызове reject
+        alert("Rejected: " + error); // error - аргумент reject
+    }
+);
+
+====================================================================================
