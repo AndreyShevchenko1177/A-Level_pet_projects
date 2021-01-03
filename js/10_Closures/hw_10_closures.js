@@ -37,7 +37,7 @@ alert(`Время работы кода составило ${timer()} милис
 
 const makeSaver = function (func) {
     let isFirst = true;
-    let rusult;
+    let result;
     return function () {
         if (isFirst) {
             result = func();

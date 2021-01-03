@@ -63,7 +63,7 @@
                         haveData(data);
                         //
                     } else {
-                        let error = new Error(xhr.statusText); // пока не пойму как это использовать...
+                        let error = new Error(xhr.statusText);
                         console.log(error);
                         queryBtn.innerText = `Ошибка: ${xhr.status}`;
                         setTimeout(() => {

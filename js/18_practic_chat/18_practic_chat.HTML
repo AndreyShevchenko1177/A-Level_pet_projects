@@ -4,7 +4,6 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>18_practic_chat</title>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
     </head>
 
     <body>
@@ -14,14 +13,14 @@
         <input type="text" id="msgId" />
         <button id="sendId">Send msg</button>
 
-        <div class="chat" id="chatId">sdfasfasfvasafvasfabvfasdfbasbfas</div>
+        <div id="chatId">sdfasfasfvasafvasfabvfasdfbasbfas</div>
 
         <script>
-            jsonPost("http://students.a-level.com.ua:10012", {
-                func: "addMessage",
-                nick: "Sheva",
-                message: "++Hi++",
-            });
+            // jsonPost("http://students.a-level.com.ua:10012", {
+            //     func: "addMessage",
+            //     nick: "Sheva",
+            //     message: "++Hi++",
+            // });
 
             function jsonPost(url, data) {
                 return new Promise((resolve, reject) => {
@@ -53,9 +52,8 @@
 
             //
 
-            let msgHist = [];
             let startMsgId = 0;
-            let data;
+            let date;
 
             setInterval(() => {
                 let j = jsonPost("http://students.a-level.com.ua:10012", {
@@ -68,14 +66,31 @@
                 });
 
                 let shouMsg = function (msgArr) {
-                    console.log(msgArr);
+                    // console.log(msgArr);
                     // msgArr.reverse();
                     msgArr.forEach((element) => {
-                        let str = element.nick + ": " + element.message + "<br>";
+                        date = new Date(element.timestamp);
+                        let str =
+                            date.getFullYear() +
+                            "/" +
+                            (date.getMonth() + 1) +
+                            "/" +
+                            date.getDate() +
+                            "  " +
+                            date.getHours() +
+                            ":" +
+                            date.getMinutes() +
+                            ":" +
+                            date.getSeconds() +
+                            " " +
+                            element.nick +
+                            ": " +
+                            element.message +
+                            "<br>";
                         chatId.insertAdjacentHTML("afterbegin", str);
                     });
                 };
-            }, 2000);
+            }, 5000);
         </script>
     </body>
 </html>
