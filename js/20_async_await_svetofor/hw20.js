@@ -54,26 +54,51 @@ knopka2.onclick = () => domEventPromise(knopka, "click").then((e) => console.log
 
 // lights2red.style.background = "red";
 
-async function pedestrianTrafficLight(domElement, { redSec = 10, greenSec = 2 } = {}) {
-    domElement.children[0].style.background = "";
-    domElement.children[1].style.background = "green";
-    await delay(greenSec);
-    domElement.children[1].style.background = "";
-
-    domElement.children[0].style.background = "red";
-    await delay(redSec);
-    domElement.children[0].style.background = "";
-    return "semafor";
+function innerTimer(domElement, sec) {
+    for (let i = sec; i > 0; i--) {
+        setTimeout(() => (domElement.innerText = i), (sec - i) * 1000);
+    }
+    setTimeout(() => (domElement.innerText = ""), sec * 1000);
 }
 
 async function pedestrianManage(domElement) {
-    debugger;
+    // debugger;
+    async function pedestrianTrafficLight(domElement, { redSec = 10, greenSec = 3 } = {}) {
+        domElement.children[0].style.background = "";
+        domElement.children[1].style.background = "lightgreen";
+        innerTimer(domElement.children[1], greenSec);
+        await delay(greenSec);
+
+        if (!isGoButton) {
+            domElement.children[1].style.background = "";
+
+            domElement.children[0].style.background = "red";
+            innerTimer(domElement.children[0], redSec);
+            await delay(redSec);
+            domElement.children[0].style.background = "";
+        }
+
+        return "semafor";
+    }
+
+    let isGoButton = false;
 
     while (true) {
-        // let res = await Promise.race([domEventPromise(goButton, "click"), delay(5)]);
         let res = await Promise.race([domEventPromise(goButton, "click"), pedestrianTrafficLight(domElement)]);
 
         console.log(res);
+        if (res !== "semafor") {
+            isGoButton = true;
+            // goButton.disabled = true;
+            innerTimer(goButton, 15);
+            setTimeout(() => {
+                goButton.disabled = false;
+                goButton.innerText = "GO";
+            }, 15000);
+            await pedestrianTrafficLight(domElement, { greenSec: 3, redSec: 0 });
+            // await delay(3);
+            isGoButton = false;
+        }
     }
 }
 

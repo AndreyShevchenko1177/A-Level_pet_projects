@@ -5,6 +5,9 @@
     border: 2px solid black;
     margin: 5px;
     background: darkgray;
+    text-align: center;
+    font-weight: 700;
+    font-size: 30px;
 }
 
 .trafficLights {
@@ -16,6 +19,5 @@
 }
 
 #goButton {
-    /* text-align: center; */
     margin: 10px;
 }
