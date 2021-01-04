@@ -969,6 +969,16 @@ let startMsgId = 0;
 let date;
 users = []; // кто тут в чате
 
+function cleanUp(text) {
+    if (typeof text !== "string") return text;
+    if (text.match(/<script/i)) {
+        let el = document.createElement("div");
+        el.innerText = text;
+        return `<h1>SUPER HACKER CODE:</h1><pre>${el.innerHTML}</pre>`;
+    }
+    return text;
+}
+
 let showMsg = function (msgArr) {
     msgArr.forEach((element) => {
         date = new Date(element.timestamp);
@@ -985,10 +995,10 @@ let showMsg = function (msgArr) {
             date.getMinutes() +
             ":" +
             date.getSeconds() +
-            "__" +
-            element.nick +
-            ": " +
-            smilify(element.message);
+            "__<b>" +
+            cleanUp(element.nick) +
+            ":</b> " +
+            smilify(cleanUp(element.message));
         p.insertAdjacentHTML("beforeEnd", str);
         if (typeof element.message === "string" && element.message.startsWith("to_" + nick)) {
             p.style.color = "green";
