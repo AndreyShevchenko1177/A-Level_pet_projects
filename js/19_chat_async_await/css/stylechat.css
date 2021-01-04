@@ -106,8 +106,9 @@ body {
     width: 25px;
 }
 
-.nikInChat,
+.nicksPresent,
 .smile {
     cursor: pointer;
     line-height: 1.5;
+    color: darkslategrey;
 }

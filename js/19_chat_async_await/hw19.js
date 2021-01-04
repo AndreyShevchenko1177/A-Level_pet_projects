@@ -1,4 +1,4 @@
-users = []; // кто тут в чате
+//
 
 // let smiles = {};
 // for (let smile of document.querySelectorAll(".emoji")) {
@@ -890,15 +890,19 @@ const wwwConstStrFirst = `<img src="https://www.webfx.com/tools/emoji-cheat-shee
 const wwwConstStrLast = `"></img>`;
 
 // построение поля смайликов
-for (let [key, value] of Object.entries(smileObj)) {
-    let smile = document.createElement("span");
-    smile.setAttribute("class", "smile");
-    smile.insertAdjacentHTML("beforeend", wwwConstStrFirst + value + wwwConstStrLast);
-    smile.onclick = function () {
-        msgId.value += ` :${key}: `; // походу это замыкание
-    };
-    smileArea.append(smile);
+function drowSmiles() {
+    for (let [key, value] of Object.entries(smileObj)) {
+        let smile = document.createElement("span");
+        smile.setAttribute("class", "smile");
+        smile.insertAdjacentHTML("beforeend", wwwConstStrFirst + value + wwwConstStrLast);
+        smile.onclick = function () {
+            msgId.value += ` :${key}: `; //  замыкание
+        };
+        smileArea.append(smile);
+    }
 }
+
+drowSmiles();
 
 function smilify(message) {
     if (typeof message === "string") {
@@ -912,13 +916,9 @@ function smilify(message) {
     return message;
 }
 
-let nick = "testnick";
-// while (!(nick = prompt("Введите свой ник:"))) {}
+// let nick = "qwerty";
+while (!(nick = prompt("Введите свой ник:"))) {}
 nickId.value = nick;
-// socket.emit("msg", {
-//     nick: nickId.value,
-//     message: "---Я тут новенький!!!---",
-// });
 nickId.setAttribute("readonly", "readonly");
 
 // отправка сообщения в чат при нажатии Enter в поле ввода сообщения
@@ -934,32 +934,45 @@ msgId.addEventListener("keydown", function (e) {
     }
 });
 
-function jsonPost(url, data) {
-    return new Promise((resolve, reject) => {
-        var x = new XMLHttpRequest();
-        x.onerror = () => reject(new Error("jsonPost failed"));
-        //x.setRequestHeader('Content-Type', 'application/json');
-        x.open("POST", url, true);
-        x.send(JSON.stringify(data));
+// function jsonPost(url, data) {
+//     return new Promise((resolve, reject) => {
+//         var x = new XMLHttpRequest();
+//         x.onerror = () => reject(new Error("jsonPost failed"));
+//         //x.setRequestHeader('Content-Type', 'application/json');
+//         x.open("POST", url, true);
+//         x.send(JSON.stringify(data));
 
-        x.onreadystatechange = () => {
-            if (x.readyState == XMLHttpRequest.DONE && x.status == 200) {
-                resolve(JSON.parse(x.responseText));
-            } else if (x.status != 200) {
-                reject(new Error("status is not 200"));
-            }
-        };
+//         x.onreadystatechange = () => {
+//             if (x.readyState == XMLHttpRequest.DONE && x.status == 200) {
+//                 resolve(JSON.parse(x.responseText));
+//             } else if (x.status != 200) {
+//                 reject(new Error("status is not 200"));
+//             }
+//         };
+//     });
+// }
+
+async function jsonPost(url, data) {
+    //
+    let response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
     });
+
+    if (response.ok) {
+        return await response.json();
+    }
+    console.log("Ошибка HTTP: " + response.status);
 }
 
 let startMsgId = 0;
 let date;
+users = []; // кто тут в чате
 
 let showMsg = function (msgArr) {
-    // console.log(msgArr);
-    // msgArr.reverse();
     msgArr.forEach((element) => {
         date = new Date(element.timestamp);
+        let p = document.createElement("p");
         let str =
             date.getFullYear() +
             "/" +
@@ -975,35 +988,78 @@ let showMsg = function (msgArr) {
             "__" +
             element.nick +
             ": " +
-            smilify(element.message) +
-            "<br>";
-        chatWindow.insertAdjacentHTML("beforeEnd", str);
+            smilify(element.message);
+        p.insertAdjacentHTML("beforeEnd", str);
+        if (typeof element.message === "string" && element.message.startsWith("to_" + nick)) {
+            p.style.color = "green";
+        }
+        if (element.nick === nick) {
+            p.style.color = "darkslategrey";
+        }
+        chatWindow.append(p);
+        if (!~users.indexOf(element.nick) && typeof element.nick === "string") {
+            users.push(element.nick);
+        }
     });
     chatWindow.scrollTop = chatWindow.scrollHeight; // прокрутка скрола чата
+    users.sort((a, b) => a.localeCompare(b));
+    showNicks(users);
 };
 
-let getMsg = function () {
-    let j = jsonPost("http://students.a-level.com.ua:10012", {
+function showNicks(users) {
+    users.forEach((nick) => {
+        let p = document.createElement("p");
+        p.append(nick);
+        whoIsHere.append(p);
+        p.onclick = function () {
+            msgId.value = `to_${nick}: ` + msgId.value; //  замыкание
+        };
+    });
+}
+
+async function getMessages() {
+    jsonPost("http://students.a-level.com.ua:10012", {
         func: "getMessages",
         messageId: startMsgId,
     }).then((x) => {
-        startMsgId = x.nextMessageId;
-        console.log(startMsgId);
-        showMsg(x.data);
+        if (startMsgId !== x.nextMessageId) {
+            startMsgId = x.nextMessageId;
+            console.log(startMsgId);
+            showMsg(x.data);
+        }
     });
-};
-
-getMsg();
-
-setInterval(getMsg, 10000);
+}
 
 let lastMsg;
 
-sendId.onclick = function () {
+async function sendMessage(nick, message) {
+    lastMsg = msgId.value;
     jsonPost("http://students.a-level.com.ua:10012", {
         func: "addMessage",
-        nick: nickId.value,
-        message: smilify(msgId.value),
+        nick: nick,
+        message: message,
     });
     msgId.value = "";
-};
+}
+
+async function sendAndCheck() {
+    if (msgId.value) {
+        await sendMessage(nickId.value, smilify(msgId.value));
+        getMessages();
+    }
+}
+
+sendId.onclick = sendAndCheck;
+
+getMessages();
+
+let delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
+
+async function checkLoop() {
+    console.log("delay");
+    delay(5000).then(getMessages).then(checkLoop);
+}
+
+checkLoop();
+
+// setInterval(getMessages, 5000);
