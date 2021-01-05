@@ -40,3 +40,16 @@ promise.then(
         alert("Rejected: " + error); // error - аргумент reject
     }
 );
+
+let delay2 = function (time) {
+    return new Promise(function (resolve, reject) {
+        //можно без reject
+        console.log("delay starting");
+        setTimeout(() => resolve("It past " + time), time);
+    });
+};
+
+Promise.race([
+    delay2(() => console.log("delay end"), 250),
+    myfetch("https://swapi.dev/api/people/1/").then((luke) => console.log(luke)),
+]);
