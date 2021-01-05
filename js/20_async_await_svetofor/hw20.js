@@ -90,7 +90,8 @@ pedestrianManage(lights2);
 // 20 сек - красный (машины едут)
 // 5 сек - зеленый(идут пешеходы)
 // Для особо спешащих пешеходов есть кнопка, которая позволяет ТОЛЬКО  в фазе "красный" переключиться сразу на зеленый
-// но за такую спешку надо платить: 20 секнд после зеленого нажать на кнопку будет нельзя а новая фаза "красного"
+// После этого незапланированного "зеленого" цикла продолжит дорабатывать свое время "красный" цикл.
+// но за такую спешку надо платить: 20 секнд после "зеленого" нажать на кнопку будет нельзя а новая фаза "красного"
 // начнется без прерывания на зеленый (то есть пропуск "зеленой" фазы, которая должна была бы быть по расписанию)
 
 async function pedestrianManageBtn(domElement) {
@@ -99,8 +100,8 @@ async function pedestrianManageBtn(domElement) {
         domElement.children[0].style.background = "red";
         innerTimer(domElement.children[0], redTime);
         await delay(redTime);
-        domElement.children[0].style.background = "";
-        domElement.children[1].style.background = "lightgreen";
+        // domElement.children[0].style.background = "";
+        // domElement.children[1].style.background = "lightgreen";
         // return "red";
     }
 
@@ -118,23 +119,47 @@ async function pedestrianManageBtn(domElement) {
         // return "green";
     }
 
+    let goButtonDelay = 20;
     let btn, red, green;
+    let isGoButtonPressed;
 
     while (true) {
-        await Promise.race([(btn = domEventPromise(goButton, "click")), (red = redLite(20))]).then(() => {
-            green = greenLite(5);
-            btn.then(() => {
-                innerTimer(goButton, 20);
-                goButton.disabled = true;
-                setTimeout(() => {
-                    goButton.disabled = false;
-                    goButton.innerText = "GO";
-                }, 20000);
-            });
+        isGoButtonPressed = false;
+        btn = domEventPromise(goButton, "click");
+        btn.then(() => {
+            goButton.disabled = true;
+            isGoButtonPressed = true;
+            innerTimer(goButton, goButtonDelay);
+            setTimeout(() => {
+                if (domElement.children[1].style.background !== "lightgreen") goButton.disabled = false;
+                goButton.innerText = "GO";
+            }, goButtonDelay * 1000);
         });
 
-        await Promise.all([red, green]);
+        while (!isGoButtonPressed) {
+            await Promise.race([btn, (red = redLite(20))]).then(() => (green = greenLite(5)));
+            await Promise.all([red, green]);
+            console.log("await Promise.all([red, green])");
+        }
     }
+
+    //  ниже - старый но рабочий вариант
+
+    // while (true) {
+    //     await Promise.race([(btn = domEventPromise(goButton, "click")), (red = redLite(20))]).then(() => {
+    //         green = greenLite(5);
+    //         btn.then(() => {
+    //             innerTimer(goButton, 20);
+    //             goButton.disabled = true;
+    //             setTimeout(() => {
+    //                 goButton.disabled = false;
+    //                 goButton.innerText = "GO";
+    //             }, 20000);
+    //         });
+    //     });
+
+    //     await Promise.all([red, green]);
+    // }
 }
 
 pedestrianManageBtn(lights2btn);
