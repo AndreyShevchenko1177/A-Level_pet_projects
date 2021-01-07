@@ -95,13 +95,12 @@ pedestrianManage(lights2);
 // начнется без прерывания на зеленый (то есть пропуск "зеленой" фазы, которая должна была бы быть по расписанию)
 
 async function pedestrianManageBtn(domElement) {
+    //
     async function redLite(redTime) {
         domElement.children[1].style.background = "";
         domElement.children[0].style.background = "red";
         innerTimer(domElement.children[0], redTime);
         await delaySec(redTime);
-        // domElement.children[0].style.background = "";
-        // domElement.children[1].style.background = "lightgreen";
         // return "red";
     }
 
@@ -119,7 +118,9 @@ async function pedestrianManageBtn(domElement) {
         // return "green";
     }
 
-    let goButtonDelay = 20;
+    let goButtonDelay = 20; // задержка кнопки в секундах - плата за экстренный зеленый
+    let redDelay = 20; // стандартное время работы красного в секундах
+    let greenDelay = 5; // стандартное время работы зеленого в секундах
     let btn, red, green;
     let isGoButtonPressed;
 
@@ -129,15 +130,15 @@ async function pedestrianManageBtn(domElement) {
         btn.then(() => {
             goButton.disabled = true;
             isGoButtonPressed = true;
-            innerTimer(goButton, goButtonDelay);
+            innerTimer(goButton, goButtonDelay + greenDelay);
             setTimeout(() => {
                 if (domElement.children[1].style.background !== "lightgreen") goButton.disabled = false;
                 goButton.innerText = "GO";
-            }, goButtonDelay * 1000);
+            }, (goButtonDelay + greenDelay) * 1000);
         });
 
         while (!isGoButtonPressed) {
-            await Promise.race([btn, (red = redLite(20))]).then(() => (green = greenLite(5)));
+            await Promise.race([btn, (red = redLite(redDelay))]).then(() => (green = greenLite(greenDelay)));
             await Promise.all([red, green]);
             console.log("await Promise.all([red, green])");
         }
