@@ -1,0 +1,56 @@
+mutation newUser($login:String, $password:String) {
+  
+  UserUpsert(user:{login:$login, password: $password}){
+    _id, createdAt
+  }
+}
+
+query login($login:String, $password:String){
+    login(login:$login, password:$password)
+  }
+
+  
+query goods {
+    GoodFind(query:"[{}]"){
+      _id categories{name}
+      name
+			#price
+    }
+  }
+
+
+
+mutation newOrder{
+    OrderUpsert (order:{
+      orderGoods:[{count:2,good:{_id:""}}]
+    })
+    {
+      _id
+      createdAt
+      total
+    }
+  }
+
+  
+  query orders{
+    OrderFind(query:"[{}]"){
+      _id
+      
+    }
+  }
+
+
+=============
+
+localStorage.authToken
+
+==============
+
+const originalFetch = fetch;
+fetch = (url, params={headers:{}}) => { 
+    params.headers.Authorization = "Bearer " + localStorage.authToken
+    return originalFetch(url, params)
+}
+//fetch
+
+================
