@@ -163,9 +163,15 @@ async function showGoodsInCategory(parentEl, _id) {
             forImage.onclick = () => {
                 forImgSrc.src = urlConst + `/` + images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
             };
-            window.addEventListener("keydown", function (e) {
-                if (e.code === "Escape") forImage.style.display = "none";
-            });
+
+            let keyEsc = function (e) {
+                if (e.code === "Escape") {
+                    forImage.style.display = "none";
+                    window.removeEventListener("keydown", keyEsc);
+                }
+            };
+
+            window.addEventListener("keydown", keyEsc);
         };
 
         shelfToker.append(divImg);
