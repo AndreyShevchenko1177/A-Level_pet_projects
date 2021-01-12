@@ -144,23 +144,29 @@ async function showGoodsInCategory(parentEl, _id) {
 
         // надо переделать. Этот цикл показывает все картинки одного товара
         // а надо показать одну первую а по клику показать все
-
         // for (let img of images) {
-        //     let divImgOne = document.createElement("div");
-        //     divImgOne.classList.add("divImg");
+        let img = images[0];
 
-        //     let imgNode = document.createElement("img");
-        //     imgNode.src = urlConst + `/` + img.url;
+        let divImgOne = document.createElement("div");
+        divImgOne.classList.add("divImg");
 
-        //     divImgOne.append(imgNode);
-        //     divImg.append(divImgOne);
+        let imgNode = document.createElement("img");
+        imgNode.src = urlConst + `/` + img.url;
 
-        //     imgNode.onclick = () => {
-        //         forImage.style.display = "";
-        //         forImgSrc.src = urlConst + `/` + img.url;
-        //         forImage.onclick = () => (forImage.style.display = "none");
-        //     };
-        // }
+        divImgOne.append(imgNode);
+        divImg.append(divImgOne);
+
+        let namberOfImg = 0;
+        imgNode.onclick = () => {
+            forImage.style.display = "";
+            forImgSrc.src = urlConst + `/` + images[namberOfImg].url;
+            forImage.onclick = () => {
+                forImgSrc.src = urlConst + `/` + images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
+            };
+            window.addEventListener("keydown", function (e) {
+                if (e.code === "Escape") forImage.style.display = "none";
+            });
+        };
 
         shelfToker.append(divImg);
         let buyBtn = document.createElement("button");
