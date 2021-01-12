@@ -42,7 +42,7 @@ async function categories(parentEl = leftSide, parentID = null) {
                 name
             }
         }`,
-        { query: JSON.stringify([{ "parent._id": parentID }]) }
+        { query: JSON.stringify([{ "parent._id": parentID }, { sort: [{ name: 1 }] }]) }
     );
     // console.log(result);
     if (result.errors) return;
@@ -141,30 +141,36 @@ async function showGoodsInCategory(parentEl, _id) {
         shelfToker.append(p);
 
         let divImg = document.createElement("div");
-        for (let img of images) {
-            let divImgOne = document.createElement("div");
-            divImgOne.classList.add("divImg");
 
-            let imgNode = document.createElement("img");
-            imgNode.src = urlConst + `/` + img.url;
+        // надо переделать. Этот цикл показывает все картинки одного товара
+        // а надо показать одну первую а по клику показать все
 
-            divImgOne.append(imgNode);
-            divImg.append(divImgOne);
+        // for (let img of images) {
+        //     let divImgOne = document.createElement("div");
+        //     divImgOne.classList.add("divImg");
 
-            imgNode.onclick = () => {
-                forImage.style.display = "";
-                forImgSrc.src = urlConst + `/` + img.url;
-                forImage.onclick = () => (forImage.style.display = "none");
-            };
-        }
+        //     let imgNode = document.createElement("img");
+        //     imgNode.src = urlConst + `/` + img.url;
+
+        //     divImgOne.append(imgNode);
+        //     divImg.append(divImgOne);
+
+        //     imgNode.onclick = () => {
+        //         forImage.style.display = "";
+        //         forImgSrc.src = urlConst + `/` + img.url;
+        //         forImage.onclick = () => (forImage.style.display = "none");
+        //     };
+        // }
 
         shelfToker.append(divImg);
         let buyBtn = document.createElement("button");
         buyBtn.append("Купить");
+        if (!localStorage.authToken) buyBtn.setAttribute("disabled", "disabled");
         shelfToker.append(buyBtn);
         shelfToker.append(_id + " - id товара");
     }
 }
+
 async function showAllGoodsInAllSubcategories(parentEl, catId) {
     let result = await gql(
         `query subCategories ($subcat:String){
@@ -174,14 +180,12 @@ async function showAllGoodsInAllSubcategories(parentEl, catId) {
                 
             }
         }`,
-        { subcat: JSON.stringify([{ "parent._id": catId }]) }
+        { subcat: JSON.stringify([{ "parent._id": catId }, { sort: [{ name: 1 }] }]) }
     );
 
     if (result.errors) return;
-    // console.log("showAllGoodsInAllSubcategories - ", result);
 
     for (let { _id } of result.data.CategoryFind) {
-        // console.log(_id);
         showGoodsInCategory(parentEl, _id);
         showAllGoodsInAllSubcategories(parentEl, _id);
     }
