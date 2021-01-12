@@ -7,9 +7,9 @@ const urlConst = "http://shop-roles.asmer.fs.a-level.com.ua";
 window.onload = start;
 
 async function start() {
-    await delay(1000);
+    // await delay(1000);
     registrationForm.style.display = "none";
-    await delay(1000);
+    // await delay(1000);
     loginForm.style.display = "none";
     forImage.style.display = "none";
     if (localStorage.authToken) {
@@ -44,26 +44,20 @@ async function categories(parentEl = leftSide, parentID = null) {
         }`,
         { query: JSON.stringify([{ "parent._id": parentID }]) }
     );
-    console.log(result);
+    // console.log(result);
     if (result.errors) return;
 
-    let newElLevel1 = "ul";
-    let newElLevel2 = "li";
-    if (parentEl === subMenu) {
-        newElLevel1 = newElLevel2 = "span";
-    }
-
-    let ul = document.createElement(newElLevel1);
+    let ul = document.createElement("ul");
     parentEl.append(ul);
 
     for (let { name, _id } of result.data.CategoryFind) {
-        let li = document.createElement(newElLevel2);
+        let li = document.createElement("li");
         li.innerText = name;
         li.style.fontWeight = "";
 
         let loaded;
         li.onclick = (event) => {
-            event.stopPropagation();
+            if (event) event.stopPropagation();
             li.parentElement.parentElement.style.fontWeight = "";
             [].forEach.call(li.parentElement.children, (el) => (el.style.fontWeight = ""));
             li.style.fontWeight = "700";
@@ -77,30 +71,34 @@ async function categories(parentEl = leftSide, parentID = null) {
             }
 
             mainBlock.innerText = "";
+            categoryTitle.innerText = "";
             subMenu.innerText = "";
-            showAllInCategory(subMenu, _id, name);
+            showAllInCategory(_id, name);
         };
 
         ul.append(li);
+
+        let span = document.createElement("span");
+        span.innerText = name;
+        subMenu.append(span);
+        span.onclick = () => {
+            li.onclick();
+        };
     }
 }
 
 categories();
 
-function showAllInCategory(parentBlock, _id, name) {
-    //
-
-    categories(parentBlock, _id);
-    showGoodsInCategory(mainBlock, _id, name);
-}
-
-async function showGoodsInCategory(parentEl, _id, name) {
-    //
+function showAllInCategory(_id, name) {
     let h = document.createElement("h1");
     h.append(name);
-    parentEl.append(h);
-    parentEl.append(`  ${_id} - id категории`);
+    categoryTitle.append(h);
+    categoryTitle.append(`_${_id} - id категории`);
+    showGoodsInCategory(mainBlock, _id);
+    showAllGoodsInAllSubcategories(mainBlock, _id);
+}
 
+async function showGoodsInCategory(parentEl, _id) {
     let result = await gql(
         `query GoodsFromCatSort ($sort:String){
             GoodFind(query: $sort) {
@@ -119,29 +117,28 @@ async function showGoodsInCategory(parentEl, _id, name) {
         }`,
         { sort: JSON.stringify([{ "categories._id": _id }, { sort: [{ name: 1 }] }]) }
     );
-    console.log(2, result);
+
     if (result.errors) return;
 
     for (let { name, _id, description, price, images } of result.data.GoodFind) {
-        let divMaster = document.createElement("div");
-        parentEl.append(divMaster);
-
-        divMaster.append(_id + " - id товара");
+        let shelfToker = document.createElement("div");
+        shelfToker.classList.add("shelfToker");
+        parentEl.append(shelfToker);
 
         let h3 = document.createElement("h3");
         h3.append(name);
-        divMaster.append(h3);
+        shelfToker.append(h3);
 
         h3 = document.createElement("h3");
         h3.append("$ " + price);
-        divMaster.append(h3);
+        shelfToker.append(h3);
 
         let p = document.createElement("p");
         let h4 = document.createElement("h4");
         h4.append("Описание:");
         p.append(h4);
         p.append(description);
-        divMaster.append(p);
+        shelfToker.append(p);
 
         let divImg = document.createElement("div");
         for (let img of images) {
@@ -160,6 +157,32 @@ async function showGoodsInCategory(parentEl, _id, name) {
                 forImage.onclick = () => (forImage.style.display = "none");
             };
         }
-        divMaster.append(divImg);
+
+        shelfToker.append(divImg);
+        let buyBtn = document.createElement("button");
+        buyBtn.append("Купить");
+        shelfToker.append(buyBtn);
+        shelfToker.append(_id + " - id товара");
+    }
+}
+async function showAllGoodsInAllSubcategories(parentEl, catId) {
+    let result = await gql(
+        `query subCategories ($subcat:String){
+            CategoryFind(query: $subcat) {
+                name
+                _id
+                
+            }
+        }`,
+        { subcat: JSON.stringify([{ "parent._id": catId }]) }
+    );
+
+    if (result.errors) return;
+    // console.log("showAllGoodsInAllSubcategories - ", result);
+
+    for (let { _id } of result.data.CategoryFind) {
+        // console.log(_id);
+        showGoodsInCategory(parentEl, _id);
+        showAllGoodsInAllSubcategories(parentEl, _id);
     }
 }

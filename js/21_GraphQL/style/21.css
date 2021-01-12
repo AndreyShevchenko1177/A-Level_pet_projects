@@ -90,32 +90,49 @@ li {
     font-weight: 700;
 }
 
-/* .rightSide {
-    display: flex;
-    flex-direction: column;
+.rightSide {
+    /* display: flex;
+    flex-direction: column; */
     flex-grow: 1;
-    padding: 10px;
-    background-color: rgb(134, 189, 252);
-}  */
+    /* padding: 10px;
+    background-color: rgb(134, 189, 252); */
+}
 
 .subMenu {
     background-color: rgb(136, 136, 255);
     display: flex;
     flex-direction: row;
-    margin: 5px 5px 20px 5px;
+    align-items: center;
+    margin: 5px 5px 5px 5px;
+    min-height: 30px;
+    border-radius: 10px;
 }
 
-.subMenu span > span:hover {
+.categoryTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 5px 5px 5px;
+    padding: 0 0 0 10px;
+    min-height: 30px;
+    align-items: baseline;
+}
+
+.subMenu span:hover {
     font-weight: 700;
 }
 .subMenu span {
     margin-left: 10px;
+    min-height: 20px;
 }
 
 .mainBlock {
     background-color: rgb(134, 189, 252);
-    /* flex-grow: 1; */
-    margin: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    justify-content: center;
+    grid-gap: 10px;
+    margin-bottom: 20px;
 }
 
 .mainBlock h1 {
@@ -156,3 +173,33 @@ li {
     padding: 20px;
     /* z-index: 5; */
 }
+
+.shelfToker {
+    border: 3px solid rgb(136, 136, 255);
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.shelfToker button {
+    margin: 5px;
+    padding: 5px 20px;
+    border-radius: 10px;
+}
+
+.shelfToker > h3:first-child {
+    min-height: 75px;
+}
+
+.shelfToker p,
+.shelfToker h4 {
+    display: none;
+}
+
+/* div {
+    border: 2px solid red;
+    border-radius: 10px;
+} */
