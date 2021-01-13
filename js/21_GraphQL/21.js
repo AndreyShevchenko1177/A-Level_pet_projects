@@ -123,6 +123,22 @@ async function showGoodsInCategory(parentEl, _id) {
     for (let { name, _id, description, price, images } of result.data.GoodFind) {
         let shelfToker = document.createElement("div");
         shelfToker.classList.add("shelfToker");
+
+        shelfToker.onclick = (e) => {
+            e.stopPropagation();
+            shelfToker.classList.add("shelfTokerBig");
+            console.log('shelfToker.classList.add("shelfTokerBig");');
+
+            let shelfKeyEsc = (ev) => {
+                if (ev.code === "Escape") {
+                    shelfToker.classList.remove("shelfTokerBig");
+                    window.removeEventListener("keydown", shelfKeyEsc);
+                }
+            };
+
+            window.addEventListener("keydown", shelfKeyEsc);
+        };
+
         parentEl.append(shelfToker);
 
         let h3 = document.createElement("h3");
@@ -135,51 +151,51 @@ async function showGoodsInCategory(parentEl, _id) {
 
         let p = document.createElement("p");
         let h4 = document.createElement("h4");
-        h4.append("Описание:");
+        h4.append("Описание: ");
         p.append(h4);
         p.append(description);
         shelfToker.append(p);
 
         let divImg = document.createElement("div");
+        divImg.classList.add("divImg");
 
-        // надо переделать. Этот цикл показывает все картинки одного товара
-        // а надо показать одну первую а по клику показать все
-        // for (let img of images) {
-        let img = images[0];
+        for (let img of images) {
+            let divImgOne = document.createElement("div");
+            divImgOne.classList.add("divImgOne");
 
-        let divImgOne = document.createElement("div");
-        divImgOne.classList.add("divImg");
+            let imgNode = document.createElement("img");
+            imgNode.src = urlConst + `/` + img.url;
 
-        let imgNode = document.createElement("img");
-        imgNode.src = urlConst + `/` + img.url;
+            divImgOne.append(imgNode);
+            divImg.append(divImgOne);
 
-        divImgOne.append(imgNode);
-        divImg.append(divImgOne);
+            let namberOfImg = 0;
 
-        let namberOfImg = 0;
-        imgNode.onclick = () => {
-            forImage.style.display = "";
-            forImgSrc.src = urlConst + `/` + images[namberOfImg].url;
-            forImage.onclick = () => {
-                forImgSrc.src = urlConst + `/` + images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
+            imgNode.onclick = (e) => {
+                e.stopPropagation();
+                forImage.style.display = "";
+                forImgSrc.src = urlConst + `/` + images[namberOfImg].url;
+                forImage.onclick = () => {
+                    forImgSrc.src = urlConst + `/` + images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
+                };
+
+                let imgKeyEsc = (ev) => {
+                    if (ev.code === "Escape") {
+                        forImage.style.display = "none";
+                        window.removeEventListener("keydown", imgKeyEsc);
+                    }
+                };
+
+                window.addEventListener("keydown", imgKeyEsc);
             };
-
-            let keyEsc = function (e) {
-                if (e.code === "Escape") {
-                    forImage.style.display = "none";
-                    window.removeEventListener("keydown", keyEsc);
-                }
-            };
-
-            window.addEventListener("keydown", keyEsc);
-        };
+        }
 
         shelfToker.append(divImg);
         let buyBtn = document.createElement("button");
         buyBtn.append("Купить");
         if (!localStorage.authToken) buyBtn.setAttribute("disabled", "disabled");
         shelfToker.append(buyBtn);
-        shelfToker.append(_id + " - id товара");
+        shelfToker.insertAdjacentHTML("beforeEnd", `<div>${_id} - id товара</div>`);
     }
 }
 
@@ -202,3 +218,7 @@ async function showAllGoodsInAllSubcategories(parentEl, catId) {
         showAllGoodsInAllSubcategories(parentEl, _id);
     }
 }
+
+//
+// ----------- Login Pasword -----------
+//

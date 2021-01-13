@@ -134,7 +134,7 @@ li {
     display: grid;
     grid-template-columns: repeat(auto-fill, 300px);
     justify-content: center;
-    grid-gap: 10px;
+    grid-gap: 15px;
     margin-bottom: 20px;
 }
 
@@ -143,9 +143,16 @@ li {
 }
 
 .divImg {
-    width: 150px;
-    height: 150px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 150px);
+    justify-content: center;
+    grid-gap: 10px;
 }
+
+.divImg div:nth-child(n + 2) {
+    display: none;
+}
+
 .forImage img,
 .mainBlock img {
     object-fit: contain;
@@ -174,17 +181,20 @@ li {
     left: 10%;
     top: 10%;
     padding: 20px;
-    /* z-index: 5; */
+    z-index: 3;
 }
 
 .shelfToker {
     border: 3px solid rgb(136, 136, 255);
     border-radius: 10px;
     padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     text-align: center;
+    background-color: rgb(134, 189, 252);
+    filter: drop-shadow(0 0 4px rgba(40, 40, 117, 0.7));
+}
+
+.shelfToker:hover {
+    filter: drop-shadow(0 0 8px rgb(40, 40, 117));
 }
 
 .shelfToker button {
@@ -196,6 +206,7 @@ li {
 .shelfToker > h3:first-child {
     min-height: 75px;
     cursor: pointer;
+    color: rgb(40, 40, 117);
 }
 
 .shelfToker p,
@@ -203,7 +214,28 @@ li {
     display: none;
 }
 
-/* div {
-    border: 2px solid red;
-    border-radius: 10px;
-} */
+.shelfTokerBig {
+    position: fixed;
+    z-index: 1;
+    width: 80%;
+    top: 10%;
+    height: 80%;
+    left: 10%;
+    overflow: auto;
+}
+
+.shelfTokerBig p,
+.shelfTokerBig h4 {
+    display: unset;
+}
+
+.shelfTokerBig div div:nth-child(n + 2) {
+    display: unset;
+}
+
+.shelfTokerBig > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 300px);
+    justify-content: center;
+    grid-gap: 10px;
+}
