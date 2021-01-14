@@ -4,19 +4,35 @@ const delay = (ms) => new Promise((res) => setTimeout(() => res(ms), ms));
 
 const urlConst = "http://shop-roles.asmer.fs.a-level.com.ua";
 
-window.onload = start;
+goLogin.onclick = () => (loginForm.style.display = "");
 
-async function start() {
-    // await delay(1000);
+goLogoff.onclick = () => {
+    localStorage.removeItem("authToken");
+    checkAuthToken();
+};
+
+const checkAuthToken = function () {
     registrationForm.style.display = "none";
-    // await delay(1000);
     loginForm.style.display = "none";
     forImage.style.display = "none";
+    forBasket.style.display = "none";
+    basketLogo.style.display = "none";
+
+    goLogin.style.display = "";
+    goRegistration.style.display = "";
+    goLogoff.style.display = "none";
+
     if (localStorage.authToken) {
-        login.style.display = "none";
-        registration.style.display = "none";
-    } else logoff.style.display = "none";
-}
+        goLogin.style.display = "none";
+        goRegistration.style.display = "none";
+        goLogoff.style.display = "";
+        basketLogo.style.display = "";
+        return true;
+    }
+    return false;
+};
+
+window.onload = checkAuthToken;
 
 const getGQL = (url) => (query, variables = {}) => {
     return fetch(url, {
@@ -127,7 +143,6 @@ async function showGoodsInCategory(parentEl, _id) {
         shelfToker.onclick = (e) => {
             e.stopPropagation();
             shelfToker.classList.add("shelfTokerBig");
-            console.log('shelfToker.classList.add("shelfTokerBig");');
 
             let shelfKeyEsc = (ev) => {
                 if (ev.code === "Escape") {
@@ -192,9 +207,11 @@ async function showGoodsInCategory(parentEl, _id) {
 
         shelfToker.append(divImg);
         let buyBtn = document.createElement("button");
-        buyBtn.append("Купить");
+        buyBtn.append("Добавить в корзину");
         if (!localStorage.authToken) buyBtn.setAttribute("disabled", "disabled");
+        buyBtn.addEventListener("click", (e) => e.stopPropagation());
         shelfToker.append(buyBtn);
+
         shelfToker.insertAdjacentHTML("beforeEnd", `<div>${_id} - id товара</div>`);
     }
 }
@@ -219,6 +236,154 @@ async function showAllGoodsInAllSubcategories(parentEl, catId) {
     }
 }
 
-//
+// ----------- ----------- ----------- ----------- ----------- ----------- -----------
 // ----------- Login Pasword -----------
-//
+// ----------- ----------- ----------- ----------- ----------- ----------- -----------
+
+function CreateInputField(parentNode, hidden = false, isCheckNeed = false) {
+    let inpEl = document.createElement("input");
+    inpEl.setAttribute("type", hidden ? "password" : "text");
+    inpEl.setAttribute("placeholder", hidden ? "Password" : "Login");
+
+    inpEl.oninput = (isUser = true) => {
+        if (isUser && this.onChange && typeof this.onChange === "function") {
+            this.onChange(inpEl.value);
+        }
+    };
+
+    parentNode.append(inpEl);
+
+    let div = document.createElement("div");
+    let checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    div.append(checkBox);
+    let seePassword = document.createElement("span");
+    seePassword.append("Показать пароль");
+    div.append(seePassword);
+
+    checkBox.oninput = () => {
+        if (checkBox.checked) {
+            inpEl.setAttribute("type", "text");
+        } else inpEl.setAttribute("type", "password");
+    };
+
+    inpEl.addEventListener("keydown", (e) => {
+        if (["Enter", "NumpadEnter"].includes(e.code)) {
+            this.onEnter();
+        }
+    });
+
+    if (isCheckNeed) {
+        parentNode.append(div);
+    }
+
+    this.getValue = function () {
+        return inpEl.value;
+    };
+
+    this.getCheckStatus = function () {
+        return checkBox.checked;
+    };
+
+    this.setValue = function (value = "") {
+        inpEl.value = value;
+    };
+
+    this.setCheckBox = function (value = false) {
+        checkBox.checked = value;
+    };
+
+    this.onChange = () => {};
+
+    this.onEnter = () => {};
+}
+
+function CreateLoginForm(parentNode) {
+    let loginField = new CreateInputField(parentNode);
+    let passwordField = new CreateInputField(parentNode, true, true);
+
+    let loginButton = document.createElement("button");
+    loginButton.append("Войти");
+    loginButton.setAttribute("disabled", "disabled");
+    parentNode.append(loginButton);
+
+    let canselButton = document.createElement("button");
+    canselButton.append("Отмена");
+
+    parentNode.append(canselButton);
+
+    loginField.onChange = passwordField.onChange = () => {
+        if (loginField.getValue() && passwordField.getValue()) {
+            loginButton.removeAttribute("disabled");
+        } else loginButton.setAttribute("disabled", "disabled");
+    };
+
+    loginField.onEnter = passwordField.onEnter = () => loginButton.onclick();
+
+    canselButton.onclick = () => {
+        this.clearAndClose();
+    };
+
+    loginButton.onclick = () => {
+        if (this.submit && typeof this.submit === "function") {
+            let loginInfo = {
+                login: loginField.getValue(),
+                password: passwordField.getValue(),
+            };
+            this.submit(loginInfo);
+        }
+    };
+
+    this.submit = () => {};
+
+    this.clearAndClose = function () {
+        loginField.setValue();
+        passwordField.setValue();
+        passwordField.setCheckBox();
+        parentNode.style.display = "none";
+    };
+}
+
+let loginObject = new CreateLoginForm(loginForm);
+
+loginObject.submit = (loginInfo) => {
+    loginToDB(loginInfo);
+};
+
+async function loginToDB({ login, password } = {}) {
+    let result = await gql(
+        `query login($login: String, $password: String) {
+            login(login: $login, password: $password)
+        }`,
+        // { sort: JSON.stringify([{ "categories._id": _id }, { sort: [{ name: 1 }] }]) }
+        { login, password }
+    );
+
+    if (result.errors) {
+        alert("Ошибка авторизации");
+        return;
+    }
+
+    if (result.data.login) {
+        localStorage.authToken = result.data.login;
+        loginObject.clearAndClose();
+        loginForm.style.display = "none";
+        checkAuthToken();
+    } else alert("Ошибка!\nВведите правильные логин и пароль.");
+}
+
+// ----------- ----------- ----------- ----------- ----------- ----------- -----------
+// ----------- Корзина ----------- ----------- Корзина ----------- ----------- Корзина -----------
+// ----------- ----------- ----------- ----------- ----------- ----------- -----------
+
+basketLogo.onclick = () => {
+    showBasket(forBasket);
+};
+
+leaveBasket.onclick = () => {
+    forBasket.style.display = "none";
+};
+
+async function showBasket(parentNode) {
+    parentNode.style.display = "";
+}

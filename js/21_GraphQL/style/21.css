@@ -8,6 +8,12 @@ body {
     background-color: rgb(134, 189, 252);
 }
 
+#goLogin,
+#goRegistration,
+#goLogoff {
+    cursor: pointer;
+}
+
 .header {
     min-height: 100px;
     background-color: rgb(136, 136, 255);
@@ -33,6 +39,10 @@ body {
     border-radius: 30%;
 }
 
+.basketLogo {
+    cursor: pointer;
+}
+
 .authorization {
     display: flex;
 }
@@ -44,18 +54,35 @@ body {
 .loginForm,
 .registrationForm {
     position: absolute;
-    border: 2px solid green;
-    background-color: rgb(176, 201, 255);
-    bottom: 0;
-    height: 25%;
-    min-height: 100px;
-    width: 25%;
-    min-width: 100px;
-    left: 0;
+    border: 2px solid rgb(136, 136, 255);
+    border-radius: 20px;
+    background-color: rgb(134, 189, 252);
+    filter: drop-shadow(0 0 8px rgb(40, 40, 117));
+    padding: 20px;
+    height: 250px;
+    width: 200px;
     margin: auto;
     top: 0;
+    bottom: 0;
+    left: 0;
     right: 0;
     text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    grid-gap: 10px;
+    z-index: 5;
+}
+
+.loginForm button,
+.registrationForm button {
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.loginForm span,
+.registrationForm span {
+    margin-left: 10px;
 }
 
 .wrapper {
@@ -173,7 +200,8 @@ li {
     margin: 0 10px;
 }
 
-.forImage {
+.forImage,
+.forBasket {
     width: 80%;
     height: 80%;
     background-color: rgb(42, 52, 70);
