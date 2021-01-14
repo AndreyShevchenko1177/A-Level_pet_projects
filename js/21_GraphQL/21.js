@@ -209,11 +209,26 @@ async function showGoodsInCategory(parentEl, _id) {
 
         shelfToker.append(divImg);
 
+        let count = document.createElement("input");
+        count.setAttribute("type", "number");
+        count.setAttribute("min", "1");
+        count.setAttribute("placeholder", "1");
+        count.value = "1";
+        count.onclick = (e) => {
+            e.stopPropagation();
+        };
+        shelfToker.append(count);
+
         let putInBasketBtn = document.createElement("button");
         putInBasketBtn.append("Добавить в корзину");
         putInBasketBtn.classList.add("putInBasketBtn");
         if (!localStorage.authToken) putInBasketBtn.setAttribute("disabled", "disabled");
-        putInBasketBtn.addEventListener("click", (e) => e.stopPropagation());
+
+        putInBasketBtn.onclick = (e) => {
+            e.stopPropagation();
+            addToBasket(_id, count.value);
+        };
+
         shelfToker.append(putInBasketBtn);
         shelfToker.insertAdjacentHTML("beforeEnd", `<div>${_id} - id товара</div>`);
 
@@ -226,6 +241,27 @@ async function showGoodsInCategory(parentEl, _id) {
         };
         shelfToker.append(shelfTokerExitBtn);
     }
+}
+
+async function addToBasket(_idValue, countValue) {
+    let result = await gql(
+        `mutation newOrder1($order1:OrderInput) {
+            OrderUpsert(order: $order1) {
+                _id
+                total
+            }
+        }`,
+        { order1: { orderGoods: [{ count: +countValue, good: { _id: _idValue } }] } }
+    );
+
+    if (result.errors) {
+        alert("Ошибка сервера при заказе");
+        console.log(result.errors);
+        return;
+    }
+
+    // console.log(result);
+    alert(`Поздравляем с успешным заказом на сумму $${result.data.OrderUpsert.total}`);
 }
 
 async function showAllGoodsInAllSubcategories(parentEl, catId) {
@@ -247,10 +283,6 @@ async function showAllGoodsInAllSubcategories(parentEl, catId) {
         showAllGoodsInAllSubcategories(parentEl, _id);
     }
 }
-
-// ----------- ----------- ----------- ----------- ----------- ----------- -----------
-// ----------- Login Pasword -----------
-// ----------- ----------- ----------- ----------- ----------- ----------- -----------
 
 function CreateInputField(parentNode, hidden = false, isCheckNeed = false) {
     let inpEl = document.createElement("input");
@@ -382,10 +414,6 @@ async function loginToDB({ login, password } = {}) {
         checkAuthToken();
     } else alert("Ошибка!\nВведите правильные логин и пароль.");
 }
-
-// ----------- ----------- ----------- ----------- ----------- ----------- -----------
-// ----------- Корзина ----------- ----------- Корзина ----------- ----------- Корзина -----------
-// ----------- ----------- ----------- ----------- ----------- ----------- -----------
 
 basketLogo.onclick = () => {
     showBasket(forBasket);

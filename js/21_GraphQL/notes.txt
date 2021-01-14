@@ -1,56 +1,276 @@
-mutation newUser($login:String, $password:String) {
-  
-  UserUpsert(user:{login:$login, password: $password}){
-    _id, createdAt
+mutation newUser($login: String, $password: String) {
+  UserUpsert(user: {login: $login, password: $password}) {
+    _id
+    createdAt
   }
 }
 
-query login($login:String, $password:String){
-    login(login:$login, password:$password)
-  }
+query login($login: String, $password: String) {
+  login(login: $login, password: $password)
+}
 
-  
+mutation dellUser($login: String, $password: String) {
+  UserDelete(user: {login: $login, password: $password}) {
+    _id
+  }
+}
+
+query muchUsers {
+  UserFind(query: "[{\"login\":\"/sheva/\"}]") {
+    _id
+    createdAt
+    login
+    nick
+  }
+}
+
+
+
+query muchUsers2($machUser:String) {
+  UserFind(query: $machUser) {
+    _id
+    createdAt
+    login
+    nick
+  }
+}
+
+
+query allUsers {
+  UserFind(query: "[{}]") {
+    _id
+    createdAt
+    login
+    nick
+  }
+}
+
+mutation dellUserID{
+  UserDelete(user:{_id: "5ff783d16f871f156bf4b007"}){_id}
+    
+}
+
+
+
 query goods {
-    GoodFind(query:"[{}]"){
-      _id categories{name}
+  GoodFind(query: "[{}]") {
+    _id
+    name
+    categories {
+      _id
       name
-			#price
+    }
+    name
+    price
+  }
+}
+
+query oneGood {
+  GoodFind(query: "[{  \"_id\": \"5dc45d0b5df9d670df48cc4b\"   }]") {
+    _id
+    createdAt
+    name
+    description
+    price
+    images {
+      _id
+      text
+      url
+      originalFileName
     }
   }
+}
 
 
 
-mutation newOrder{
-    OrderUpsert (order:{
-      orderGoods:[{count:2,good:{_id:""}}]
-    })
-    {
+query GoodsFromCatSort ($sort:String){
+  GoodFind(query: $sort) {
+    _id
+    name
+    # description
+    # price
+    # images {
+    #   _id
+    #   createdAt
+    #   text
+    #   url
+    #   originalFileName
+    # }
+  }
+}
+
+
+query GoodsFromCat ($catId:String){
+  GoodFind(query: $catId) {
+    _id
+    createdAt
+    name
+    description
+    price
+    images {
       _id
-      createdAt
+      text
+      url
+      originalFileName
+    }
+    categories {
+      _id
+      name
+    }
+    
+  }
+}
+
+
+
+
+
+
+query categoriesAll {
+  CategoryFind(query: "[{}]") {
+    _id
+    name
+    parent {
+      _id
+      name
+    }
+  }
+}
+
+query categoriesNull {
+  CategoryFind(query: "[{\"parent._id\": null}]") {
+    name
+    _id
+  }
+}
+
+query subCategories ($subcat:String){
+  CategoryFind(query: $subcat) {
+    name
+    _id
+    subCategories{_id name}
+  }
+}
+
+
+
+mutation newOrder {
+  OrderUpsert(order: {orderGoods: [{count: 3, good: {_id: "5dc882c90e36db246e3049bc"}},
+  																 {count: 5, good: {_id: "5dc886550e36db246e3049c0"}}
+                      						]}) {
+    _id
+    createdAt
+    total
+  }
+}
+
+
+
+mutation newOrder1($order1:OrderInput) {
+  OrderUpsert(order: $order1) {
+    _id
+    total
+  }
+}
+
+
+
+
+
+query orders1 {
+  OrderFind(query: "[{  \"_id\":\"5ff7ae9e6f871f156bf4b00a\"  }]") {
+    _id
+    orderGoods {
+      count
+      good {
+        _id
+        name
+        price
+      }
+    }
+    owner {
+      login
+    }
+  }
+}
+
+query orders {
+  OrderFind(query: "[{   }]") {
+    _id
+    total
+    orderGoods {
+      count
+      good {
+        _id
+        name
+        price
+      }
+    }
+    owner {
+      login
+    }
+  }
+}
+
+
+
+mutation dellOrder {
+  OrderDelete(order: {_id: "5ff4c2a06f871f156bf4afc3"}) {
+    _id
+  }
+}
+
+
+
+mutation imgAdd{
+  ImageUpsert(image:{}) {
+    _id
+    createdAt
+    text
+    url
+    originalFileName
+  }
+}
+
+
+query FindOrders($lookOrders:String){
+  OrderFind(query:$lookOrders){
+    total
+    orderGoods{
+      good{
+        name
+        images{
+          url
+        }
+      }
+      price
+      count
       total
     }
   }
-
-  
-  query orders{
-    OrderFind(query:"[{}]"){
-      _id
-      
-    }
-  }
-
-
-=============
-
-localStorage.authToken
-
-==============
-
-const originalFetch = fetch;
-fetch = (url, params={headers:{}}) => { 
-    params.headers.Authorization = "Bearer " + localStorage.authToken
-    return originalFetch(url, params)
 }
-//fetch
 
-================
+
+==========================================================================================
+==========================================================================================
+
+{
+  "machUser": "[{\"login\":\"/sheva/\"}]",
+  "subcat": "[{\"parent._id\":\"5dc4b2553f23b553bf354101\"}]",
+  "catId": "[{ \"categories._id\": \"5dc458985df9d670df48cc47\"  }]",
+  "sort": "[{\"categories._id\": \"5dc458985df9d670df48cc47\"},  {\"sort\" : [{\"name\":-1}] }  ]",
+  "login": "sheva77",
+  "password": "Seldom123w",
+  "lookOrders": "[ {} ]",
+  "lookOrders2": "[{\"total\":{\"$gt\":\"1700\"}},{\"sort\":[{\"total\":1}]}]",
+  "order1": {
+    "orderGoods": [
+      {
+        "count": 7,
+        "good": {
+          "_id": "5dc4a1535df9d670df48cc68"
+        }
+      }
+    ]
+  }
+}
