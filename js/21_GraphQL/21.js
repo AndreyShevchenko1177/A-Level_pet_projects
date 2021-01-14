@@ -27,12 +27,23 @@ const checkAuthToken = function () {
         goRegistration.style.display = "none";
         goLogoff.style.display = "";
         basketLogo.style.display = "";
+        setBasketBtnOn();
         return true;
     }
+
+    setBasketBtnOff();
     return false;
 };
 
 window.onload = checkAuthToken;
+
+const setBasketBtnOff = function () {
+    document.querySelectorAll(".putInBasketBtn").forEach((el) => el.setAttribute("disabled", "disabled"));
+};
+
+const setBasketBtnOn = function () {
+    document.querySelectorAll(".putInBasketBtn").forEach((el) => el.removeAttribute("disabled"));
+};
 
 const getGQL = (url) => (query, variables = {}) => {
     return fetch(url, {
@@ -143,15 +154,6 @@ async function showGoodsInCategory(parentEl, _id) {
         shelfToker.onclick = (e) => {
             e.stopPropagation();
             shelfToker.classList.add("shelfTokerBig");
-
-            let shelfKeyEsc = (ev) => {
-                if (ev.code === "Escape") {
-                    shelfToker.classList.remove("shelfTokerBig");
-                    window.removeEventListener("keydown", shelfKeyEsc);
-                }
-            };
-
-            window.addEventListener("keydown", shelfKeyEsc);
         };
 
         parentEl.append(shelfToker);
@@ -206,13 +208,23 @@ async function showGoodsInCategory(parentEl, _id) {
         }
 
         shelfToker.append(divImg);
-        let buyBtn = document.createElement("button");
-        buyBtn.append("Добавить в корзину");
-        if (!localStorage.authToken) buyBtn.setAttribute("disabled", "disabled");
-        buyBtn.addEventListener("click", (e) => e.stopPropagation());
-        shelfToker.append(buyBtn);
 
+        let putInBasketBtn = document.createElement("button");
+        putInBasketBtn.append("Добавить в корзину");
+        putInBasketBtn.classList.add("putInBasketBtn");
+        if (!localStorage.authToken) putInBasketBtn.setAttribute("disabled", "disabled");
+        putInBasketBtn.addEventListener("click", (e) => e.stopPropagation());
+        shelfToker.append(putInBasketBtn);
         shelfToker.insertAdjacentHTML("beforeEnd", `<div>${_id} - id товара</div>`);
+
+        let shelfTokerExitBtn = document.createElement("button");
+        shelfTokerExitBtn.classList.add("shelfTokerExitBtn");
+        shelfTokerExitBtn.append("Вернуться назад");
+        shelfTokerExitBtn.onclick = (e) => {
+            e.stopPropagation();
+            shelfToker.classList.remove("shelfTokerBig");
+        };
+        shelfToker.append(shelfTokerExitBtn);
     }
 }
 
@@ -355,7 +367,6 @@ async function loginToDB({ login, password } = {}) {
         `query login($login: String, $password: String) {
             login(login: $login, password: $password)
         }`,
-        // { sort: JSON.stringify([{ "categories._id": _id }, { sort: [{ name: 1 }] }]) }
         { login, password }
     );
 
@@ -380,10 +391,96 @@ basketLogo.onclick = () => {
     showBasket(forBasket);
 };
 
-leaveBasket.onclick = () => {
-    forBasket.style.display = "none";
-};
-
 async function showBasket(parentNode) {
+    let result = await gql(
+        `query FindOrders($lookOrders2:String){
+            OrderFind(query:$lookOrders2){
+                total
+                orderGoods{
+                    good{
+                        name
+                        images{
+                            url
+                        }
+                    }
+                    price
+                    count
+                    total
+                }
+            }
+        }`,
+        { lookOrders2: JSON.stringify([{}]) }
+        // { lookOrders2: JSON.stringify([{}, { sort: [{ total: 1 }] }]) }
+        // ++++++++++++++    а вот эта сортировка ну никак не работает...???   ++++++++++++++++++++++++++
+    );
+
+    if (result.errors) {
+        alert("Ошибка сервера...");
+        console.log(result.errors);
+        return;
+    }
+
     parentNode.style.display = "";
+    // console.log(result);
+
+    let masterTotal = 0;
+
+    forBasket.innerHTML = "";
+
+    result.data.OrderFind.forEach((order) => {
+        let div1order = document.createElement("div");
+        forBasket.append(div1order);
+        showOrder(div1order, order);
+
+        let h = document.createElement("h4");
+        div1order.append(h);
+        h.append(`Всего за заказ: $${order.total}`);
+
+        masterTotal += order.total;
+    });
+
+    h = document.createElement("h2");
+    forBasket.append(h);
+    h.append(`ИТОГО: $${masterTotal}`);
+
+    let exitBasketBtn = document.createElement("button");
+    exitBasketBtn.append("Вернуться назад");
+    forBasket.append(exitBasketBtn);
+
+    exitBasketBtn.onclick = () => {
+        forBasket.style.display = "none";
+    };
+
+    forBasket.scrollTop = 0;
+    // forBasket.scrollBy(0, 0);
+
+    //
 }
+
+const showOrder = function (parent, { orderGoods: orderArray, total: total1Order }) {
+    //
+    for (let { good, price, count, total: total1pozition } of orderArray) {
+        let div = document.createElement("div");
+        parent.append(div);
+
+        let img = document.createElement("img");
+        div.append(img);
+        img.src = urlConst + `/` + good.images[0].url;
+
+        let p = document.createElement("p");
+        div.append(p);
+        p.append(good.name);
+
+        p = document.createElement("p");
+        div.append(p);
+        p.append(`Цена: $${price}`);
+
+        p = document.createElement("p");
+        div.append(p);
+        p.append(`Кол-во: ${count}`);
+
+        p = document.createElement("p");
+        div.append(p);
+        p.append(`Всего: $${total1pozition}`);
+    }
+};

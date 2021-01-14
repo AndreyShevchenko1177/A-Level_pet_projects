@@ -159,10 +159,12 @@ li {
 .mainBlock {
     background-color: rgb(134, 189, 252);
     display: grid;
-    grid-template-columns: repeat(auto-fill, 300px);
+    grid-template-columns: repeat(auto-fit, 280px);
+    /* grid-template-rows: repeat(auto-fit, 380px); */
     justify-content: center;
     grid-gap: 15px;
     margin-bottom: 20px;
+    padding-right: 20px;
 }
 
 .mainBlock h1 {
@@ -172,6 +174,7 @@ li {
 .divImg {
     display: grid;
     grid-template-columns: repeat(auto-fit, 150px);
+    grid-template-rows: repeat(auto-fit, 150px);
     justify-content: center;
     grid-gap: 10px;
 }
@@ -200,8 +203,7 @@ li {
     margin: 0 10px;
 }
 
-.forImage,
-.forBasket {
+.forImage {
     width: 80%;
     height: 80%;
     background-color: rgb(42, 52, 70);
@@ -210,6 +212,48 @@ li {
     top: 10%;
     padding: 20px;
     z-index: 3;
+}
+
+.forBasket {
+    width: 80%;
+    height: 80%;
+    background-color: rgb(134, 189, 252);
+    border: 3px solid rgb(136, 136, 255);
+    filter: drop-shadow(0 0 8px rgb(40, 40, 117));
+    border-radius: 10px;
+    position: fixed;
+    left: 10%;
+    top: 10%;
+    padding: 10px;
+    z-index: 5;
+    overflow: auto;
+}
+
+.forBasket > div {
+    border: 3px solid rgb(136, 136, 255);
+    border-radius: 10px;
+    min-height: 100px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.forBasket > div > div {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-rows: 1fr;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 20px;
+    margin: 20px 0;
+}
+
+.forBasket img {
+    width: 100px;
+}
+
+.forBasket button {
+    padding: 10px;
+    border-radius: 20px;
 }
 
 .shelfToker {
@@ -242,6 +286,10 @@ li {
     display: none;
 }
 
+.shelfTokerExitBtn {
+    display: none;
+}
+
 .shelfTokerBig {
     position: fixed;
     z-index: 1;
@@ -266,4 +314,8 @@ li {
     grid-template-columns: repeat(auto-fit, 300px);
     justify-content: center;
     grid-gap: 10px;
+}
+
+.shelfTokerBig .shelfTokerExitBtn {
+    display: unset;
 }
