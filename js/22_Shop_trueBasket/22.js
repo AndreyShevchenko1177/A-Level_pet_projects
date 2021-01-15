@@ -5,12 +5,18 @@ const delay = (ms) => new Promise((res) => setTimeout(() => res(ms), ms));
 const urlConst = "http://shop-roles.asmer.fs.a-level.com.ua";
 let loginName = "";
 
-goLogin.onclick = () => (loginForm.style.display = "");
+goLogin.onclick = () => {
+    loginForm.style.display = "";
+};
 
 goLogoff.onclick = () => {
     localStorage.removeItem("authToken");
     loginName = "";
     checkAuthToken();
+};
+
+goRegistration.onclick = () => {
+    registrationForm.style.display = "";
 };
 
 function getLoginFromToken(token = "") {
@@ -28,7 +34,6 @@ const init = function () {
     loginForm.style.display = "none";
     forImage.style.display = "none";
     forBasket.style.display = "none";
-    basketLogo.style.display = "none";
     checkAuthToken();
 };
 
@@ -39,12 +44,11 @@ const checkAuthToken = function () {
         goLogin.style.display = "none";
         goRegistration.style.display = "none";
         goLogoff.style.display = "";
-        basketLogo.style.display = "";
         historyDiv.style.display = "";
-
+        nickNameDiv.style.display = "";
         setBasketBtnOn();
         loginName = getLoginFromToken(localStorage.authToken);
-        loginNamesSpan.innerHTML = loginName;
+        nickNameSpan.innerHTML = loginName;
         return true;
     }
 
@@ -52,8 +56,8 @@ const checkAuthToken = function () {
     goRegistration.style.display = "";
     goLogoff.style.display = "none";
     historyDiv.style.display = "none";
-    loginNamesSpan.innerHTML = "?";
-
+    nickNameSpan.innerHTML = "?";
+    nickNameDiv.style.display = "none";
     setBasketBtnOff();
     return false;
 };
@@ -357,12 +361,15 @@ function CreateInputField(parentNode, hidden = false, isCheckNeed = false) {
     this.onEnter = () => {};
 }
 
-function CreateLoginForm(parentNode) {
+function CreateLoginForm(parentNode, isModeLogin = true) {
+    //isModeLogin = true  - по умолчанию создается форма для логина
+    // false - будет сождаваться форма для регистрации
     let loginField = new CreateInputField(parentNode);
     let passwordField = new CreateInputField(parentNode, true, true);
+    // function CreateInputField(parentNode, hidden = false, isCheckNeed = false)
 
     let loginButton = document.createElement("button");
-    loginButton.append("Войти");
+    loginButton.append(isModeLogin ? "Войти" : "Зарегистрироваться");
     loginButton.setAttribute("disabled", "disabled");
     parentNode.append(loginButton);
 
@@ -403,10 +410,15 @@ function CreateLoginForm(parentNode) {
     };
 }
 
-let loginObject = new CreateLoginForm(loginForm);
+let loginFormObject = new CreateLoginForm(loginForm);
+let registrationFormObject = new CreateLoginForm(registrationForm, false);
 
-loginObject.submit = (loginInfo) => {
+loginFormObject.submit = (loginInfo) => {
     loginToDB(loginInfo);
+};
+
+registrationFormObject.submit = (reginInfo) => {
+    registrToDB(reginInfo);
 };
 
 async function loginToDB({ login, password } = {}) {
@@ -418,16 +430,43 @@ async function loginToDB({ login, password } = {}) {
     );
 
     if (result.errors) {
-        alert("Ошибка авторизации");
+        alert("Ошибка сети");
         return;
     }
 
     if (result.data.login) {
         localStorage.authToken = result.data.login;
-        loginObject.clearAndClose();
+        loginFormObject.clearAndClose();
         loginForm.style.display = "none";
+        registrationFormObject.clearAndClose();
+        registrationForm.style.display = "none";
         checkAuthToken();
     } else alert("Ошибка!\nВведите правильные логин и пароль.");
+}
+async function registrToDB({ login, password } = {}) {
+    let result = await gql(
+        `mutation newUser($login: String, $password: String) {
+            UserUpsert(user: {login: $login, password: $password}) {
+                _id
+                createdAt
+            }
+        }`,
+        { login, password }
+    );
+
+    if (result.errors) {
+        alert(`Ошибка регистрации:\n${result.errors[0].message}`);
+        return;
+    }
+    alert("Вы успешно зарегистрированы.");
+    loginToDB({ login, password });
+
+    // if (result.data.login) {
+    //     localStorage.authToken = result.data.login;
+    //     loginFormObject.clearAndClose();
+    //     loginForm.style.display = "none";
+    //     checkAuthToken();
+    // } else alert("Ошибка!\nВведите правильные логин и пароль.");
 }
 
 basketLogo.onclick = () => {
