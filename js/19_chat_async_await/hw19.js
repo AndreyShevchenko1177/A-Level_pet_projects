@@ -1066,8 +1066,10 @@ getMessages();
 let delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 async function checkLoop() {
-    console.log("delay");
-    delay(5000).then(getMessages).then(checkLoop);
+    while (true) {
+        await delay(5000);
+        getMessages();
+    }
 }
 
 checkLoop();
