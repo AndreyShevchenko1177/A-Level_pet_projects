@@ -1,0 +1,331 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    background-color: rgb(134, 189, 252);
+}
+
+#goLogin,
+#goRegistration,
+#goLogoff {
+    cursor: pointer;
+}
+
+.header {
+    min-height: 100px;
+    padding: 0 5px;
+    background-color: rgb(136, 136, 255);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-style: italic;
+    font-weight: 700;
+}
+
+.header * {
+    margin: 0 2px;
+    /* border: 2px solid red; */
+}
+
+.logoSlogan {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 60px;
+    height: 100%;
+    border-radius: 30%;
+}
+
+.basketLogo {
+    cursor: pointer;
+}
+
+.authorization {
+    display: flex;
+}
+
+.authorization div {
+    margin: 5px;
+}
+
+.displayNone {
+    display: none;
+}
+
+.loginForm,
+.registrationForm {
+    position: absolute;
+    border: 2px solid rgb(136, 136, 255);
+    border-radius: 20px;
+    background-color: rgb(134, 189, 252);
+    filter: drop-shadow(0 0 8px rgb(40, 40, 117));
+    padding: 20px;
+    height: 250px;
+    width: 200px;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    grid-gap: 10px;
+    z-index: 5;
+}
+
+.loginForm button,
+.registrationForm button {
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.loginForm span,
+.registrationForm span {
+    margin-left: 10px;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.leftSide {
+    padding: 5px;
+    min-width: 200px;
+    /* min-height: 400px; */
+    background-color: rgb(134, 189, 252);
+    width: 300px;
+    min-width: 300px;
+}
+
+.leftSide > p {
+    text-align: center;
+    font-weight: bold;
+}
+
+li {
+    background-color: rgb(136, 136, 255);
+    margin: 5px 20px 5px 10px;
+    padding: 5px;
+    border-radius: 7px;
+    list-style-type: inherit;
+    list-style-position: inside;
+    cursor: pointer;
+}
+
+.leftSide li:hover {
+    font-weight: 700;
+}
+
+.rightSide {
+    /* display: flex;
+    flex-direction: column; */
+    flex-grow: 1;
+    /* padding: 10px;
+    background-color: rgb(134, 189, 252); */
+}
+
+.subMenu {
+    background-color: rgb(136, 136, 255);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 5px 5px 5px 5px;
+    min-height: 30px;
+    border-radius: 10px;
+    padding: 0 5px;
+}
+
+.categoryTitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 5px 5px 5px;
+    padding: 0 0 0 10px;
+    min-height: 30px;
+    align-items: baseline;
+}
+
+.subMenu span:hover {
+    font-weight: 700;
+}
+.subMenu span {
+    margin: 5px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.mainBlock {
+    background-color: rgb(134, 189, 252);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 280px);
+    /* grid-template-rows: repeat(auto-fit, 380px); */
+    justify-content: center;
+    grid-gap: 15px;
+    margin-bottom: 20px;
+    padding-right: 20px;
+}
+
+.mainBlock h1 {
+    margin: 5px 5px 20px 5px;
+}
+
+.divImg {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 150px);
+    grid-template-rows: repeat(auto-fit, 150px);
+    justify-content: center;
+    grid-gap: 10px;
+}
+
+.divImg div:nth-child(n + 2) {
+    display: none;
+}
+
+.forImage img,
+.mainBlock img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.footer {
+    min-height: 60px;
+    background-color: rgb(136, 136, 255);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.footer * {
+    margin: 0 10px;
+}
+
+.forImage {
+    width: 80%;
+    height: 80%;
+    background-color: rgb(42, 52, 70);
+    position: fixed;
+    left: 10%;
+    top: 10%;
+    padding: 20px;
+    z-index: 3;
+}
+
+.forBasket {
+    width: 80%;
+    height: 80%;
+    background-color: rgb(134, 189, 252);
+    border: 3px solid rgb(136, 136, 255);
+    filter: drop-shadow(0 0 8px rgb(40, 40, 117));
+    border-radius: 10px;
+    position: fixed;
+    left: 10%;
+    top: 10%;
+    padding: 10px;
+    z-index: 5;
+    overflow: auto;
+}
+
+.forBasket > div {
+    border: 3px solid rgb(136, 136, 255);
+    border-radius: 10px;
+    min-height: 100px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.forBasket > div > div {
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr 1fr 1.5fr;
+    grid-template-rows: 1fr;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 20px;
+    margin: 20px 0;
+}
+
+.forBasket img {
+    width: 100px;
+}
+
+.forBasket button {
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.shelfToker {
+    border: 3px solid rgb(136, 136, 255);
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background-color: rgb(134, 189, 252);
+    filter: drop-shadow(0 0 4px rgba(40, 40, 117, 0.7));
+}
+
+.shelfToker:hover {
+    filter: drop-shadow(0 0 8px rgb(40, 40, 117));
+}
+
+.shelfToker button {
+    margin: 5px;
+    padding: 5px 20px;
+    border-radius: 10px;
+}
+
+.shelfToker > h3:first-child {
+    min-height: 75px;
+    cursor: pointer;
+    color: rgb(40, 40, 117);
+}
+
+.shelfToker p,
+.shelfToker h4 {
+    display: none;
+}
+
+.shelfToker input {
+    width: 40px;
+}
+
+.shelfTokerExitBtn {
+    display: none;
+}
+
+.shelfTokerBig {
+    position: fixed;
+    z-index: 1;
+    width: 80%;
+    top: 10%;
+    height: 80%;
+    left: 10%;
+    overflow: auto;
+}
+
+.shelfTokerBig p,
+.shelfTokerBig h4 {
+    display: unset;
+}
+
+.shelfTokerBig div div:nth-child(n + 2) {
+    display: unset;
+}
+
+.shelfTokerBig > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 300px);
+    justify-content: center;
+    grid-gap: 10px;
+}
+
+.shelfTokerBig .shelfTokerExitBtn {
+    display: unset;
+}
