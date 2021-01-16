@@ -41,6 +41,7 @@ body {
     border-radius: 30%;
 }
 
+#historyDiv,
 .basketLogo {
     cursor: pointer;
 }

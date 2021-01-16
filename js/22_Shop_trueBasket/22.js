@@ -1,9 +1,13 @@
 const delay = (ms) => new Promise((res) => setTimeout(() => res(ms), ms));
 
-//localStorage.removeItem("authToken");
+// localStorage.removeItem("authToken");
+// "eyJzdWIiOnsibG9naW4iOiJfX2Fub255bW91c19fIn19"-- - {"sub":{"login": "__anonymous__"}}
 
 const urlConst = "http://shop-roles.asmer.fs.a-level.com.ua";
-let loginName = "";
+let loginName = "__anonymous__";
+let defaultLoginName = "__anonymous__";
+let basketObj = {};
+basketObj[defaultLoginName] = {};
 
 goLogin.onclick = () => {
     loginForm.style.display = "";
@@ -11,7 +15,7 @@ goLogin.onclick = () => {
 
 goLogoff.onclick = () => {
     localStorage.removeItem("authToken");
-    loginName = "";
+    loginName = defaultLoginName;
     checkAuthToken();
 };
 
@@ -19,13 +23,19 @@ goRegistration.onclick = () => {
     registrationForm.style.display = "";
 };
 
+if (!localStorage.basket) {
+    localStorage.basket = JSON.stringify(basketObj);
+} else {
+    basketObj = JSON.parse(localStorage.basket);
+}
+
 function getLoginFromToken(token = "") {
     try {
         let str = JSON.parse(atob(token.split(".")[1])).sub.login;
         return str;
     } catch (error) {
         console.log("Ошибка декодирования login из токена: ", error);
-        return "";
+        return defaultLoginName;
     }
 }
 
@@ -48,6 +58,7 @@ const checkAuthToken = function () {
         nickNameDiv.style.display = "";
         setBasketBtnOn();
         loginName = getLoginFromToken(localStorage.authToken);
+        updateBasketObj();
         nickNameSpan.innerHTML = loginName;
         return true;
     }
@@ -56,18 +67,29 @@ const checkAuthToken = function () {
     goRegistration.style.display = "";
     goLogoff.style.display = "none";
     historyDiv.style.display = "none";
-    nickNameSpan.innerHTML = "?";
+    nickNameSpan.innerHTML = defaultLoginName;
     nickNameDiv.style.display = "none";
     setBasketBtnOff();
     return false;
 };
 
+const updateBasketObj = function () {
+    if (!basketObj[loginName]) {
+        basketObj[loginName] = {};
+        localStorage.basket = JSON.stringify(basketObj);
+    }
+};
+
 const setBasketBtnOff = function () {
-    document.querySelectorAll(".putInBasketBtn").forEach((el) => el.setAttribute("disabled", "disabled"));
+    document
+        .querySelectorAll(".putInBasketBtn")
+        .forEach((el) => el.setAttribute("disabled", "disabled"));
 };
 
 const setBasketBtnOn = function () {
-    document.querySelectorAll(".putInBasketBtn").forEach((el) => el.removeAttribute("disabled"));
+    document.querySelectorAll(".putInBasketBtn").forEach((el) => {
+        el.removeAttribute("disabled");
+    });
 };
 
 const getGQL = (url) => (query, variables = {}) => {
@@ -76,7 +98,9 @@ const getGQL = (url) => (query, variables = {}) => {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            ...(localStorage.authToken ? { Authorization: `Bearer ${localStorage.authToken}` } : {}),
+            ...(localStorage.authToken
+                ? { Authorization: `Bearer ${localStorage.authToken}` }
+                : {}),
         },
         body: JSON.stringify({ query, variables }),
     })
@@ -218,7 +242,10 @@ async function showGoodsInCategory(parentEl, _id) {
                 forImage.style.display = "";
                 forImgSrc.src = urlConst + `/` + images[namberOfImg].url;
                 forImage.onclick = () => {
-                    forImgSrc.src = urlConst + `/` + images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
+                    forImgSrc.src =
+                        urlConst +
+                        `/` +
+                        images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
                 };
 
                 let imgKeyEsc = (ev) => {
@@ -257,31 +284,37 @@ async function showGoodsInCategory(parentEl, _id) {
         shelfToker.append(putInBasketBtn);
         shelfToker.insertAdjacentHTML("beforeEnd", `<div>${_id} - id товара</div>`);
 
-        let shelfTokerExitBtn = appendExitBtn(shelfToker, { onTop: false });
+        let shelfTokerExitBtn = appendActionBtn(shelfToker, { onTop: false }, "Вернуться назад");
         shelfTokerExitBtn.classList.add("shelfTokerExitBtn");
     }
 }
 
-async function addToBasket(_idValue, countValue) {
-    let result = await gql(
-        `mutation newOrder1($order1:OrderInput) {
-            OrderUpsert(order: $order1) {
-                _id
-                total
-            }
-        }`,
-        { order1: { orderGoods: [{ count: +countValue, good: { _id: _idValue } }] } }
-    );
+//
 
-    if (result.errors) {
-        alert("Ошибка сервера при заказе");
-        console.log(result.errors);
-        return;
-    }
+//
 
-    // console.log(result);
-    alert(`Поздравляем с успешным заказом на сумму $${result.data.OrderUpsert.total}`);
-}
+// +++++++++ПЕРЕДЕЛАТЬ;
+
+// async function addToBasket(_idValue, countValue) {
+//     let result = await gql(
+//         `mutation newOrder1($order1:OrderInput) {
+//             OrderUpsert(order: $order1) {
+//                 _id
+//                 total
+//             }
+//         }`,
+//         { order1: { orderGoods: [{ count: +countValue, good: { _id: _idValue } }] } }
+//     );
+
+//     if (result.errors) {
+//         alert("Ошибка сервера при заказе");
+//         console.log(result.errors);
+//         return;
+//     }
+
+//     // console.log(result);
+//     alert(`Поздравляем с успешным заказом на сумму $${result.data.OrderUpsert.total}`);
+// }
 
 async function showAllGoodsInAllSubcategories(parentEl, catId) {
     let result = await gql(
@@ -443,6 +476,7 @@ async function loginToDB({ login, password } = {}) {
         checkAuthToken();
     } else alert("Ошибка!\nВведите правильные логин и пароль.");
 }
+
 async function registrToDB({ login, password } = {}) {
     let result = await gql(
         `mutation newUser($login: String, $password: String) {
@@ -460,20 +494,13 @@ async function registrToDB({ login, password } = {}) {
     }
     alert("Вы успешно зарегистрированы.");
     loginToDB({ login, password });
-
-    // if (result.data.login) {
-    //     localStorage.authToken = result.data.login;
-    //     loginFormObject.clearAndClose();
-    //     loginForm.style.display = "none";
-    //     checkAuthToken();
-    // } else alert("Ошибка!\nВведите правильные логин и пароль.");
 }
 
-basketLogo.onclick = () => {
-    showBasket(forBasket);
+historyDiv.onclick = () => {
+    showOrderHistory(forBasket);
 };
 
-async function showBasket(parentNode) {
+async function showOrderHistory(parentNode) {
     let result = await gql(
         `query FindOrders($lookOrders2:String){
             OrderFind(query:$lookOrders2){
@@ -493,7 +520,8 @@ async function showBasket(parentNode) {
         }`,
         { lookOrders2: JSON.stringify([{}]) }
         // { lookOrders2: JSON.stringify([{}, { sort: [{ total: 1 }] }]) }
-        // ++++++++++++++    а вот эта сортировка ну никак не работает...???   ++++++++++++++++++++++++++
+        // ++++++++++++++    а вот эта сортировка ну никак не работает...???   +++++++++
+        // потому что total - вычисляемое поле
     );
 
     if (result.errors) {
@@ -506,7 +534,7 @@ async function showBasket(parentNode) {
     let masterTotal = 0;
     forBasket.innerHTML = "";
 
-    appendExitBtn(forBasket, { onTop: true });
+    appendActionBtn(forBasket, { onTop: true }, "Вернуться назад");
 
     result.data.OrderFind.forEach((order) => {
         let div1order = document.createElement("div");
@@ -524,14 +552,14 @@ async function showBasket(parentNode) {
     forBasket.prepend(h);
     h.append(`Общая сумма всех заказов: $${masterTotal}`);
 
-    appendExitBtn(forBasket, { onTop: true });
+    appendActionBtn(forBasket, { onTop: true }, "Вернуться назад");
 
     forBasket.scrollTop = 0;
 }
-const appendExitBtn = function (parent, { onTop = false }) {
-    let exitBtn = document.createElement("button");
-    exitBtn.append("Вернуться назад");
 
+const appendActionBtn = function (parent, { onTop = false }, innerText = "Вернуться назад") {
+    let exitBtn = document.createElement("button");
+    exitBtn.append(innerText);
     if (onTop) {
         parent.prepend(exitBtn);
     } else {
@@ -540,7 +568,9 @@ const appendExitBtn = function (parent, { onTop = false }) {
 
     exitBtn.onclick = () => {
         parent.style.display = "none";
+        parent.innerHTML = "";
     };
+
     return exitBtn;
 };
 
@@ -570,4 +600,19 @@ const showOrder = function (parent, { orderGoods: orderArray, total: total1Order
         div.append(p);
         p.append(`Всего: $${total1pozition}`);
     }
+};
+
+basketLogo.onclick = () => {
+    showBasket(forBasket);
+};
+
+const showBasket = function (parent) {
+    parent.style.display = "";
+    appendActionBtn(parent, { onTop: true }, (innerText = "Вернуться назад"));
+    parent.append(localStorage.basket);
+    let btn = appendActionBtn(parent, { onTop: false }, (innerText = "Оформить заказ (купить)"));
+
+    btn.onclick = () => {
+        console.log("Мы купили", JSON.parse(localStorage.basket));
+    };
 };
