@@ -1,13 +1,27 @@
+// Корзина хранится в localstorage для всех пользователей.
+// Ключем для доступа к данным корзины конкретного пользователя служит его __id,
+// полученный из localStorage.authToken после авторизации.
+// Данные корзины для каждого пользователя сбрасываются только в момент покупки.
+// Наполнять корзину можно и анонимно. Но оформить этот заказ не получится.
+// В случае развития этого проекта можно организовать дополнительную логику для
+// анонимной корзины. Например: если после авторизации Ваша корзина из истории
+// оказалась пустой, то товары из анонимной корзины попадут в Вашу, но только в случае
+// если сессия не прерывалась.
+// Но мне кажется, что такая организация корзины - нарушает безопасность личных данных
+// и корзина должна быть организована на серверной стороне.
+
 const delay = (ms) => new Promise((res) => setTimeout(() => res(ms), ms));
 
 // localStorage.removeItem("authToken");
 // "eyJzdWIiOnsibG9naW4iOiJfX2Fub255bW91c19fIn19"-- - {"sub":{"login": "__anonymous__"}}
 
 const urlConst = "http://shop-roles.asmer.fs.a-level.com.ua";
-let loginName = "__anonymous__";
 let defaultLoginName = "__anonymous__";
+let defaultLoginId = "0";
+let loginName = defaultLoginName;
+let loginId = defaultLoginId;
 let basketObj = {};
-basketObj[defaultLoginName] = {};
+basketObj[defaultLoginId] = {};
 
 goLogin.onclick = () => {
     loginForm.style.display = "";
@@ -29,13 +43,15 @@ if (!localStorage.basket) {
     basketObj = JSON.parse(localStorage.basket);
 }
 
-function getLoginFromToken(token = "") {
+async function setLoginFromToken() {
+    loginName = defaultLoginName;
+    loginId = defaultLoginId;
     try {
-        let str = JSON.parse(atob(token.split(".")[1])).sub.login;
-        return str;
+        loginName = await JSON.parse(atob(localStorage.authToken.split(".")[1])).sub.login;
+        loginId = await JSON.parse(atob(localStorage.authToken.split(".")[1])).sub.id;
+        updateBasketObj();
     } catch (error) {
-        console.log("Ошибка декодирования login из токена: ", error);
-        return defaultLoginName;
+        console.log("Ошибка декодирования login из токена / либо пользователь разлогинился: ", error);
     }
 }
 
@@ -49,16 +65,15 @@ const init = function () {
 
 window.onload = init;
 
-const checkAuthToken = function () {
+async function checkAuthToken() {
     if (localStorage.authToken) {
         goLogin.style.display = "none";
         goRegistration.style.display = "none";
         goLogoff.style.display = "";
         historyDiv.style.display = "";
         nickNameDiv.style.display = "";
-        setBasketBtnOn();
-        loginName = getLoginFromToken(localStorage.authToken);
-        updateBasketObj();
+        // setBasketBtnOn();
+        await setLoginFromToken();
         nickNameSpan.innerHTML = loginName;
         return true;
     }
@@ -69,28 +84,32 @@ const checkAuthToken = function () {
     historyDiv.style.display = "none";
     nickNameSpan.innerHTML = defaultLoginName;
     nickNameDiv.style.display = "none";
-    setBasketBtnOff();
+    // setBasketBtnOff();
+    setLoginFromToken();
     return false;
-};
+}
 
-const updateBasketObj = function () {
-    if (!basketObj[loginName]) {
-        basketObj[loginName] = {};
-        localStorage.basket = JSON.stringify(basketObj);
+async function updateBasketObj() {
+    if (!basketObj[loginId]) {
+        basketObj[loginId] = {};
     }
-};
+    try {
+        let temp = await JSON.stringify(basketObj);
+        localStorage.basket = temp;
+    } catch (error) {
+        console.log("Ошибка localStorage.basket = JSON.stringify(basketObj) - ", error);
+    }
+}
 
-const setBasketBtnOff = function () {
-    document
-        .querySelectorAll(".putInBasketBtn")
-        .forEach((el) => el.setAttribute("disabled", "disabled"));
-};
+// const setBasketBtnOff = function () {
+//     document.querySelectorAll(".putInBasketBtn").forEach((el) => el.setAttribute("disabled", "disabled"));
+// };
 
-const setBasketBtnOn = function () {
-    document.querySelectorAll(".putInBasketBtn").forEach((el) => {
-        el.removeAttribute("disabled");
-    });
-};
+// const setBasketBtnOn = function () {
+//     document.querySelectorAll(".putInBasketBtn").forEach((el) => {
+//         el.removeAttribute("disabled");
+//     });
+// };
 
 const getGQL = (url) => (query, variables = {}) => {
     return fetch(url, {
@@ -98,9 +117,7 @@ const getGQL = (url) => (query, variables = {}) => {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            ...(localStorage.authToken
-                ? { Authorization: `Bearer ${localStorage.authToken}` }
-                : {}),
+            ...(localStorage.authToken ? { Authorization: `Bearer ${localStorage.authToken}` } : {}),
         },
         body: JSON.stringify({ query, variables }),
     })
@@ -242,10 +259,7 @@ async function showGoodsInCategory(parentEl, _id) {
                 forImage.style.display = "";
                 forImgSrc.src = urlConst + `/` + images[namberOfImg].url;
                 forImage.onclick = () => {
-                    forImgSrc.src =
-                        urlConst +
-                        `/` +
-                        images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
+                    forImgSrc.src = urlConst + `/` + images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
                 };
 
                 let imgKeyEsc = (ev) => {
@@ -274,7 +288,7 @@ async function showGoodsInCategory(parentEl, _id) {
         let putInBasketBtn = document.createElement("button");
         putInBasketBtn.append("Добавить в корзину");
         putInBasketBtn.classList.add("putInBasketBtn");
-        if (!localStorage.authToken) putInBasketBtn.setAttribute("disabled", "disabled");
+        // if (!localStorage.authToken) putInBasketBtn.setAttribute("disabled", "disabled");
 
         putInBasketBtn.onclick = (e) => {
             e.stopPropagation();
@@ -289,32 +303,11 @@ async function showGoodsInCategory(parentEl, _id) {
     }
 }
 
-//
-
-//
-
-// +++++++++ПЕРЕДЕЛАТЬ;
-
-// async function addToBasket(_idValue, countValue) {
-//     let result = await gql(
-//         `mutation newOrder1($order1:OrderInput) {
-//             OrderUpsert(order: $order1) {
-//                 _id
-//                 total
-//             }
-//         }`,
-//         { order1: { orderGoods: [{ count: +countValue, good: { _id: _idValue } }] } }
-//     );
-
-//     if (result.errors) {
-//         alert("Ошибка сервера при заказе");
-//         console.log(result.errors);
-//         return;
-//     }
-
-//     // console.log(result);
-//     alert(`Поздравляем с успешным заказом на сумму $${result.data.OrderUpsert.total}`);
-// }
+function addToBasket(_idValue, countValue) {
+    basketObj[loginId][_idValue] = +countValue;
+    updateBasketObj();
+    alert(`Товар добавлен в корзину.`);
+}
 
 async function showAllGoodsInAllSubcategories(parentEl, catId) {
     let result = await gql(
@@ -606,13 +599,39 @@ basketLogo.onclick = () => {
     showBasket(forBasket);
 };
 
-const showBasket = function (parent) {
+async function showBasket(parent) {
     parent.style.display = "";
     appendActionBtn(parent, { onTop: true }, (innerText = "Вернуться назад"));
-    parent.append(localStorage.basket);
-    let btn = appendActionBtn(parent, { onTop: false }, (innerText = "Оформить заказ (купить)"));
+    if (!Object.keys(basketObj[loginId]).length) {
+        let h = document.createElement("h2");
+        h.append("Ваша корзина пустая");
+        parent.append(h);
+    } else {
+        //
+        parent.append(`${Object.keys(basketObj[loginId]).length}`);
+        // цикл вывода заказов
+        //
+        //
+    }
 
-    btn.onclick = () => {
-        console.log("Мы купили", JSON.parse(localStorage.basket));
-    };
-};
+    //
+    //
+    // если корзина пустая - надо сказать и заблокировать кнопку
+    //
+    //
+
+    if (loginId === "0") {
+        let h = document.createElement("h2");
+        h.append("Для оформления заказа необходимо авторизоваться");
+        parent.append(h);
+    } else {
+        let btn = appendActionBtn(parent, { onTop: false }, (innerText = "Оформить заказ (купить)"));
+        if (!Object.keys(basketObj[loginId]).length) {
+            btn.setAttribute("disabled", "disabled");
+        }
+        btn.onclick = () => {
+            // let temp = JSON.parse(localStorage.basket);
+            console.log("Мы купили", loginId, basketObj[loginId]);
+        };
+    }
+}
