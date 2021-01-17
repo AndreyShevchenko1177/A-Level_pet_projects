@@ -16,32 +16,28 @@ const delay = (ms) => new Promise((res) => setTimeout(() => res(ms), ms));
 // "eyJzdWIiOnsibG9naW4iOiJfX2Fub255bW91c19fIn19"-- - {"sub":{"login": "__anonymous__"}}
 
 const urlConst = "http://shop-roles.asmer.fs.a-level.com.ua";
-let defaultLoginName = "__anonymous__";
-let defaultLoginId = "0";
+const defaultLoginName = "__anonymous__";
+const defaultLoginId = "0";
 let loginName = defaultLoginName;
 let loginId = defaultLoginId;
 let basketObj = {};
 basketObj[defaultLoginId] = {};
 
 goLogin.onclick = () => {
+    init();
     loginForm.style.display = "";
 };
 
 goLogoff.onclick = () => {
     localStorage.removeItem("authToken");
     loginName = defaultLoginName;
-    checkAuthToken();
+    init();
 };
 
 goRegistration.onclick = () => {
+    init();
     registrationForm.style.display = "";
 };
-
-if (!localStorage.basket) {
-    localStorage.basket = JSON.stringify(basketObj);
-} else {
-    basketObj = JSON.parse(localStorage.basket);
-}
 
 async function setLoginFromToken() {
     loginName = defaultLoginName;
@@ -51,19 +47,25 @@ async function setLoginFromToken() {
         loginId = await JSON.parse(atob(localStorage.authToken.split(".")[1])).sub.id;
         updateBasketObj();
     } catch (error) {
-        console.log("Ошибка декодирования login из токена / либо пользователь разлогинился: ", error);
+        console.log(
+            "Ошибка декодирования login из токена / либо пользователь разлогинился: ",
+            error
+        );
     }
 }
 
 const init = function () {
+    if (!localStorage.basket) {
+        localStorage.basket = JSON.stringify(basketObj);
+    } else {
+        basketObj = JSON.parse(localStorage.basket);
+    }
     registrationForm.style.display = "none";
     loginForm.style.display = "none";
     forImage.style.display = "none";
     forBasket.style.display = "none";
     checkAuthToken();
 };
-
-window.onload = init;
 
 async function checkAuthToken() {
     if (localStorage.authToken) {
@@ -101,23 +103,15 @@ async function updateBasketObj() {
     }
 }
 
-// const setBasketBtnOff = function () {
-//     document.querySelectorAll(".putInBasketBtn").forEach((el) => el.setAttribute("disabled", "disabled"));
-// };
-
-// const setBasketBtnOn = function () {
-//     document.querySelectorAll(".putInBasketBtn").forEach((el) => {
-//         el.removeAttribute("disabled");
-//     });
-// };
-
 const getGQL = (url) => (query, variables = {}) => {
     return fetch(url, {
         method: "POST",
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
-            ...(localStorage.authToken ? { Authorization: `Bearer ${localStorage.authToken}` } : {}),
+            ...(localStorage.authToken
+                ? { Authorization: `Bearer ${localStorage.authToken}` }
+                : {}),
         },
         body: JSON.stringify({ query, variables }),
     })
@@ -259,7 +253,10 @@ async function showGoodsInCategory(parentEl, _id) {
                 forImage.style.display = "";
                 forImgSrc.src = urlConst + `/` + images[namberOfImg].url;
                 forImage.onclick = () => {
-                    forImgSrc.src = urlConst + `/` + images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
+                    forImgSrc.src =
+                        urlConst +
+                        `/` +
+                        images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
                 };
 
                 let imgKeyEsc = (ev) => {
@@ -278,7 +275,6 @@ async function showGoodsInCategory(parentEl, _id) {
         let count = document.createElement("input");
         count.setAttribute("type", "number");
         count.setAttribute("min", "1");
-        count.setAttribute("placeholder", "1");
         count.value = "1";
         count.onclick = (e) => {
             e.stopPropagation();
@@ -528,7 +524,6 @@ async function showOrderHistory(parentNode) {
     forBasket.innerHTML = "";
 
     appendActionBtn(forBasket, { onTop: true }, "Вернуться назад");
-
     result.data.OrderFind.forEach((order) => {
         let div1order = document.createElement("div");
         forBasket.prepend(div1order);
@@ -568,8 +563,22 @@ const appendActionBtn = function (parent, { onTop = false }, innerText = "Вер
 };
 
 const showOrder = function (parent, { orderGoods: orderArray, total: total1Order }) {
-    //
     for (let { good, price, count, total: total1pozition } of orderArray) {
+        if (!good) {
+            good = {
+                images: [
+                    {
+                        url: "",
+                    },
+                ],
+                name: "",
+            };
+        }
+        // да, это костыль, но увы не смог составить запрос, чтобы вложенное поле
+        // в массиве-в обекте-в массиве не равнялось null
+        // И вообще! Это ли не сервер должен следить, чтобы в базу чушь не заносили?
+
+        parent.innerHTML = "";
         let div = document.createElement("div");
         parent.append(div);
 
@@ -601,37 +610,134 @@ basketLogo.onclick = () => {
 
 async function showBasket(parent) {
     parent.style.display = "";
-    appendActionBtn(parent, { onTop: true }, (innerText = "Вернуться назад"));
+    parent.innerHTML = "";
+    appendActionBtn(parent, { onTop: true }, "Вернуться назад");
+
     if (!Object.keys(basketObj[loginId]).length) {
-        let h = document.createElement("h2");
+        let h = document.createElement("h3");
         h.append("Ваша корзина пустая");
         parent.append(h);
     } else {
-        //
-        parent.append(`${Object.keys(basketObj[loginId]).length}`);
-        // цикл вывода заказов
-        //
-        //
+        for (let [_id, count] of Object.entries(basketObj[loginId])) {
+            await show1goodFromBasket(parent, _id, +count);
+        }
+
+        let hTotal = document.createElement("h3");
+        hTotal.setAttribute("id", "hTotal");
+        // hTotal.innerText = `Общая сумма: ${CountTotal(parent)}`; //*********************** */
+        parent.append(hTotal);
+        CountTotal(parent);
     }
 
-    //
-    //
-    // если корзина пустая - надо сказать и заблокировать кнопку
-    //
-    //
+    appendActionBtn(parent, { onTop: false }, "Вернуться назад");
 
     if (loginId === "0") {
-        let h = document.createElement("h2");
+        let h = document.createElement("h3");
         h.append("Для оформления заказа необходимо авторизоваться");
         parent.append(h);
     } else {
-        let btn = appendActionBtn(parent, { onTop: false }, (innerText = "Оформить заказ (купить)"));
+        let btn = appendActionBtn(parent, { onTop: false }, "Оформить заказ (купить)");
+        btn.setAttribute("id", "buyBtn");
         if (!Object.keys(basketObj[loginId]).length) {
             btn.setAttribute("disabled", "disabled");
         }
+
         btn.onclick = () => {
-            // let temp = JSON.parse(localStorage.basket);
-            console.log("Мы купили", loginId, basketObj[loginId]);
+            parent.style.display = "none";
+            parent.innerHTML = "";
+            buy();
         };
     }
 }
+
+const CountTotal = function (parent) {
+    let totalCost = 0;
+    let costFieldsAll = parent.querySelectorAll(".costField");
+    [].forEach.call(costFieldsAll, (el) => {
+        totalCost += +el.innerText.slice(1);
+    });
+    hTotal.innerText = `Общая сумма: $${totalCost}`;
+    //
+    //
+    //
+    //
+};
+
+async function get1goodFromDB(_id) {
+    let result = await gql(
+        `query oneGood ($_id:String){
+            GoodFind(query:$_id ) {
+            _id
+            name
+            price
+            images {
+                url
+                }
+            }
+        }`,
+        { _id: JSON.stringify([{ _id: _id }]) }
+    );
+
+    if (result.errors) {
+        console.log("не смог получить товар из DB для отображения в корзине:", result.errors);
+        return;
+    }
+
+    return result.data.GoodFind[0];
+}
+
+async function show1goodFromBasket(parent, _id, count) {
+    let item = await get1goodFromDB(_id);
+
+    let div = document.createElement("div");
+    parent.append(div);
+
+    let img = document.createElement("img");
+    div.append(img);
+    img.src = urlConst + `/` + item.images[0].url;
+
+    let p = document.createElement("p");
+    div.append(p);
+    p.append(item.name);
+
+    p = document.createElement("p");
+    div.append(p);
+    p.append(`Цена: $${item.price}`);
+
+    let inpCount = document.createElement("input");
+    inpCount.setAttribute("type", "number");
+    inpCount.setAttribute("min", "1");
+    inpCount.value = count;
+
+    div.append(inpCount);
+
+    let cost = document.createElement("p");
+    cost.setAttribute("class", "costField");
+    div.append(cost);
+    cost.append(`$${Math.round(count * item.price)}`);
+
+    let btn = appendActionBtn(div, { onTop: false }, "Удалить");
+
+    inpCount.oninput = async function () {
+        basketObj[loginId][_id] = +inpCount.value;
+        await updateBasketObj();
+        cost.innerHTML = `$${Math.round(inpCount.value * item.price)}`;
+        CountTotal(parent);
+    };
+
+    btn.onclick = async function () {
+        delete basketObj[loginId][_id];
+        if (!Object.keys(basketObj[loginId]).length) {
+            buyBtn.setAttribute("disabled", "disabled");
+        }
+        await updateBasketObj();
+        div.remove();
+        CountTotal(parent);
+    };
+}
+
+async function buy() {}
+
+window.onload = init;
+
+// "[{  \"_id\": \"5dc45d0b5df9d670df48cc4b\"}]"

@@ -242,25 +242,26 @@ li {
     min-height: 100px;
     margin: 10px;
     padding: 10px;
-}
-
-.forBasket > div > div {
     display: grid;
-    grid-template-columns: 1fr 5fr 1fr 1fr 1.5fr;
-    grid-template-rows: 1fr;
-    justify-content: center;
+    grid-template-columns: 1fr 4fr 1.5fr 0.8fr 1fr 1fr;
     align-items: center;
-    grid-gap: 20px;
-    margin: 20px 0;
+    text-align: center;
+    grid-gap: 10px;
 }
 
 .forBasket img {
     width: 100px;
 }
 
+.forBasket input {
+    width: 50px;
+}
+
 .forBasket button {
-    padding: 10px;
+    padding: 5px 10px;
     border-radius: 20px;
+    max-width: 180px;
+    margin: 10px;
 }
 
 .shelfToker {
