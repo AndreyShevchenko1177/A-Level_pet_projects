@@ -1,5 +1,6 @@
+//
 // Корзина хранится в localstorage для всех пользователей.
-// Ключем для доступа к данным корзины конкретного пользователя служит его __id,
+// Ключом для доступа к данным корзины конкретного пользователя служит его _id,
 // полученный из localStorage.authToken после авторизации.
 // Данные корзины для каждого пользователя сбрасываются только в момент покупки.
 // Наполнять корзину можно и анонимно. Но оформить этот заказ не получится.
@@ -7,8 +8,7 @@
 // анонимной корзины. Например: если после авторизации Ваша корзина из истории
 // оказалась пустой, то товары из анонимной корзины попадут в Вашу, но только в случае
 // если сессия не прерывалась.
-// Но мне кажется, что такая организация корзины - нарушает безопасность личных данных
-// и корзина должна быть организована на серверной стороне.
+// Но мне кажется, что корзина должна быть организована на серверной стороне.
 
 const delay = (ms) => new Promise((res) => setTimeout(() => res(ms), ms));
 
@@ -74,7 +74,6 @@ async function checkAuthToken() {
         goLogoff.style.display = "";
         historyDiv.style.display = "";
         nickNameDiv.style.display = "";
-        // setBasketBtnOn();
         await setLoginFromToken();
         nickNameSpan.innerHTML = loginName;
         return true;
@@ -86,7 +85,6 @@ async function checkAuthToken() {
     historyDiv.style.display = "none";
     nickNameSpan.innerHTML = defaultLoginName;
     nickNameDiv.style.display = "none";
-    // setBasketBtnOff();
     setLoginFromToken();
     return false;
 }
@@ -131,7 +129,6 @@ async function categories(parentEl = leftSide, parentID = null) {
         }`,
         { query: JSON.stringify([{ "parent._id": parentID }, { sort: [{ name: 1 }] }]) }
     );
-    // console.log(result);
     if (result.errors) return;
 
     let ul = document.createElement("ul");
@@ -284,7 +281,6 @@ async function showGoodsInCategory(parentEl, _id) {
         let putInBasketBtn = document.createElement("button");
         putInBasketBtn.append("Добавить в корзину");
         putInBasketBtn.classList.add("putInBasketBtn");
-        // if (!localStorage.authToken) putInBasketBtn.setAttribute("disabled", "disabled");
 
         putInBasketBtn.onclick = (e) => {
             e.stopPropagation();
@@ -575,11 +571,10 @@ const showOrder = function (parent, { orderGoods: orderArray, total: total1Order
             };
         }
         // да, это костыль, но увы не смог составить запрос, чтобы вложенное поле
-        // в массиве-в обекте-в массиве не равнялось null
+        // в обекте - в массиве не равнялось null
         // И вообще! Это ли не сервер должен следить, чтобы в базу чушь не заносили?
 
-        parent.innerHTML = "";
-        let div = document.createElement("div");
+        div = document.createElement("div");
         parent.append(div);
 
         let img = document.createElement("img");
@@ -624,7 +619,6 @@ async function showBasket(parent) {
 
         let hTotal = document.createElement("h3");
         hTotal.setAttribute("id", "hTotal");
-        // hTotal.innerText = `Общая сумма: ${CountTotal(parent)}`; //*********************** */
         parent.append(hTotal);
         CountTotal(parent);
     }
@@ -642,10 +636,10 @@ async function showBasket(parent) {
             btn.setAttribute("disabled", "disabled");
         }
 
-        btn.onclick = () => {
+        btn.onclick = async function () {
             parent.style.display = "none";
             parent.innerHTML = "";
-            buy();
+            await buy();
         };
     }
 }
@@ -657,10 +651,6 @@ const CountTotal = function (parent) {
         totalCost += +el.innerText.slice(1);
     });
     hTotal.innerText = `Общая сумма: $${totalCost}`;
-    //
-    //
-    //
-    //
 };
 
 async function get1goodFromDB(_id) {
@@ -679,7 +669,7 @@ async function get1goodFromDB(_id) {
     );
 
     if (result.errors) {
-        console.log("не смог получить товар из DB для отображения в корзине:", result.errors);
+        console.log("не смог купить:", result.errors);
         return;
     }
 
@@ -689,8 +679,10 @@ async function get1goodFromDB(_id) {
 async function show1goodFromBasket(parent, _id, count) {
     let item = await get1goodFromDB(_id);
 
+    let div1 = document.createElement("div");
+    parent.append(div1);
     let div = document.createElement("div");
-    parent.append(div);
+    div1.append(div);
 
     let img = document.createElement("img");
     div.append(img);
@@ -736,8 +728,36 @@ async function show1goodFromBasket(parent, _id, count) {
     };
 }
 
-async function buy() {}
+async function buy() {
+    let order1 = { orderGoods: [] };
+
+    for (let [_id, count] of Object.entries(basketObj[loginId])) {
+        order1.orderGoods.push({
+            count: count,
+            good: { _id: _id },
+        });
+    }
+
+    let result = await gql(
+        `mutation newOrder1($order1:OrderInput) {
+            OrderUpsert(order: $order1) {
+            _id
+            total
+            }
+        }`,
+        { order1 }
+    );
+
+    if (result.errors) {
+        console.log("не смог получить товар из DB для отображения в корзине:", result.errors);
+        return;
+    }
+
+    console.log(result.data.OrderUpsert.total);
+    alert(`Ваш заказ успешно оформлен. \nОбщая сумма заказа $${result.data.OrderUpsert.total}`);
+    for (let key in basketObj[loginId]) {
+        delete basketObj[loginId][key];
+    }
+}
 
 window.onload = init;
-
-// "[{  \"_id\": \"5dc45d0b5df9d670df48cc4b\"}]"
