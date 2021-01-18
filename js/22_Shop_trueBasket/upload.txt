@@ -1,0 +1,51 @@
+sushka2.jpg - 
+UPLOAD RESULT 
+{_id: "6004c96d6f871f156bf4b318", url: "images/4d4e58e7dbd46c69f99a5f1e26f1d6e3"}
+url: "images/4d4e58e7dbd46c69f99a5f1e26f1d6e3"
+_id: "6004c96d6f871f156bf4b318"
+__proto__: Object
+
+
+sushka3.jpg -
+UPLOAD RESULT 
+{_id: "6004c9e76f871f156bf4b319", url: "images/171945b4a171e904a1306312b8d83c8f"}
+url: "images/171945b4a171e904a1306312b8d83c8f"
+_id: "6004c9e76f871f156bf4b319"
+__proto__: Object
+
+
+sushka4.jpg - 
+UPLOAD RESULT 
+{_id: "6004ca096f871f156bf4b31a", url: "images/1f2c60b45db35d5b5d4cb25c934904fa"}
+url: "images/1f2c60b45db35d5b5d4cb25c934904fa"
+_id: "6004ca096f871f156bf4b31a"
+__proto__: Object
+
+
+mutation ImageUpsert {
+  ImageUpsert(image: {
+    _id: "6004c96d6f871f156bf4b318", 
+    good: {
+      _id: "5dcabcf46d09c45440d14cf3"
+    }
+  }) {
+    _id
+    url
+  }
+}
+
+mutation AddImgToGood{
+  GoodUpsert(good:{
+    _id: "5dcabcf46d09c45440d14cf3",
+    images:[
+      {
+        _id: "6004c96d6f871f156bf4b318"
+        good:{
+          _id: "5dcabcf46d09c45440d14cf3"
+        }
+      }
+    ]
+  }){
+    _id
+  }
+}
