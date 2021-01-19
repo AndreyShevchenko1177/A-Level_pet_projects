@@ -8,10 +8,14 @@
     </head>
     <body>
         <h1 id="title"></h1>
-        <div id="container1"></div>
+        <span>asdfg</span>
+        <span id="container1"></span>
         <div id="container2"></div>
         <script>
-            function Control(el, { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, minAngle = 0 } = {}) {
+            function Control(
+                el,
+                { value = 0, step = 1, max = 100, min = 0, maxAngle = 360, minAngle = 0 } = {}
+            ) {
                 const img = document.createElement("img");
                 img.src = "1@3xNew.png";
                 img.width = "250";
@@ -40,6 +44,7 @@
                 const { top, left } = img.getBoundingClientRect();
 
                 changeValue(0);
+
 
                 console.log(img.width, top, left);
 
@@ -101,7 +106,8 @@
             }
 
             const volumeControl = new Control(container1, { value: 50 });
-            volumeControl.onChange = (value) => console.log("VOLUME", value);
+
+            volumeControl.onChange = (x) => console.log("VOLUME", value);
 
             const balanceControl = new Control(container2, {
                 maxAngle: 90,

@@ -46,7 +46,9 @@ function SuperCheckbox(el) {
     checkbox.type = "checkbox";
     checkbox.checked = store.getState();
 
-    let unsubscribe = store.subscribe(() => (checkbox.checked = store.getState()));
+    let unsubscribe = store.subscribe(
+        () => (checkbox.checked = store.getState())
+    );
     checkbox.onchange = () => store.dispatch({ type: "TOGGLE" });
 
     el.append(checkbox);

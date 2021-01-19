@@ -25,8 +25,10 @@ let smileObj = {
     satisfied: "graphics/emojis/satisfied.png",
     grin: "graphics/emojis/grin.png",
     wink: "graphics/emojis/wink.png",
-    stuck_out_tongue_winking_eye: "graphics/emojis/stuck_out_tongue_winking_eye.png",
-    stuck_out_tongue_closed_eyes: "graphics/emojis/stuck_out_tongue_closed_eyes.png",
+    stuck_out_tongue_winking_eye:
+        "graphics/emojis/stuck_out_tongue_winking_eye.png",
+    stuck_out_tongue_closed_eyes:
+        "graphics/emojis/stuck_out_tongue_closed_eyes.png",
     grinning: "graphics/emojis/grinning.png",
     kissing: "graphics/emojis/kissing.png",
     kissing_smiling_eyes: "graphics/emojis/kissing_smiling_eyes.png",
@@ -307,8 +309,10 @@ let smileObj = {
     waning_gibbous_moon: "graphics/emojis/waning_gibbous_moon.png",
     last_quarter_moon: "graphics/emojis/last_quarter_moon.png",
     waning_crescent_moon: "graphics/emojis/waning_crescent_moon.png",
-    last_quarter_moon_with_face: "graphics/emojis/last_quarter_moon_with_face.png",
-    first_quarter_moon_with_face: "graphics/emojis/first_quarter_moon_with_face.png",
+    last_quarter_moon_with_face:
+        "graphics/emojis/last_quarter_moon_with_face.png",
+    first_quarter_moon_with_face:
+        "graphics/emojis/first_quarter_moon_with_face.png",
     crescent_moon: "graphics/emojis/crescent_moon.png",
     earth_africa: "graphics/emojis/earth_africa.png",
     earth_americas: "graphics/emojis/earth_americas.png",
@@ -422,7 +426,8 @@ let smileObj = {
     bookmark_tabs: "graphics/emojis/bookmark_tabs.png",
     bar_chart: "graphics/emojis/bar_chart.png",
     chart_with_upwards_trend: "graphics/emojis/chart_with_upwards_trend.png",
-    chart_with_downwards_trend: "graphics/emojis/chart_with_downwards_trend.png",
+    chart_with_downwards_trend:
+        "graphics/emojis/chart_with_downwards_trend.png",
     scroll: "graphics/emojis/scroll.png",
     clipboard: "graphics/emojis/clipboard.png",
     calendar: "graphics/emojis/calendar.png",
@@ -442,7 +447,8 @@ let smileObj = {
     blue_book: "graphics/emojis/blue_book.png",
     orange_book: "graphics/emojis/orange_book.png",
     notebook: "graphics/emojis/notebook.png",
-    notebook_with_decorative_cover: "graphics/emojis/notebook_with_decorative_cover.png",
+    notebook_with_decorative_cover:
+        "graphics/emojis/notebook_with_decorative_cover.png",
     ledger: "graphics/emojis/ledger.png",
     books: "graphics/emojis/books.png",
     bookmark: "graphics/emojis/bookmark.png",
@@ -805,12 +811,14 @@ let smileObj = {
     pisces: "graphics/emojis/pisces.png",
     ophiuchus: "graphics/emojis/ophiuchus.png",
     six_pointed_star: "graphics/emojis/six_pointed_star.png",
-    negative_squared_cross_mark: "graphics/emojis/negative_squared_cross_mark.png",
+    negative_squared_cross_mark:
+        "graphics/emojis/negative_squared_cross_mark.png",
     a: "graphics/emojis/a.png",
     b: "graphics/emojis/b.png",
     ab: "graphics/emojis/ab.png",
     o2: "graphics/emojis/o2.png",
-    diamond_shape_with_a_dot_inside: "graphics/emojis/diamond_shape_with_a_dot_inside.png",
+    diamond_shape_with_a_dot_inside:
+        "graphics/emojis/diamond_shape_with_a_dot_inside.png",
     recycle: "graphics/emojis/recycle.png",
     end: "graphics/emojis/end.png",
     back: "graphics/emojis/back.png",
@@ -894,7 +902,10 @@ function drowSmiles() {
     for (let [key, value] of Object.entries(smileObj)) {
         let smile = document.createElement("span");
         smile.setAttribute("class", "smile");
-        smile.insertAdjacentHTML("beforeend", wwwConstStrFirst + value + wwwConstStrLast);
+        smile.insertAdjacentHTML(
+            "beforeend",
+            wwwConstStrFirst + value + wwwConstStrLast
+        );
         smile.onclick = function () {
             msgId.value += ` :${key}: `; //  замыкание
         };
@@ -908,8 +919,17 @@ function smilify(message) {
     if (typeof message === "string") {
         for (key in smileObj) {
             // key += "";  // если раскомментировать, то можно ниже обращаться через точку
-            while (message !== message.replace(`:${key}:`, wwwConstStrFirst + smileObj[key] + wwwConstStrLast)) {
-                message = message.replace(`:${key}:`, wwwConstStrFirst + smileObj[key] + wwwConstStrLast);
+            while (
+                message !==
+                message.replace(
+                    `:${key}:`,
+                    wwwConstStrFirst + smileObj[key] + wwwConstStrLast
+                )
+            ) {
+                message = message.replace(
+                    `:${key}:`,
+                    wwwConstStrFirst + smileObj[key] + wwwConstStrLast
+                );
             }
         }
     }
@@ -1000,7 +1020,10 @@ let showMsg = function (msgArr) {
             ":</b> " +
             smilify(cleanUp(element.message));
         p.insertAdjacentHTML("beforeEnd", str);
-        if (typeof element.message === "string" && element.message.startsWith("to_" + nick)) {
+        if (
+            typeof element.message === "string" &&
+            element.message.startsWith("to_" + nick)
+        ) {
             p.style.color = "green";
         }
         if (element.nick === nick) {

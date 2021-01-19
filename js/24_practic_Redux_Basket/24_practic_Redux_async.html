@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="A">A</button>
+    <button id="B">B</button>
+    <h1 id="Cart"></h1>
+    <script>
+        function createStore(reducer) {
+            let state = reducer(undefined, {})
+            let cbs = []
+
+            function dispatch(action) {
+                if (typeof action === 'function'){
+                    return action(dispatch)
+                }
+                let newState = reducer(state, action)
+                if (state !== newState) {
+                    state = newState
+                    for (let cb of cbs) cb()
+                }
+            }
+
+            return {
+                getState() {
+                    return state
+                },
+                dispatch,
+                subscribe(cb) {
+                    cbs.push(cb)
+                    return () => {
+                        cbs = cbs.filter(someElement => someElement !== cb)
+                    }
+                }
+            }
+        }
+
+        function cartReducer(state = {}, {type, id, count}) {
+            if(type === 'CART_ADD') {
+                return {
+                    ...state,
+                    [id]:count + (state[id] || 0) 
+                }
+            }
+            if(type === 'CART_DELETE') {
+                const {[id]:skip,...newState} = state;
+                return newState
+            }
+            return state;
+        }
+        
+        
+        function promiseReducer (state = {}, {type, status, payload, error, name}) {
+            if(type === 'PROMISE') {
+                return {...state, [name]:{status, payload, error}}
+            }
+            return state
+        }
+        
+        const store = createStore(promiseReducer);
+        store.subscribe(() => console.log(store.getState()))
+        // store.subscribe( ()=> {
+        //     Cart.innerText = store.getState().delay3.status
+        // })
+
+        const actionPromisePending = (name) => ({name, type: "PROMISE", status: "PENDING"})
+        const actionPromiseResolved = (name, payload) => ({name, type: "PROMISE", status: "RESOLVED", payload, error: undefined})
+        const actionPromiseRejected = (name, error) => ({name, type: "PROMISE", status: "REJECTED", payload: undefined, error})
+        
+        const delaySec = (sec) => new Promise((ok) => setTimeout(() => ok(sec), sec * 1000));
+        // store.dispatch(actionPromisePending('delay'))
+        // delaySec(3).then(payload => store.dispatch(actionPromiseResolved('delay', payload)), 
+        //                  error => store.dispatch(actionPromiseRejected('delay', error))
+        // );
+        
+
+        function actionPromise(name, promise) {
+            return async dispatch => {
+                dispatch(actionPromisePending(name))
+                try {
+                  let payload = await promise
+                  dispatch(actionPromiseResolved(name, payload))
+                  return payload
+                } catch (e){
+                    dispatch(actionPromiseRejected(name, e))
+                }
+            }
+        }
+
+        // store.dispatch(actionPromise('delay3', delaySec(3)))
+        // store.dispatch(actionPromise('delay5', delaySec(5)))
+
+
+
+
+        const getGQL = url => 
+            (query, variables={}) => 
+                fetch(url, 
+                    {method: 'POST', 
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        ...(localStorage.authToken ? {Authorization: `Bearer ${localStorage.authToken}`} : {})
+                        },
+                        body: JSON.stringify({query,variables})})
+                .then(res => res.json())
+
+                let gql = getGQL("http://shop-roles.asmer.fs.a-level.com.ua/graphql");
+        
+        function actionLogin(login, password) {
+            return  actionPromise('login', gql(`query login($login:String, $password:String) {
+                                login(login:$login, password:$password)
+                    }`, {login, password}))
+        }
+
+
+        store.dispatch(actionLogin("qqq", "123"))
+
+
+
+        // const actionCartAdd = (id, count = 1) => ({type:"CART_ADD", id, count});
+        // const actionCartDelete = (id) => ({type:"CART_DELETE", id});
+
+        // A.onclick = () => {store.dispatch(actionCartAdd('A'))}
+        // B.onclick = () => {store.dispatch(actionCartAdd('B'))}
+
+        
+
+        // store.dispatch({type:"CART_ADD", id: "A", count: 3})
+        // store.dispatch({type:"CART_ADD", id: "B", count: 4})
+        // store.dispatch({type:"CART_ADD", id: "C", count: 5})
+        // store.dispatch({type:"CART_DELETE", id: "B"})
+        
+    </script>
+</body>
+
+</html>                
