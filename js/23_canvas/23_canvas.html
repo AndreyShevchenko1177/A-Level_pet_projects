@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>23_canvas.html</title>
+        <link href="./23_style.css" rel="stylesheet" type="text/css" />
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.3/papaparse.min.js"></script>
+        <script src="http://gitlab.a-level.com.ua/gitgod/nanobind/raw/master/static/nb.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <canvas
+                id="canvas"
+                width="500"
+                height="500"
+                class="canvas"
+            ></canvas>
+            <div class="wrapper2">
+                <button id="undo">UNDO</button>
+                <select id="tool">
+                    <option value="graffity">Graffity</option>
+                    <option value="line">Line</option>
+                    <option value="circle">Circle</option>
+                    <option value="ellipse">Ellipse</option>
+                    <option value="rectangle">Rectangle</option>
+                    <option value="select">Select</option>
+                </select>
+                <span id="comment"></span>
+                <input type="color" id="color" />
+                <input type="number" id="size" value="5" />
+                <button id="delete">Delete...</button>
+            </div>
+        </div>
+        <script src="./23_canvasJs.js"></script>
+    </body>
+</html>

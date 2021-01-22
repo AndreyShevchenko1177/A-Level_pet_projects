@@ -1,0 +1,23 @@
+/* * {
+    padding: 0;
+    margin: 0;
+} */
+
+.canvas {
+    border: 2px solid red;
+    cursor: crosshair;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 0.2fr 2fr;
+}
+.wrapper2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.wrapper2 * {
+    margin: 5px;
+}
