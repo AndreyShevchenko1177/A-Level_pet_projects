@@ -1,55 +1,47 @@
-//
+function Password(parent, open = false) {
+    let inpPass = document.createElement("input");
+    let checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    if (open) checkBox.setAttribute("checked", "checked");
+    let text = document.createElement("span");
+    text.innerText = "view";
 
-let del3000ms = new Promise(function (ok, fail) {
-    setTimeout(() => ok("vse super"), 3000);
-});
+    this.setValue = function (value) {
+        inpPass.value = value;
+    };
 
-//
+    this.getValue = function () {
+        return inpPass.value;
+    };
 
-del3000ms
-    .then((res) => res.toUpperCase())
-    .then(
-        (res2) => console.log(res2),
-        (err) => console.log("Uuuups")
-    );
+    var test = () =>
+        checkBox.checked
+            ? (inpPass.type = "text")
+            : (inpPass.type = "password");
 
-//
+    this.setOpen = function () {
+        checkBox.checked;
+        test();
+    };
 
-let delay = (ms) => new Promise((ok) => setTimeout(() => ok(ms), ms));
+    this.getOpen = function () {
+        return checkBox.checked;
+    };
 
-delay(1000)
-    .then((ms) => console.log("wait " + ms))
-    .then(() => delay(2000))
-    .then((ms) => console.log("wait twice " + ms));
+    inpPass.oninput = () => {
+        this.onChange();
+    };
 
-let promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-        // переведёт промис в состояние fulfilled с результатом "result"
-        resolve("result1111");
-    }, 3000);
-});
+    checkBox.onclick = () => {
+        test();
+        this.onOpenChange(checkBox.checked);
+    };
 
-// promise.then навешивает обработчики на успешный результат или ошибку
-promise.then(
-    (result) => {
-        // первая функция-обработчик - запустится при вызове resolve
-        alert("Fulfilled: " + result); // result - аргумент resolve
-    },
-    (error) => {
-        // вторая функция - запустится при вызове reject
-        alert("Rejected: " + error); // error - аргумент reject
-    }
-);
+    parent.append(inpPass);
+    parent.append(checkBox);
+    parent.append(text);
+}
 
-let delay2 = function (time) {
-    return new Promise(function (resolve, reject) {
-        //можно без reject
-        console.log("delay starting");
-        setTimeout(() => resolve("It past " + time), time);
-    });
-};
+let p = new Password(document.body, true);
 
-Promise.race([
-    delay2(() => console.log("delay end"), 250),
-    myfetch("https://swapi.dev/api/people/1/").then((luke) => console.log(luke)),
-]);
+p.onOpenChange = (open) => console.log(open);

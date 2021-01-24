@@ -17,11 +17,14 @@
                 class="canvas"
             ></canvas>
             <div class="wrapper2">
-                <button id="undo">UNDO</button>
+                <button id="clear">Clear</button>
+                <button id="undo">UNDO (delete last object)</button>
+                <button id="delete">Delete selected</button>
                 <select id="tool">
                     <option value="graffity">Graffity</option>
                     <option value="line">Line</option>
-                    <option value="circle">Circle</option>
+                    // --- круг = элипс + Ctrl
+                    <!-- <option value="circle">Circle</option> -->
                     <option value="ellipse">Ellipse</option>
                     <option value="rectangle">Rectangle</option>
                     <option value="select">Select</option>
@@ -29,7 +32,6 @@
                 <span id="comment"></span>
                 <input type="color" id="color" />
                 <input type="number" id="size" value="5" />
-                <button id="delete">Delete...</button>
             </div>
         </div>
         <script src="./23_canvasJs.js"></script>

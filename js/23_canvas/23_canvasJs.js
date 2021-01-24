@@ -1,45 +1,43 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
-const width = canvas.width;
-const height = canvas.height;
+const canvWidth = canvas.width;
+const canvHeight = canvas.height;
 
 let current;
 let selection = [];
-
-tool.onchange = () => {
-    comment.innerText = "";
-    if (tool.value === "circle") {
-        comment.innerText = "Круг - этот тот же элипс, но +CTRL";
-    }
-    if (tool.value === "rectangle") {
-        comment.innerText = "Квадрат = прямоугольник + CTRL";
-    }
-};
 
 const tools = {
     graffity: {
         mousemove(e) {
             //e.buttons 0b00000x11 & 0b00000100 == x
             e.buttons & 1 &&
-                new Circle(e.layerX, e.layerY, +size.value, color.value);
+                // new Circle(e.layerX, e.layerY, +size.value, color.value);
+                new Ellipse(
+                    e.layerX,
+                    e.layerY,
+                    +size.value,
+                    +size.value,
+                    color.value
+                );
         },
     },
 
-    // а круг - это частный случай элипса :) - просто зажми клавишу Ctrl
-    circle: {
-        // mousedown(e) {
-        //     current = new Circle(e.layerX, e.layerY, 1, color.value);
-        // },
-        // mousemove(e) {
-        //     if (!current) return;
-        //     current.radius = current.distanceTo(e.layerX, e.layerY);
-        //     Drawable.drawAll();
-        // },
-        // mouseup(e) {
-        //     current = null;
-        // },
-    },
+    // ------- а круг - это частный случай элипса :) - просто зажми клавишу Ctrl
+    //
+    // circle: {
+    // mousedown(e) {
+    //     current = new Circle(e.layerX, e.layerY, 1, color.value);
+    // },
+    // mousemove(e) {
+    //     if (!current) return;
+    //     current.radius = current.distanceTo(e.layerX, e.layerY);
+    //     Drawable.drawAll();
+    // },
+    // mouseup(e) {
+    //     current = null;
+    // },
+    // },
 
     ellipse: {
         mousedown(e) {
@@ -86,13 +84,11 @@ const tools = {
         },
     },
 
-    //TODO:
     rectangle: {
         mousedown(e) {
             current = new Rectangle(e.layerX, e.layerY, 1, 1, color.value);
         },
         mousemove(e) {
-            // console.log(e);
             if (!current) return;
             let deltaX = current.distanceTo(e.layerX, current.y);
             let deltaY = current.distanceTo(current.x, e.layerY);
@@ -112,43 +108,77 @@ const tools = {
     },
 
     select: {
-        click(e) {
-            // console.log(e);
-            let found = Drawable.instances.filter(
-                (c) => c.in && c.in(e.layerX, e.layerY)
-            );
-            if (found.length) {
-                if (e.ctrlKey) {
-                    selection.push(found.pop());
-                } else {
-                    selection = [found.pop()];
-                }
-            } else {
-                if (!e.ctrlKey) selection = [];
-            }
+        itWasMousemove: false,
 
-            Drawable.drawAll(selection);
+        click(e) {
+            let found = [];
+            if (!tools.select.itWasMousemove) {
+                found = Drawable.instances.filter(
+                    (c) => c.in && c.in(e.layerX, e.layerY)
+                );
+                // ------   такая логика мне кажется более естественной ------
+                // но это уже из вопросов "идеологии партии" (программного продукта)
+                //
+                if (found[0]) {
+                    found = [found.pop()];
+                }
+                if (!e.ctrlKey) {
+                    selection = [];
+                }
+
+                selection = selection.concat(found);
+                Drawable.drawAll(selection);
+            }
+            tools.select.itWasMousemove = false;
         },
 
-        mousedown(e) {},
+        mousedown(e) {
+            current = new Rectangle(e.layerX, e.layerY, 1, 1, "#8F8F8F", true);
+        },
 
-        mousemove(e) {},
+        mousemove(e) {
+            if (!current) return;
+            tools.select.itWasMousemove = true;
+            let deltaX = current.distanceTo(e.layerX, current.y);
+            let deltaY = current.distanceTo(current.x, e.layerY);
+            current.width = e.layerX > current.x ? deltaX : -deltaX;
+            current.height = e.layerY > current.y ? deltaY : -deltaY;
+            Drawable.drawAll();
+        },
 
+        //TODO:
         mouseup(e) {
-            //x,y, w, h прямоугольника
-            //selection - только те элеменеты Drawable.instances которые в границах прямоугольника.
+            Drawable.instances.pop();
+
+            let found = Drawable.instances.filter(
+                (c) =>
+                    c.inBounds &&
+                    c.inBounds(
+                        current.x,
+                        current.y,
+                        current.width,
+                        current.height
+                    )
+            );
+
+            if (!e.ctrlKey) {
+                selection = [];
+            }
+
+            selection = selection.concat(found);
+            Drawable.drawAll(selection);
+            current = null;
         },
     },
 };
 
-// а круг - это частный случай элипса :) - просто зажми клавишу Ctrl
-tools.circle = tools.ellipse;
-
 function superHandler(evt) {
+    // console.log(evt.type);
     let t = tools[tool.value];
-    // console.log(this);
     // надо же еще и проверить вообще наличие такой опции
-    if (t && typeof t[evt.type] === "function") t[evt.type].call(this, evt);
+    if (t && typeof t[evt.type] === "function") {
+        t[evt.type].call(this, evt);
+    }
 }
 
 canvas.onmousemove = superHandler;
@@ -180,7 +210,7 @@ Drawable.addInstance = function (item) {
 };
 
 Drawable.drawAll = function (selection = []) {
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, canvWidth, canvHeight);
     Drawable.forAll((item) => item.draw());
     selection.forEach((item) => item.draw(true));
 };
@@ -191,6 +221,8 @@ Drawable.forAll = function (callback) {
     }
 };
 
+// ---- Круг - это частный случай элипса ----
+//
 // class Circle extends Drawable {
 //     constructor(x, y, radius, color) {
 //         super();
@@ -198,7 +230,6 @@ Drawable.forAll = function (callback) {
 //         this.y = y;
 //         this.radius = radius;
 //         this.color = color;
-
 //         this.draw();
 //     }
 
@@ -209,8 +240,14 @@ Drawable.forAll = function (callback) {
 //         ctx.fillStyle = this.color;
 //         if (selected) {
 //             ctx.lineWidth = 5;
-//             ctx.strokeStyle = ~this.color;
-//             console.log(~this.color, this.color);
+//             // проба чтоб цвет контура отличался от цвета заливки
+//             // но надо дорабатывать логику
+//             ctx.strokeStyle =
+//                 "#" +
+//                 (
+//                     (0x7fffff + parseInt("0x" + this.color.slice(1))) %
+//                     0xffffff
+//                 ).toString(16);
 //             ctx.stroke();
 //         }
 //         ctx.fill();
@@ -234,7 +271,6 @@ class Ellipse extends Drawable {
         this.radiusX = radiusX;
         this.radiusY = radiusY;
         this.color = color;
-
         this.draw();
     }
 
@@ -252,13 +288,15 @@ class Ellipse extends Drawable {
         ctx.closePath();
         ctx.fillStyle = this.color;
         if (selected) {
-            ctx.lineWidth = 4;
+            ctx.lineWidth = 5;
             // проба чтоб цвет контура отличался от цвета заливки
             // но надо дорабатывать логику
             ctx.strokeStyle =
                 "#" +
-                (0xffffff - parseInt("0x" + this.color.slice(1))).toString(16);
-            console.log(ctx.strokeStyle, this.color);
+                (
+                    (0x7fffff + parseInt("0x" + this.color.slice(1))) %
+                    0xffffff
+                ).toString(16);
             ctx.stroke();
         }
         ctx.fill();
@@ -267,15 +305,24 @@ class Ellipse extends Drawable {
     in(x, y) {
         return (
             (x - this.x) ** 2 / this.radiusX ** 2 +
-                (y - this.y) ** 2 / this.radiusY ** 2 <
+                (y - this.y) ** 2 / this.radiusY ** 2 <=
             1
         );
         // (x**2)/a**2 + (y**2)/b**2 = 1 - формула элипса
     }
 
-    //TODO:
-    inBounds(x, y, w, h) {
-        // return x > this.x - Math.abs(this.x);
+    inBounds(x, y, width, height) {
+        let minX = Math.min(x, x + width);
+        let minY = Math.min(y, y + height);
+        let maxX = Math.max(x, x + width);
+        let maxY = Math.max(y, y + height);
+
+        return (
+            Math.min(this.x - this.radiusX, this.x + this.radiusX) >= minX &&
+            Math.max(this.x - this.radiusX, this.x + this.radiusX) <= maxX &&
+            Math.min(this.y - this.radiusY, this.y + this.radiusY) >= minY &&
+            Math.max(this.y - this.radiusY, this.y + this.radiusY) <= maxY
+        );
     }
 }
 
@@ -288,7 +335,6 @@ class Line extends Drawable {
         this.height = height;
         this.color = color;
         this.lineWidth = lineWidth;
-
         this.draw();
     }
 
@@ -301,16 +347,32 @@ class Line extends Drawable {
         ctx.lineWidth = this.lineWidth;
         ctx.stroke();
     }
+
+    inBounds(x, y, width, height) {
+        let minX = Math.min(x, x + width);
+        let minY = Math.min(y, y + height);
+        let maxX = Math.max(x, x + width);
+        let maxY = Math.max(y, y + height);
+
+        return (
+            Math.min(this.x, this.x + this.width) >= minX &&
+            Math.max(this.x, this.x + this.width) <= maxX &&
+            Math.min(this.y, this.y + this.height) >= minY &&
+            Math.max(this.y, this.y + this.height) <= maxY
+        );
+    }
 }
 
 class Rectangle extends Drawable {
-    constructor(x, y, width, height, color) {
+    constructor(x, y, width, height, color, isSelectTool = false) {
         super();
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.color = color;
+        this.draw();
+        this.isSelectTool = isSelectTool;
     }
 
     draw(selected) {
@@ -318,24 +380,53 @@ class Rectangle extends Drawable {
         ctx.rect(this.x, this.y, this.width, this.height);
         ctx.closePath();
         ctx.fillStyle = this.color;
+        ctx.lineWidth = this.isSelectTool ? 1 : 5;
+        // проба чтоб цвет контура отличался от цвета заливки
+        // но надо дорабатывать логику
         if (selected) {
-            ctx.lineWidth = 4;
+            ctx.strokeStyle =
+                "#" +
+                (
+                    (0x7fffff + parseInt("0x" + this.color.slice(1))) %
+                    0xffffff
+                ).toString(16);
+        } else {
+            ctx.strokeStyle = this.color;
+        }
+        if (this.isSelectTool || selected) {
             ctx.stroke();
         }
-        ctx.fill();
+        if (!this.isSelectTool) {
+            ctx.fill();
+        }
     }
 
     in(x, y) {
         return (
-            this.x <= x &&
-            x <= this.x + this.width &&
-            this.y <= y &&
-            y <= this.y + this.height
+            Math.min(this.x, this.x + this.width) <= x &&
+            x <= Math.max(this.x, this.x + this.width) &&
+            Math.min(this.y, this.y + this.height) <= y &&
+            y <= Math.max(this.y, this.y + this.height)
+        );
+    }
+
+    inBounds(x, y, width, height) {
+        let minX = Math.min(x, x + width);
+        let minY = Math.min(y, y + height);
+        let maxX = Math.max(x, x + width);
+        let maxY = Math.max(y, y + height);
+
+        return (
+            Math.min(this.x, this.x + this.width) >= minX &&
+            Math.max(this.x, this.x + this.width) <= maxX &&
+            Math.min(this.y, this.y + this.height) >= minY &&
+            Math.max(this.y, this.y + this.height) <= maxY
         );
     }
 }
 
-color.onchange = () => {
+// c oninput  повеселее
+color.oninput = () => {
     selection.forEach((c) => (c.color = color.value));
     Drawable.drawAll(selection);
 };
@@ -348,14 +439,24 @@ document.getElementById("delete").onclick = () => {
     Drawable.drawAll();
 };
 
-//new Line(0,0,100,100, "red")
-////new Circle(30,30,10, "red")
+document.getElementById("undo").onclick = () => {
+    Drawable.instances.pop();
+    selection = [];
+    Drawable.drawAll();
+};
 
-////canvas.onmousemove = function(e){
-////}
+clear.onclick = () => {
+    selection = [];
+    Drawable.instances = [];
+    ctx.clearRect(0, 0, canvWidth, canvHeight);
+};
 
-//undo.onclick = function(){
-//Drawable.instances.pop()
-////Drawable.instances = []
-//Drawable.drawAll()
-//}
+tool.onchange = () => {
+    comment.innerText = "";
+    if (tool.value === "circle" || tool.value === "ellipse") {
+        comment.innerText = "Круг - этот тот же элипс, но +CTRL";
+    }
+    if (tool.value === "rectangle") {
+        comment.innerText = "Квадрат = прямоугольник + CTRL";
+    }
+};
