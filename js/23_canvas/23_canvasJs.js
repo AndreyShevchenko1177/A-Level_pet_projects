@@ -146,7 +146,6 @@ const tools = {
             Drawable.drawAll();
         },
 
-        //TODO:
         mouseup(e) {
             Drawable.instances.pop();
 
@@ -173,7 +172,6 @@ const tools = {
 };
 
 function superHandler(evt) {
-    // console.log(evt.type);
     let t = tools[tool.value];
     // надо же еще и проверить вообще наличие такой опции
     if (t && typeof t[evt.type] === "function") {
