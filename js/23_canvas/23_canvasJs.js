@@ -289,12 +289,9 @@ class Ellipse extends Drawable {
             ctx.lineWidth = 5;
             // проба чтоб цвет контура отличался от цвета заливки
             // но надо дорабатывать логику
+            // prettier-ignore
             ctx.strokeStyle =
-                "#" +
-                (
-                    (0x7fffff + parseInt("0x" + this.color.slice(1))) %
-                    0xffffff
-                ).toString(16);
+                "#" + ((0x7fffff + parseInt("0x" + this.color.slice(1))) % 0xffffff).toString(16);
             ctx.stroke();
         }
         ctx.fill();
@@ -336,14 +333,57 @@ class Line extends Drawable {
         this.draw();
     }
 
-    draw() {
+    draw(selected) {
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
         ctx.lineTo(this.x + this.width, this.y + this.height);
         ctx.closePath();
-        ctx.strokeStyle = this.color;
+        // prettier-ignore
+        ctx.strokeStyle = selected ?
+            "#" + ((0x7fffff + parseInt("0x" + this.color.slice(1))) % 0xffffff ).toString(16)
+            : this.color;
         ctx.lineWidth = this.lineWidth;
         ctx.stroke();
+    }
+
+    in(x, y) {
+        // prettier-ignore
+        if (
+            !(x > Math.min(this.x - this.lineWidth, this.x + this.width + this.lineWidth) &&
+                x < Math.max(this.x - this.lineWidth, this.x + this.width + this.lineWidth) &&
+                y > Math.min(this.y - this.lineWidth, this.y + this.height + this.lineWidth) &&
+                y < Math.max(this.y - this.lineWidth, this.y + this.height + this.lineWidth)
+            )
+        ) {
+            return false;
+        }
+
+        // prettier-ignore
+        let aureoleArr = [
+            Math.atan((y + this.lineWidth / 2 - this.y) / (x - this.lineWidth / 2 - this.x)),
+            Math.atan((y + this.lineWidth / 2 - this.y) / (x + this.lineWidth / 2 - this.x)),
+            Math.atan((y - this.lineWidth / 2 - this.y) / (x + this.lineWidth / 2 - this.x)),
+            Math.atan((y - this.lineWidth / 2 - this.y) / (x - this.lineWidth / 2 - this.x)),
+        ];
+
+        let ownAngle = Math.atan(this.height / this.width);
+        let maxAngle = Math.max(...aureoleArr);
+        let minAngle = Math.min(...aureoleArr);
+        if (maxAngle - minAngle > Math.PI / 2) {
+            if (maxAngle > Math.PI) {
+                minAngle += Math.PI;
+            } else {
+                maxAngle -= Math.PI;
+            }
+
+            [maxAngle, minAngle] = [minAngle, maxAngle];
+
+            if (this.width * this.height > 0) {
+                ownAngle = ownAngle * -1;
+            }
+        }
+
+        return minAngle <= ownAngle && ownAngle <= maxAngle;
     }
 
     inBounds(x, y, width, height) {
@@ -380,20 +420,19 @@ class Rectangle extends Drawable {
         ctx.fillStyle = this.color;
         ctx.lineWidth = this.isSelectTool ? 1 : 5;
         // проба чтоб цвет контура отличался от цвета заливки
-        // но надо дорабатывать логику
+        // но надо дорабатывать логику (подобрать цвет)
+        // prettier-ignore
         if (selected) {
             ctx.strokeStyle =
-                "#" +
-                (
-                    (0x7fffff + parseInt("0x" + this.color.slice(1))) %
-                    0xffffff
-                ).toString(16);
+                "#" + ((0x7fffff + parseInt("0x" + this.color.slice(1))) % 0xffffff).toString(16);
         } else {
             ctx.strokeStyle = this.color;
         }
+
         if (this.isSelectTool || selected) {
             ctx.stroke();
         }
+
         if (!this.isSelectTool) {
             ctx.fill();
         }
@@ -451,9 +490,11 @@ clear.onclick = () => {
 
 tool.onchange = () => {
     comment.innerText = "";
+
     if (tool.value === "circle" || tool.value === "ellipse") {
         comment.innerText = "Круг - этот тот же элипс, но +CTRL";
     }
+
     if (tool.value === "rectangle") {
         comment.innerText = "Квадрат = прямоугольник + CTRL";
     }
