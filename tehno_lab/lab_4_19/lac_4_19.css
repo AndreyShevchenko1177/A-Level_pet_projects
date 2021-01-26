@@ -1,0 +1,22 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    padding: 30px;
+    margin: 0px;
+}
+
+#myCheckbox {
+    position: absolute;
+    z-index: 1;
+}
+
+.point {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background-color: black;
+    z-index: 2;
+}

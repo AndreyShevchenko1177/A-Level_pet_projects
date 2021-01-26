@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Lab_4_2</title>
+        <link rel="stylesheet" href="./lab_4_2.css" />
+    </head>
+    <body>
+        <h4>Индивидуальные задания</h4>
+        <p>
+            На языке JavaScript разработать программные средства, выполняющие
+            следующие действия:<br /><br />
+        </p>
+        <ul class="list">
+            <li>
+                по событию 1 отметить указанный в таблице объект, изменив одно
+                или несколько его свойств;
+            </li>
+
+            <li>
+                по событию 2 осуществить движение этого объекта из заданной
+                точки (x,y) экрана по траектории, заданной функцией f(x) и
+                направлением ("куда") в соответствии с указанным режимом:
+                <ul class="list2">
+                    <li>1 - до достижения границ окна браузера;</li>
+                    <li>
+                        2 - до достижения границ окна браузера после
+                        однократного отражения;
+                    </li>
+                    <li>
+                        3 - непрерывное движение с многократными отражениями от
+                        границ окна браузера. надо выполнять с отражением от
+                        границ окна браузера.
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                амплитуду и скорость движения выбирать из соображения
+                наглядности.
+            </li>
+        </ul>
+        <!-- prettier-ignore -->
+        <table border="1" align="center" width="100%" style="font: 5mm; color: #00a">
+            <tr>
+                <th rowspan="2">№</th>
+                <th rowspan="2">Объект</th>
+                <th colspan="4">Параметры движения</th>
+                <th colspan="2">События</th>
+            </tr>
+
+            <tr>
+                <th>(x,y)</th>
+                <th>f(x)</th>
+                <th>Куда</th>
+                <th>Режим</th>
+                <th>1</th>
+                <th>2</th>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Рисунок</td>
+                <td>X=300;Y=400</td>
+                <td>25cos(x)</td>
+                <td>Вверх</td>
+                <td>2</td>
+                <td>Click</td>
+                <td>Contextmenu</td>
+            </tr>
+        </table>
+        <img id="myImg" src="./sunflower_PNG13363.png" alt="" />
+        <script src="./lab_4_2.js"></script>
+    </body>
+</html>

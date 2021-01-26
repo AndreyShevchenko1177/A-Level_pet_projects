@@ -1,0 +1,23 @@
+* {
+    padding: 0px;
+    margin: 0px;
+}
+
+body {
+    padding: 50px;
+    margin: 0px;
+}
+
+#myImg {
+    width: 100px;
+    position: absolute;
+    z-index: 1;
+}
+
+.point {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    background-color: black;
+    z-index: 2;
+}

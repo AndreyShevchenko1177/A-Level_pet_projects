@@ -1,0 +1,519 @@
+<HTML>
+<HEAD>
+<TITLE>Лабораторная работа 13 (4 JavaScript): Позиционирование и движение
+элементов на Web-странице</TITLE>
+<LINK REL=STYLESHEET TYPE="text/css" HREF="heads.css">
+</HEAD>
+<BODY>
+<H1> ЛАБОРАТОРНАЯ РАБОТА № 13 (4 JavaScript)</H1>
+<H2> <SPAN CLASS="beg" >Тема: </SPAN>Позиционирование и движение элементов на 
+Web-странице</H2>
+<H2> <SPAN CLASS="beg" >Цель: </SPAN>
+Изучение средств и возможностей языка JavaScript для позиционирования и 
+организации движения элементов на Web-странице</H2>
+<A NAME="beg"></A>
+<H3>ОГЛАВЛЕНИЕ</H3> 
+<A CLASS="com" HREF="#1">1 Позиционирование элементов на Web-странице<BR>
+<A CLASS="com" HREF="#2">2 Организация движения объектов на Web-странице<BR>
+<A CLASS="com" HREF="#2.1">2.1 Изменение координат элемента с помощью 
+циклического  процесса<BR>
+<A CLASS="com" HREF="#2.2">2.2 Изменение координат элемента по событиям мышки<BR>
+<A CLASS="com" HREF="#2.3">2.3 Перетаскивание элементов<BR>
+<A CLASS="com" HREF="#3">3 Свойства и методы объекта Math<BR>
+<A CLASS="com" HREF="#prim1">Пример 1<BR>
+<A CLASS="com" HREF="#prim2">Пример 2<BR>
+<A CLASS="com" HREF="#prim3">Пример 3<BR>
+<A CLASS="com" HREF="#ind">Индивидуальные задания </SPAN><BR>
+<A NAME="1"></A>
+<H4>1 Позиционирование элементов на Web-странице</H4>
+<P>Режим позиционирования элемента Web-страницы, т.е. размещения его на экране, задается с 
+помощью свойства CSS <SPAN  CLASS="svoj">position</SPAN>, которое имеет 
+следующие значения:
+<UL CLASS="list">
+<LI>static - положение элемента на экране задается браузером в соответствии с 
+тем местом, которое элемент занимает в HTML-документе (значение задано по 
+умолчанию, не использует координаты элемента и поэтому не может быть выбрано 
+для организации движения элемента);
+<LI>relative - положение элемента на экране задается с помощью координат 
+относительно того места на экране, куда браузер поместил бы элемент в режиме 
+static;
+<LI>absolute - положение элемента на экране задается с помощью его координат 
+относительно родителя.
+</UL>
+<P>При использовании режима позиционирования <SPAN CLASS="svoj">absolute</SPAN>, 
+положение элемента на экране может быть задано с помощью таких свойств CSS:
+<UL CLASS="list">
+<LI>left - задает или возвращает горизонтальную позицию левой границы элемента 
+относительно родителя (если родителем является тэг &lt;BODY&gt;, то относительно 
+левой границы окна браузера);
+<LI>top - задает или возвращает вертикальную позицию верхней границы элемента 
+относительно родителя (если родителем является тэг &lt;BODY&gt;, то относительно 
+верхней границы окна браузера);
+<LI>right - задает или возвращает горизонтальную позицию правой границы элемента 
+относительно родителя (если родителем является тэг &lt;BODY&gt;, то относительно 
+правой границы окна браузера);
+<LI>bottom - задает или возвращает вертикальную позицию нижней границы элемента 
+относительно родителя (если родителем является тэг &lt;BODY&gt;, то относительно 
+нижней границы окна браузера).
+</UL>
+<P>Если для одного элемента заданы оба свойства: 
+<SPAN CLASS="svoj">left</SPAN> и <SPAN CLASS="svoj">right</SPAN>, то свойство 
+<SPAN CLASS="svoj">right</SPAN> игнорируется. При совместном задании свойств 
+<SPAN CLASS="svoj">top</SPAN> и <SPAN CLASS="svoj">bottom</SPAN> предпочтение 
+отдается свойству <SPAN CLASS="svoj">top</SPAN>.<BR>
+<SPAN CLASS="txt_abz">Значения </SPAN>свойств <SPAN CLASS="svoj">left</SPAN>, 
+<SPAN CLASS="svoj">top</SPAN>, <SPAN CLASS="svoj">right</SPAN> и 
+<SPAN CLASS="svoj">bottom</SPAN> могут быть заданы:
+<UL CLASS="list">
+<LI>в абсолютных единицах:
+<UL CLASS="list2">
+<LI>&nbsp;pt - в пунктах (1/72 дюйма);
+<LI>&nbsp;px - в пикселях;
+<LI>&nbsp;mm - в мм;
+<LI>&nbsp;cm - в см;
+<LI>&nbsp;in  - в дюймах.
+</UL>
+<LI>в процентах от ширины родителя;
+<LI>предопределенным значением auto, которое задается по умолчанию и указывает 
+на то, что элемент позиционируется браузером.
+</UL>
+<P>Если единицы измерения не указаны, то подразумевается, что они заданы в 
+пикселях.<BR>
+<SPAN CLASS="txt_abz">Ниже </SPAN>приведен пример рисунка, расположенного в 200 
+пикседях от левой границы экрана и в 100 пикселях от верхней границы экрана:<BR><BR>
+<SPAN CLASS="html">&lt;IMG NAME="imgs" SRC="fish.gif" STYLE="position:absolute;
+left:200;top:100">
+<P>Если попытаться сдвинуть этот рисунок на экране на 50 пикселей вправо с 
+помощью выражения<BR><BR>
+<SPAN CLASS="html">imgs.style.left+=50,
+<P CLASS="ba">то это приведет к возникновению ошибки "Недопустимый аргумент" из-за того, 
+что свойство <SPAN CLASS="svoj">left</SPAN> возвращает значение не в виде числа 
+200, а в виде строки "200px".<BR>
+<SPAN CLASS="txt_abz">Поэтому </SPAN>надо или воспользоваться функцией 
+<SPAN CLASS="svoj">parseInt()</SPAN>, которая возвращает только число:<BR><BR>
+<SPAN CLASS="html">imgs.style.left=parseInt(imgs.style.left)+50,
+<P CLASS="ba">или вместо свойств <SPAN CLASS="svoj">left</SPAN>,
+<SPAN CLASS="svoj">top</SPAN>, <SPAN CLASS="svoj">right</SPAN> и 
+<SPAN CLASS="svoj">bottom</SPAN> применять свойства:
+<UL CLASS="list">
+<LI>pixelLeft - задает или возвращает численное значение горизонтальной позиции левой 
+границы элемента в пикселях;
+<LI>pixelTop - задает или возвращает численное значение вертикальной позиции верхней 
+границы элемента в пикселях;
+<LI>pixelRight - задает или возвращает численное значение горизонтальной позиции 
+правой границы элемента в пикселях;
+<LI>pixelBottom - задает или возвращает численное значение вертикальной позиции 
+нижней границы элемента в пикселях.
+</UL>
+<P>В нашем примере вместо свойства <SPAN CLASS="svoj">left</SPAN> необходимо 
+использовать свойство <SPAN CLASS="svoj">pixelLeft</SPAN>:<BR><BR>
+<SPAN CLASS="html">imgs.style.pixelLeft+=50;
+<P>Если же координаты элемента заданы в других единицах измерения, необходимо 
+использовать свойства:
+<UL CLASS="list">
+<LI>posLeft - задает или возвращает численное значение горизонтальной позиции левой 
+границы элемента в единицах измерения, заданных свойством left;
+<LI>posTop - задает или возвращает численное значение вертикальной позиции верхней 
+границы элемента в единицах измерения, заданных свойством top;
+<LI>posRight - задает или возвращает численное значение горизонтальной позиции 
+правой границы элемента в единицах измерения, заданных свойством right;
+<LI>posBottom - задает или возвращает численное значение вертикальной позиции 
+нижней границы элемента в единицах измерения, заданных свойством bottom.
+</UL>
+<A NAME="2"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4>2 Организация движения объектов на Web-странице</H4>
+<P>Движение элемента на Web-странице осуществляется путем изменения значений 
+свойств, задающих его координаты.<BR>
+<SPAN CLASS="txt_abz">Изменение </SPAN>координат элемента может быть 
+реализовано:
+<UL CLASS="list">
+<LI>путем программно организованного циклического процесса (см. <A CLASS="pri" 
+HREF=#prim1>пример № 1</A></SPAN>);
+<LI>по событиям мышки (см. <A CLASS="pri" HREF=#prim2>пример № 2</A></SPAN>);
+<LI>путем"привязки" элемента к курсору мышки, т.е. путем задания координат 
+элемента, равнымы координатам курсора мышки (см. <A CLASS="pri" 
+HREF=#prim3>пример № 3</A></SPAN>);
+<LI>по событиям клавиатуры (см. описание лаб. работы № 5 "Работа с клавиатурой").
+</UL>
+<A NAME="2.1"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4 CLASS="pod">2.1 Изменение координат элемента с помощью циклического 
+процесса</H4>
+<P>Для организации циклического процесса могут быть использованы следующие методы 
+объекта <SPAN CLASS="svoj">window</SPAN>:
+<UL CLASS="list">
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">setTimeout("функция или 
+выражение", интервал [,список аргументов функции, разделенных запятыми])</SPAN>: 
+вычисляет значение выражения или вызывает функцию по истечению заданного 
+интервала (в миллисекундах), если до этого не был вызван метод <SPAN 
+STYLE="font:bold italic 5.5mm;color:#000070">clearTimeout()</SPAN>, может 
+передавать в функцию заданные в списке аргументы, возвращает указатель на 
+объект таймера, который может быть использован в методе <SPAN STYLE="font:bold 
+italic 5.5mm;color:#000070">clearTimeout()</SPAN> для остановки и уничтожения 
+таймера;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">clearTimeout(таймер)</SPAN>: 
+останавливает таймер, установленный методом <SPAN STYLE="font:bold italic 5.5mm;
+color:#000070">setTimeout()</SPAN>;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">setInterval("функция или 
+выражение", интервал [,список аргументов функции, разделенных запятыми])</SPAN>: вычисляет значение выражения или вызывает функцию каждый 
+раз по истечению данного интервала (в миллисекундах), если до этого не был 
+вызван метод <SPAN STYLE="font:bold italic 5.5mm;color:#000070">clearTimeout()</SPAN>, 
+может передавать в функцию заданные в списке аргументы, возвращает указатель на 
+объект таймера, который может быть использован в методе <SPAN STYLE="font:bold 
+italic 5.5mm;color:#000070">clearTimeout()</SPAN> для остановки и уничтожения 
+таймера;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">clearInterval(таймер)</SPAN>: 
+останавливает таймер, установленный методом <SPAN STYLE="font:bold italic 5.5mm;color:
+#000070">setInterval()</SPAN>.
+</UL>
+<P>Использование метода <SPAN CLASS="svoj">setTimeout()</SPAN> для организации 
+движения элемента показано в <A CLASS="pri" HREF=#prim1>примере № 1</A>, где 
+реализовано движение элемента Web-страницы - буквы Z, заданной с помощью тэга 
+&lt;P&gt;, по траектории в виде синусоиды ():
+<A NAME="prim1"></A><BR>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<P><A CLASS="out" HREF="js_pr4-1.htm">Пример 1</A><BR><BR>
+
+<SPAN CLASS="html">&lt;HTML&gt;<BR>
+<SPAN CLASS="html">&lt;HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;TITLE&gt;Изменение координат элемента с помощью циклического процесса&lt;/TITLE&gt;<BR>
+<SPAN CLASS="html">&lt;SCRIPT&gt;<BR>
+<SPAN CLASS="html">x=0; y=100; dx=0; dy=0;<BR>
+<SPAN CLASS="html">function f(x) { return 60*Math.sin(x*Math.PI/180);}<BR>
+<SPAN CLASS="html">function moveTxt()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if ((z.style.pixelLeft&lt;document.body.clientWidth-30)
+&& (z.style.pixelTop&gt;30))<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">z.style.left=x+dx;<BR>
+<SPAN CLASS="html">z.style.top=y+dy-f(x+dx);<BR>           
+<SPAN CLASS="html">dx+=20;<BR>
+<SPAN CLASS="html">dy+=7;<BR>
+<SPAN CLASS="html">setTimeout("moveTxt()",125);<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">&lt;/SCRIPT&gt;<BR>
+<SPAN CLASS="html">&lt;/HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;BODY&gt;<BR> 
+<SPAN CLASS="html">&lt;P ID="z" STYLE="color:blue;font:8mm;
+position:absolute;left:0;top:100"<BR>
+<SPAN CLASS="html_par">onClick="moveTxt()"&gt;Z&lt;/P&gt;<BR>
+<SPAN CLASS="html">&lt;/BODY&gt;<BR>
+<SPAN CLASS="html">&lt;/HTML&gt;<BR>
+<P>В примере 1 с помощью функции <SPAN CLASS="svoj">f(x)</SPAN> реализовано
+движение объекта справа налево и сверху вниз по синусоиде
+<SPAN CLASS="svoj">y=60sin(x)</SPAN>. Поскольку траектория указана в виде
+тригометрической функции, для ее задания был использован объект
+<SPAN CLASS="svoj">Math</SPAN>, свойства и методы которого описаны в разделе 3.
+При этом было выполнено преобразование аргумента функции
+<SPAN CLASS="svoj">sin(x)</SPAN> из градусов в радианы. Направление и скорость
+движения объекта зависит от величины и знака приращений его координат
+<SPAN CLASS="svoj">dx</SPAN> и <SPAN CLASS="svoj">dy</SPAN>. На скорость
+движения также влияет промежуток времени, через который эти приращения
+происходят (2-й параметр метода <SPAN CLASS="svoj">setTimeout()</SPAN>).<BR>
+<SPAN CLASS="txt_abz">Выбор </SPAN>амплитуды и скорости движения в примере 1
+осуществлен из соображений наглядности.<BR>
+<SPAN CLASS="txt_abz">По </SPAN>щелчку мышки по букве Z вызывается функция 
+<SPAN CLASS="svoj">moveTxt()</SPAN>, которая осуществляет движение этого элемента
+из точки окна браузера с координатами: <SPAN CLASS="svoj">left=0; 
+top=100</SPAN> путем задания приращений его координатам 
+<SPAN CLASS="svoj">left</SPAN> и <SPAN CLASS="svoj">top</SPAN>:<BR><BR>
+<SPAN CLASS="html">z.style.left=x+dx;<BR>
+<SPAN CLASS="html">z.style.top=y+dy-f(x+dx);<BR>
+<P CLASS="ba">до тех пор, пока он не приблизится к границам окна браузера
+(граница не достигается, чтобы буква Z оставалась в области полной видимости).<BR>
+<SPAN CLASS="txt_abz">Значения левой и нижней границы </SPAN> окна браузера
+определяются с помощью свойств тэга &lt;BODY&gt; <SPAN CLASS="svoj">clientWidth </SPAN> и 
+<SPAN CLASS="svoj">clientHeight</SPAN>. Эти свойства могут быть использованы
+для определения размеров любых элементов Web-страницы, которые имеют ширину и 
+высоту.<BR>
+<SPAN CLASS="txt_abz">При </SPAN>использовании альтернативных методов 
+<SPAN CLASS="svoj">setInterval()</SPAN> и 
+<SPAN CLASS="svoj">clearInterval()</SPAN> описание функции 
+<SPAN CLASS="svoj">moveTxt()</SPAN> необходимо несколько изменить:<BR><BR>
+<SPAN CLASS="html">function moveTxt()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if ((z.style.pixelLeft&lt;document.body.clientWidth-30)
+&& (z.style.pixelTop&gt;30))<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">z.style.left=x+dx;<BR>
+<SPAN CLASS="html">z.style.top=y+dy-f(x+dx);<BR>           
+<SPAN CLASS="html">dx+=20;<BR>
+<SPAN CLASS="html">dy+=7;<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">else clearInterval(timer);<BR>
+<SPAN CLASS="html">}<BR>
+<P>Кроме того, вызов функции <SPAN CLASS="svoj">moveTxt()</SPAN> в этом случае 
+следует выполнять так:<BR><BR>
+<SPAN CLASS="html_par">onClick="timer=setInterval('moveTxt()',125);"
+<P>
+<A NAME="2.2"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4 CLASS="pod">2.2 Изменение координат элемента по событиям мышки</H4>
+<P>Движение элемента Web-страницы по экрану кроме рассмотренного выше способа 
+изменения его координат с помощью программно организованного циклического 
+процесса, может осуществить сам пользователь Web-сайта с помощью мышки.<BR>
+<SPAN CLASS="txt_abz">В </SPAN><A CLASS="pri" HREF=#prim2>примере № 2</A> 
+описана функция <SPAN CLASS="svoj">runRef()</SPAN>, которая каждый раз при 
+достижении указателем мышки ссылки <I STYLE="color:red"><U>Ссылка</U></I> или 
+при движении указателя мышки по ссылке выполняет приращения координат этого 
+элемента, реализуя эффект "убегающей" от пользователя ссылки. Все его попытки 
+щелкнуть по ссылке, чтобы загрузить новую страницу 
+(<SPAN CLASS="svoj">js_1.htm</SPAN>), оказываются безрезультатными.<BR>
+<SPAN CLASS="txt_abz">С </SPAN>помощью переменных <SPAN CLASS="svoj">dx</SPAN>
+и <SPAN CLASS="svoj">dy</SPAN>, которые меняют свой знак на противоложный при 
+достижении соответственно вертикальных или горизонтальных границ окна браузера, 
+реализовано отражение ссылки при движении по экрану от его границ.<BR>
+<SPAN CLASS="txt_abz">Вызов </SPAN>функции <SPAN CLASS="svoj">runRef()</SPAN> 
+как по событию <SPAN CLASS="svoj">Mousemove</SPAN>, так и по событию 
+<SPAN CLASS="svoj">Mouseover</SPAN> обеспечивает более надежную защиту ссылки 
+от щелчка мышки.
+<A NAME="prim2"></A><BR>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<P><A CLASS="out" HREF="js_pr4-2.htm">Пример 2</A><BR><BR>
+
+<SPAN CLASS="html">&lt;HTML&gt;<BR>
+<SPAN CLASS="html">&lt;HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;TITLE&gt;Организация движения элементов Web-страницы с помощью <BR>
+<SPAN CLASS="html">мышки &lt;/TITLE&gt;<BR>
+<SPAN CLASS="html">&lt;SCRIPT&gt;<BR>
+<SPAN CLASS="html">dx=10; dy=10;<BR>
+<SPAN CLASS="html">function runRef()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if  ((parseInt(m.style.left)<25) || <BR>
+<SPAN CLASS="html_par">(parseInt(m.style.left)>document.body.clientWidth-25)) dx=-dx;<BR>    
+<SPAN CLASS="html">if  ((m.style.posTop<25) || <BR>
+<SPAN CLASS="html_par">(m.style.posTop>document.body.clientHeight-25)) dy=-dy;<BR> 
+<SPAN CLASS="html"> m.style.pixelLeft+=dx;<BR>
+<SPAN CLASS="html">m.style.pixelTop+=dy;<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">&lt;/SCRIPT&gt;<BR>
+<SPAN CLASS="html">&lt;/HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;BODY"&gt;<BR>
+<SPAN CLASS="html">&lt;A NAME="m" HREF="js_1.htm"<BR> 
+<SPAN CLASS="html_par">STYLE="position:absolute;left:100;top:100;color:red"<BR>
+<SPAN CLASS="html_par">onMousemove="runRef()"<BR>
+<SPAN CLASS="html_par">onMouseover="runRef()"&gt;
+<SPAN CLASS="htmlp">Ссылка
+<SPAN CLASS="htmlba">&lt;/A&gt;<BR>
+<SPAN CLASS="html">&lt;/BODY&gt;<BR>
+<SPAN CLASS="html">&lt;/HTML&gt;<BR>
+
+<A NAME="2.3"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4 CLASS="pod">2.3 Перетаскивание элементов</H4>
+<P>Перетаскивание элементов Web-страницы с помощью мышки реализуется путем 
+присваивания текущим координатам перемещаемого элемента текущих координат мышки. 
+Доступ к координатам мышки можно осуществить, используя такие свойства объекта 
+<SPAN CLASS="svoj">event</SPAN>:
+<UL CLASS="list">
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">clientX</SPAN> - 
+возвращает горизонтальную координату курсора мышки относительно клиенткой 
+части окна (без учета рамок, заголовка, строки меню, панели инстументов и 
+строки состояния);
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">clientY</SPAN> - 
+возвращает вертикальную координату курсора мышки относительно клиенткой части 
+окна (без учета рамок, заголовка, строки меню, панели инстументов и строки 
+состояния);
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">offsetX</SPAN> - 
+возвращает горизонтальную координату курсора мышки относительно элемента 
+страницы, вызвавшего это событие;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">offsetY</SPAN> - 
+возвращает вертикальную координату курсора мышки относительно элемента 
+страницы, вызвавшего это событие;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">screenX</SPAN> - 
+возвращает горизонтальную координату курсора мышки относительно экрана;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">screenY</SPAN> - 
+возвращает вертикальную координату курсора мышки относительно экрана;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">x</SPAN> - возвращает 
+горизонтальную координату курсора мышки относительно родительского элемента;
+<LI><SPAN STYLE="font:bold italic 5.5mm;color:#000070">y</SPAN> - возвращает 
+вертикальную координату курсора мышки относительно родительского элемента.
+</UL>
+<P>В <A CLASS="pri" HREF=#prim3>примере № 3</A> создается Web-страница, 
+содержащая три элемента - рисунок и два слова "ТЕКСТ" одинакового размера, но 
+разных цветов.  
+
+<A NAME="prim3"></A><BR>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<P><A CLASS="out" HREF="js_pr4-3.htm">Пример 3</A><BR><BR>
+<SPAN CLASS="html">&lt;HTML&gt;<BR>
+<SPAN CLASS="html">&lt;HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;TITLE&gt;Перетаскивание элементов Web-страницы&lt;/TITLE&gt;<BR>
+<SPAN CLASS="html">&lt;SCRIPT&gt;<BR>
+<SPAN CLASS="html">var n=0; l=0;<BR>
+<SPAN CLASS="html">function drag()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">with (document.all(n).style)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">position="absolute";<BR>
+<SPAN CLASS="html">/* window.status= "n="+n+" z-index="+l+" left="+pixelLeft+" 
+top="+pixelTop+<BR>
+<SPAN CLASS="html">" x="+event.x+" y="+event.y; */<BR>
+<SPAN CLASS="html">left=event.x;<BR>
+<SPAN CLASS="html">top=event.y;<BR>
+<SPAN CLASS="html">zIndex=l;<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">&lt;/SCRIPT&gt;<BR>
+<SPAN CLASS="html">&lt;/HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;BODY onClick="n=event.srcElement.sourceIndex;"<BR>
+<SPAN CLASS="html_par">onContextmenu="if(l==2) l=0; else l++;return false"<BR>
+<SPAN CLASS="html_par">onMousemove="drag()"><BR>
+<SPAN CLASS="html">&lt;IMG SRC="fish.gif" &gt;<BR>
+<SPAN CLASS="html">&lt;P STYLE="color:#0FF;font:8mm"&gt;TEXT1<BR>
+<SPAN CLASS="html">&lt;P STYLE="color:#F0F;font:8mm"&gt;TEXT2<BR>
+<SPAN CLASS="html">&lt;/BODY&gt;<BR>
+<SPAN CLASS="html">&lt;/HTML&gt;<BR>
+<P>При щелчке мышки по любому из этих объектов (по событию 
+<SPAN CLASS="svoj">Click</SPAN>) для отмеченного объекта устанавливается режим
+перетаскивания: в переменную <SPAN CLASS="svoj">n</SPAN> заносится порядковый
+номер этого элемента Web-страницы, например, для рисунка: n=5, для первого
+текста: n=6, для второго: n=7 (при щелчке по свободному пространству окна
+браузера n принимает значение 4 - номер тэга BODY).<BR>
+<SPAN CLASS="txt_abz">Режим </SPAN>перетаскивания отмеченного объекта
+реализуется путем вызова при движении мышки (по событию 
+<SPAN CLASS="svoj">Mousemove</SPAN>) функции 
+<SPAN CLASS="svoj">drag()</SPAN>, которая выполняет следующие действия:
+<UL CLASS="list">
+<LI>устанавливает для объекта с номером n абсолютное позиционирование;
+<LI>присваивает горизонтальной и вертикальной координатам этого объекта
+соответственно горизонтальную и вертикальную координату указателя мышкки,
+что позволяет ему перемещаться за движущейся мышкой;
+<LI>устанавливает для объекта текущее значение свойства
+<SPAN CLASS="svoj">z-index</SPAN>, заданное в переменной l.
+</UL>
+<P>При щелчке правой кнопкой мышки (по событию 
+<SPAN CLASS="svoj">Contextmenu</SPAN>) циклически меняется значение переменной
+l (0,1,2,0,...), задающей текущее значение свойства
+<SPAN CLASS="svoj">z-index</SPAN>, что позволяет любому объекту при задании 
+соответствующего значения или перекрывать другие объкты Web-страницы, или
+располагаться под ними.<BR>
+<SPAN CLASS="txt_abz">Для </SPAN>отмены режима перетаскивания отмеченного объекта
+необходимо повторно щелчкнуть мышкой. При этом в переменную
+<SPAN CLASS="svoj">n</SPAN> заносится номер уже нового объекта - того, который
+в момент щелчка находился под перетаскиваемым объектом. Это связано с тем, что
+при движении координаты указателя мышки на пиксел опережают координаты самого
+объекта. В этом случае для нового объекта устанавливается режим перетаскивания   
+(если только этим объектом не является тэг BODY).<BR>
+<SPAN CLASS="txt_abz">Добавим</SPAN>, что закомментированные строки функции
+<SPAN CLASS="svoj">drag()</SPAN> были использованы при отладке программы для вывода
+в поле статуса окна браузера значений таких контрольных данных: номер,
+<SPAN CLASS="svoj">z-index</SPAN> и координаты перетаскиваемого объекта, а
+также координаты мышки.
+<A NAME="3"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4>3 Свойства и методы объекта Math</H4>
+<P>Объект <SPAN CLASS="svoj">Math</SPAN> позволяет программистам использовать
+математические константы и функции при написании программ на JavaScript.
+Имеет следующие свойства:
+<UL CLASS="list">
+<LI>E - возвращает константу Эйлера (e);
+<LI>LN10 - возвращает значение ln 10;
+<LI>LN2 - возвращает значение ln2;
+<LI>LOG10E - возвращает значение lg e;
+<LI>LOG2E - возвращает значение log<SUB>2</SUB>e;
+<LI>PI - возвращает значение 3,14159...
+</UL>
+<P CLASS="ba">и методы:
+<UL CLASS="list">
+<LI>abs(число) - возвращает абсолютное значение аргумента;
+<LI>acos(число) - возвращает арккосинус аргумента в радианах;
+<LI>asin(число) - возвращает арксинус аргумента в радианах;
+<LI>atan(число) - возвращает арктангенс аргумента в радианах;
+<LI>atan2(x, y) - возвращает угол в радианах между горизонтальной осью и
+прямой проведенной через начало координат и точку с координатми x, y;
+<LI>ceil(число) - возвращает ближайшее целое число, большее или равное аргументу;
+<LI>cos(число) - возвращает косинус аргумента в радианах;
+<LI>exp(число) - возвращает значение e<SUP>число</SUP>;
+<LI>floor(число) - возвращает ближайшее целое число, меньше аргумента или равное ему;
+<LI>log(число) - возвращает натуральный логарифм аргумента;
+<LI>max(список аргументов, разделенный запятыми) - возвращает максимальный из
+аргументов; если не задан ни один аргумент возвращает значение NEGATIVE
+INFINITY ("минус бесконечность"); если один из аргументов равен NaN (Not
+a Number - "не число"),  возвращается NaN;
+<LI>min(список аргументов, разделенный запятыми) - возвращает минимальный из
+аргументов; если не задан ни один аргумент возвращает значение POSITIVE
+INFINITY ("плюс бесконечность"); если один из аргументов равен NaN,
+возвращается NaN;
+<LI>pow(основание, порядок) - возвращает значение основание<SUP>порядок</SUP>;
+<LI>random() - возвращает псевдослучайное число от 0 включительно до 1
+исключительно;
+<LI>round(число) - возвращает значение оргумента, округленное до ближайшего
+целого;
+<LI>sin(число) - возвращает синус аргумента в радианах;
+<LI>sqrt(число) - возвращает квадратный корень от аргумента;
+<LI>tan(число) - возвращает тангенс аргумента в радианах.
+</UL>
+<A NAME="ind"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4>Индивидуальные задания </H4>
+<P>На языке JavaScript разработать программные средства, выполняющие следующие действия:<BR><BR>
+<UL CLASS="list">
+<LI>по событию 1 отметить указанный в таблице объект, изменив одно или несколько
+его свойств;
+<LI> по событию 2 осуществить движение этого объекта из заданной точки (x,y)
+экрана по траектории, заданной функцией f(x) и направлением ("куда") в соответствии с
+указанным режимом:
+<UL CLASS="list2">
+<LI>1 - до достижения границ окна браузера;
+<LI>2 - до достижения границ окна браузера после однократного отражения; 
+<LI>2 - непрерывное движение с многократными отражениями от границ окна
+браузера.
+надо выполнять с отражением от границ окна браузера.
+</UL>
+<LI>амплитуду и скорость движения выбирать из соображения наглядности.
+</UL>
+<P> <table border=1 align=center width="100%" style="font:5mm;color:#00a">
+<tr><th rowspan=2>№<th rowspan=2>Объект<th colspan=4>Параметры движения
+<th colspan=2>События
+<tr><th>(x,y)<th>f(x)<th>Куда<th>Режим<th>1<th>2
+<tr><td>1<td>Слово<td>X=0;Y=450<td>2x+5<td>Вправо/вверх<td>3<td>Click<td>Click
+<tr><td>2<td>Рисунок<td>X=300;Y=400<td>25cos(x)<td>Вверх<td>2<td>Click<td>Contextmenu
+<tr><td>3<td>Ссылка<td>X=450;Y=220<td>40sin(3x)<td>Влево<td>2<td>Click<td>Mouseover
+<tr><td>4<td>Таблица<td>X=600;Y=400<td>x*x/500<td>Влево/вверх<td>3<td>Click><td>Mousemove
+<tr><td>5<td>Буква<td>X=200;Y=0<td>exp(x/100)<td>Вниз<td>2<td>Dblclick<td>Dblclick
+<tr><td>6<td>Рисунок<td>X=10;Y=300<td>30log(x+10)<td>Вправо<td>2<td>Dblclick<td>Contextmenu
+<tr><td>7<td>Ссылка<td>X=600;Y=200<td>10tan(x)<td>Влево<td>2<td>Dblclick<td>Mouseover
+<tr><td>8<td>Слово<td>X=50;Y=50<td>0.001x*x+x<td>Вправо/вниз<td>3<td>Dblclick<td>Mousemove
+<tr><td>9<td>Кнопка <td>X=500;Y=5<td>60sin(x*x)<td>Влево/вниз<td>1<td>Contextmenu<td>Contextmenu
+<tr><td>10<td>Буква<td>X=250;Y=450<td>25cos(2x+1)<td>Вверх<td>2<td>Contextmenu<td>Click
+<tr><td>11<td>Кнопка<td>X=350;Y=0<td>0.5exp(x/250)<td>Вниз<td>2<td>Contextmenu<td>Dblclick
+<tr><td>12<td>Ссылка <td>X=75;Y=175<td>50log(x+5)-50<td>Вправо<td>3<td>Contextmenu<td>Mouseover
+<tr><td>13<td>Форма<td>X=20;Y=420<td>0.2x+45<td>Вправо/вверх<td>3<td>Contextmenu<td>Mousemove
+<tr><td>14<td>Список OL<td>X=550;Y=20<td>-2.5x+15<td>Влево/вниз<td>1<td>Mouseover<td>Click
+<tr><td>15<td>Число<td>X=650;Y=510<td>1000/(x+25)<td>Влево/вверх<td>1<td>Mouseover<td>Dblclick
+<tr><td>16<td>IFRAME<td>X=20;Y=80<td>x*x*x/(x*x+125))<td>Вправо/вниз<td>3<td>Mouseover<td>Contextmenu
+<tr><td>17<td>Список UL<td>X=20;Y=330<td>x<sup>0.75</sup>-15<td>Вправо<td>2<td>Mouseover<td>Mouseout
+<tr><td>18<td>radio<td>X=620;Y=280<td>x<sup>1.05</sup>-x<td>Влево<td>2<td>Mousemove<td>Click
+<tr><td>19<td>checkbox<td>X=20;Y=440<td>x<sup>0.5</sup>-50<td>Вправо/вверх<td>3<td>Mousemove<td>Dblclick
+<tr><td>20<td>SELECT<td>X=580;Y=590<td>(x*x+x+10)<sup>0.5</sup><td>Влево/вверх<td>2<td>Mousemove<td>Contextmenu
+</table>

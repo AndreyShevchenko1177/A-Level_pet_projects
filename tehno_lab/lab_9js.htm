@@ -1,0 +1,449 @@
+<HTML>
+<HEAD>
+<TITLE>Лабораторная работа 18 (9 JavaScript): Технология AJAX</TITLE>
+<LINK REL=STYLESHEET TYPE="text/css" HREF="heads.css">
+</HEAD>
+<BODY>
+<H1> ЛАБОРАТОРНАЯ РАБОТА № 18 (9 JavaScript)</H1>
+<H2> <SPAN CLASS="beg" >Тема: </SPAN>Технология AJAX</H2>
+<H2> <SPAN CLASS="beg" >Цель: </SPAN>
+Изучение особенностей технологии AJAX для получения данных с сервера</H2>
+<A NAME="beg"></A>
+<H3>ОГЛАВЛЕНИЕ</H3> 
+<A CLASS="com" HREF="#2">1 Технология AJAX <BR>
+<A CLASS="com" HREF="#2">1.1 Особенности технологии AJAX<BR>
+<A CLASS="com" HREF="#1.2">1.2 Использование объекта XMLHttpRequest<BR>
+<A CLASS="com" HREF="#1.2.1">1.2.1 Создание объекта xmlHttp<BR>
+<A CLASS="com" HREF="#1.2.2">1.2.2 Формирование запроса к серверу<BR>
+<A CLASS="com" HREF="#1.2.3">1.2.3 Получение данных из сервера<BR>
+<A CLASS="com" HREF="#prim1">Пример 1<BR>
+<A CLASS="com" HREF="#prim2">Пример 2<BR>
+<A CLASS="com" HREF="#ind">Индивидуальные задания<BR>
+<A NAME="1"></A>
+<H4>1 Технология AJAX</H4>
+<H4 CLASS="pod">1.1 Особенности технологии AJAX</H4>
+<P>AJAX (Asynchronous JavaScript And XML - асинхронный JavaScript и XML) 
+представляет собой технологию, позволяющую при необходимости в фоновом режиме
+(не прерывая работы пользователя и незаметно для него) выполнять запросы к
+серверу и получать дополнительные данные для обновления отдельных частей
+Web-страницы, тем самым исключая необходимость повторной загрузки страницы.                         
+Например, выполнять на стороне сервера проверку правильности заполнения данных
+пользоваетелем по мере их ввода.<BR>                         
+<SPAN CLASS="txt_abz">Без </SPAN>использования технологии AJAX для решения этой
+задачи имеются такие возможности:
+<UL CLASS="list">
+<LI>выполнять проверку на стороне сервера, но в этом случае необходимо
+формировать новую Web-страниц, что увеличивает загрузку сети и увеличивает
+время ожидания клиента;
+<LI>выполнять проверку на стороне клиенте, но при этом зачастую необходимо
+хранить большой объем информации на компьютере клиента.
+</UL>
+<P>Для применения AJAX необходимы следующие компоненты:<BR>
+<UL CLASS="list">
+<LI>JavaScript (основной компонент);
+<LI>объект XMLHttpRequest;
+<LI>серверные технологии (например, PHP).
+</UL>
+<P>Первоначально технологию AJAX разработала фирма Microsoft как объект ActiveX
+для браузера Internet Explorer. Затем фирма Mozilla  создала объект 
+XMLHttpRequest с (почти) идентичными API, который в настоящее время
+поддерживается всеми современными браузерами.<BR>
+<SPAN CLASS="txt_abz">Рекомендации </SPAN>организации W3C аналогичной
+функциональности пока не применены ни в одном браузере.
+<A NAME="1.2"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4 CLASS="pod">1.2 Использование объекта XMLHttpRequest</H4>
+<P>Объект <SPAN CLASS="svoj">XMLHttpRequest</SPAN> дает возможность отправлять
+асинхронные HTTP-запросы из кода JavaScript серверу, принимать от него ответы и
+обновлять отдельные части Web-страницы, не прерывая работу пользователя. Имеет
+следующие методы и свойства:
+<UL CLASS="list">
+<LI>abort() - останавливает выполнение текущего запроса;
+<LI>getAllResponseHeaders() - возвращает все HTTP-заголовки ответа в виде
+строки;
+<LI>getResponseHeader(header) - возвращает указанный HTTP-заголовок ответа в
+виде строки;
+<LI>open(method, URL [, async_flag [, userName [. password ]]]) - 
+инициализирует параметры запроса, где:
+<UL CLASS="list2">
+<LI>method - один из методов обмена данными с сервером: наиболее часто
+используются GET и POST, но разрешены также методы HEAD, PUT или DELETE;
+<LI>URL - абсолютный или относительный URL-адрес сервера;
+<LI>async_flag (необязательнлый параметр) - значение true означает асинхронный режим работы с сервером:
+скрипт, послав запрос серверу, продолжает свою работу (значение по умолчанию),
+значение false означает синхронный режим работы с сервером: скрипт, послав
+запрос серверу, приостанавливает свою работу, ожидая ответа от сервера;
+<LI>userName (необязательнлый параметр) - имя пользователя для аутентификации,
+если параметр равен Null или "" и сайт требует аутентификации, то появляется
+окно login;
+<LI>password (необязательнлый параметр) - пароль пользователя для
+аутентификации, если равен Null или "", то игнорируется;
+</UL>
+<LI>send(data) - выполняет запрос, данные указываются только для методов POST
+или PUT;
+<LI>setRequestHeader(level, value) - указывает имя и значение HTTP-заголовка в
+запросе;
+<LI>onreadystatechange - используется для установки функции обратного вызова,
+которая будет обслуживать изменения состояния запроса;
+<LI>readyState - возвращает состояние запроса:
+<UL CLASS="list2">
+<LI>0 - не инициализирован;
+<LI>1 - выполняется подготовка запроса;
+<LI>2 - запрос отправлен;
+<LI>3 - выполняется обмен;
+<LI>4 - обмен завершен.
+</UL>
+<LI>responseText - возвращает ответ сервера в виде строки;
+<LI>responseXML - возвращает ответ сервера в формате XML;
+<LI>responseStream - возвращает ответ сервера в виде двоичных данных;
+<LI>status - возвращает HTTP-код состояния запроса;
+<LI>statusText - возвращает сообщение о состоянии запроса.
+</UL>
+<P>Использование методов и свойств объекта <SPAN CLASS="svoj">XMLHttpRequest</SPAN>
+приведено в примере </SPAN><A CLASS="pri" HREF=#prim1>№ 1</A></SPAN>, в котором
+выполняется получение текстовых данных из локального сервера, и  в примере
+</SPAN><A CLASS="pri" HREF=#prim2>№ 2</A></SPAN>, в котором выполняется  
+получение случайных чисел из удаленного сервера. В этих примерах осуществляется:
+<UL CLASS="list">
+<LI>создание объекта xmlHttp;
+<LI>формирование запроса к серверу;
+<LI>получение данных из сервера.
+</UL>
+<P>
+<A NAME="1.2.1"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4 CLASS="pod">1.2.1 Создание объекта xmlHttp</H4>
+<P>Создание объекта <SPAN CLASS="svoj">xmlHttp</SPAN> осуществляется с помощью
+функции <SPAN CLASS="svoj">createxmlHttp()</SPAN>. 
+Поскольку объект <SPAN CLASS="svoj">xmlHttp</SPAN> создается в обоих примерах
+(</SPAN><A CLASS="pri" HREF=#prim1>№ 1</A></SPAN> и 
+</SPAN><A CLASS="pri" HREF=#prim2>№ 2</A></SPAN>), оператор присвоения,
+вызывающий функцию <SPAN CLASS="svoj">createxmlHttp()</SPAN> и сама функция
+описаны во внешнем файле <SPAN CLASS="svoj">ajax.js</SPAN>:<BR><BR>
+<SPAN CLASS="html">xmlHttp=createxmlHttp();<BR>
+<SPAN CLASS="html">function createxmlHttp()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">try<BR>              
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">var xmlHttp=new XMLHttpRequest(); //var делает переменную локальльной<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">catch(e)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">xmlHttp=new ActiveXObject("Microsoft.XMLHttp");<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">if(!xmlHttp) alert("Объект xmlHttp не создан");<BR>
+<SPAN CLASS="html">else return xmlHttp;<BR>
+<SPAN CLASS="html">}<BR>
+<P> Функция <SPAN CLASS="svoj">createxmlHttp()</SPAN> содержит конструкцию
+<SPAN CLASS="svoj">try/catch</SPAN>, которая используется для проверки того,
+выполняется ли некоторый код JavaScpipt без ошибок:<BR>
+<SPAN CLASS="html">try<BR>              
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">// Проверяемый код<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">catch(e)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">// Обработка ошибки<BR>
+<SPAN CLASS="html">}<BR>
+<P>Проверяемый код помещается в блок <SPAN CLASS="svoj">try{}</SPAN>. Если при
+выполнении кода произошла ошибка (возникла исключительная ситуация), то
+управление передается блоку <SPAN CLASS="svoj">catch(e){}</SPAN>, который
+перехватывает возникшее исключение и обрабатывает ошибку. При этом исключение
+не доходит до интерпретатора JavaScpipt и поэтому не сообщается пользователю.
+Если в блоке <SPAN CLASS="svoj">try{}</SPAN> код выполняется без ошибок, то 
+блок <SPAN CLASS="svoj">catch(e){}</SPAN> управление не получает вовсе.<BR>
+<SPAN CLASS="txt_abz">Как </SPAN>отмечалось выше, современные браузеры
+поддерживают работу с <SPAN CLASS="svoj">XMLHttpRequest</SPAN>. Однако это не
+относится к браузерам IE версии 6 и ниже. Поэтому функция
+<SPAN CLASS="svoj">createxnlHttp()</SPAN> сначала пытается создать объект
+<SPAN CLASS="svoj">xmlHttp</SPAN> с помощью класса 
+<SPAN CLASS="svoj">XMLHttpRequest</SPAN> (блок <SPAN CLASS="svoj">try{}</SPAN>).
+Если при этом возникает исключительлная ситуация, управление передается в блок
+<SPAN CLASS="svoj">catch(e){}</SPAN>, где делается попытка создать объект
+<SPAN CLASS="svoj">xmlHttp</SPAN> уже с помощью  объекта 
+<SPAN CLASS="svoj">ActiveXObject</SPAN>.<BR>
+<SPAN CLASS="txt_abz">Если </SPAN>объект и при этом создать не удается, то
+выводится сообщение о том, что объект <SPAN CLASS="svoj">xmlHttp</SPAN> не
+создан.  
+<A NAME="1.2.2"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4 CLASS="pod">1.2.2 Формирование запроса к серверу</H4>
+<P>После создания объекта <SPAN CLASS="svoj">xmlHttp</SPAN> можно использовать
+его методы и свойства для организации запроса к серверу. Это делается с помощью
+функции <SPAN CLASS="svoj">process()</SPAN>, которая как и функция
+<SPAN CLASS="svoj">createxnlHttp()</SPAN> используется в примерах 
+</SPAN><A CLASS="pri" HREF=#prim1>№ 1</A></SPAN> и 
+</SPAN><A CLASS="pri" HREF=#prim2>№ 2</A></SPAN> и хранится в файле
+<SPAN CLASS="svoj">ajax.js</SPAN>:<BR><BR>
+<SPAN CLASS="html">function process()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if(xmlHttp)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">try<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">xmlHttp.open("GET",serverAddr+serverPar,true);<BR>
+<SPAN CLASS="html">xmlHttp.onreadystatechange=handleStateChange;<BR>
+<SPAN CLASS="html">xmlHttp.send(null);<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">catch(e)<BR> 
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">alert("Невозможно соединится с сервером:\n"+e.toString()+
+"\n"+e.description);<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<P>Функция <SPAN CLASS="svoj">process()</SPAN> сначала проверяет, создан ли
+объект <SPAN CLASS="svoj">xmlHttp</SPAN>. Если создан, то выполняются следующие
+действия:
+<UL CLASS="list">
+<LI>С помощью метода <SPAN CLASS="svoj">open()</SPAN> задаются значения
+параметров соединения с сервером:
+<UL CLASS="list2">
+<LI>метод - GET;
+<LI>адрес сервера и передаваемые параметры указываются с помощью переменных
+serverAddr и serverPar;
+<LI>режим обмена - асинхронный.
+</UL>
+<LI>С помощью свойства <SPAN CLASS="svoj">onreadystatechange</SPAN> указывается
+обработчик изменений состояния запроса - функция handleStateChange;
+<LI>С помощью метода send() посылается запрос на сервер;
+<LI>С помощью конструкции try{}/catch(e){} проверяется, не возникла ли ошибка
+при выполнении вышеописанных действий по созданию и отправлению запроса на
+сервер.
+</UL>
+<P> При возникновении исключительной ситуации на экран выводится сообщение
+о невозможности соединения с сервером, к которому добавляется перехваченное
+сообщение <SPAN CLASS="svoj">e</SPAN>, преобразованное в строку.<BR>
+<SPAN CLASS="txt_abz">Имеется </SPAN>две возможности преобразования
+<SPAN CLASS="svoj">e</SPAN>:  
+<UL CLASS="list">
+<LI>с помощью метода toString();
+<LI>с помощью  свойства description.
+</UL>
+<P>Функция <SPAN CLASS="svoj">process()</SPAN> использует обе эти возможности.
+При этом в случае, например, неправильного задания URL-адреса сервера на экране появляются
+следующие сообщения:
+<P CLASS="ba"><I>Невозможно соединится с сервером<BR>
+[object Error]<BR>
+Отказано в доступе</I>
+<A NAME="1.2.3"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4 CLASS="pod">1.2.3 Получение данных из сервера</H4>
+<P>Получение данных из сервера выполняется по разному в примере
+<SPAN><A CLASS="pri" HREF=#prim1>№ 1</A></SPAN> и в примере
+<SPAN><A CLASS="pri" HREF=#prim2>№ 2</A></SPAN>, поэтому будет рассмотрено
+отдельно.
+<A NAME="prim1"></A><BR>
+<P><A CLASS="out" HREF="js_pr8-1.htm">Пример 1</A><BR><BR>
+<SPAN CLASS="html">&lt;HTML&gt;<BR>
+<SPAN CLASS="html">&lt;HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;TITLE&gt;Чтение текста из сервера с помощью AJAX&lt;/TITLE&gt;<BR>
+<SPAN CLASS="html">&lt;SCRIPT SRC="ajax.js"&gt;&lt;/SCRIPT&gt;<BR>
+<SPAN CLASS="html">&lt;SCRIPT&gt;<BR>
+<SPAN CLASS="html">serverAddr="http://zykov/data.txt";<BR>
+<SPAN CLASS="html">serverPar="";<BR>
+<SPAN CLASS="html">function handleStateChange()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">myDiv=document.getElementById("div");<BR>
+<SPAN CLASS="html">if(xmlHttp.readyState==1)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">myDiv.innerHTML+="Состояние запроса:1 (подготовка к отправлению)";<BR>
+<SPAN CLASS="html">try { myDiv.innerHTML+=", статус: "+xmlHttp.statusText+"&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">catch(e) { myDiv.innerHTML+="&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">else<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if(xmlHttp.readyState==2)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">myDiv.innerHTML+="Состояние запроса:2 (отправлен)";<BR>
+<SPAN CLASS="html">try { myDiv.innerHTML+=", статус: "+xmlHttp.statusText+"&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">catch(e) { myDiv.innerHTML+="&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">else<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if(xmlHttp.readyState==3)<BR>
+<SPAN CLASS="html">{ <BR>
+<SPAN CLASS="html">myDiv.innerHTML+="Состояние запроса:3 (идет обмен)";<BR>
+<SPAN CLASS="html">try { myDiv.innerHTML+=", статус: "+xmlHttp.statusText+"&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">catch(e) { myDiv.innerHTML+="&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">else <BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if(xmlHttp.readyState==4)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">myDiv.innerHTML+="Состояние запроса:4 (обмен завершен)";<BR>
+<SPAN CLASS="html">try { myDiv.innerHTML+=", статус: "+xmlHttp.statusText+"&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">catch(e) { myDiv.innerHTML+="&lt;BR/&gt;"; }<BR>
+<SPAN CLASS="html">if(xmlHttp.status==200)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">try<BR> 
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">resp=xmlHttp.responseText;<BR>
+<SPAN CLASS="html">myDiv.innerHTML+="&lt;P>Сервер передал:"+resp;<BR> 
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">catch(e) { alert("Ошибка чтения ответа: "+e.description); }<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">else { alert("Ошибка получения данных\n статус: "+xmlHttp.statusText);}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">&lt;/SCRIPT&gt;<BR>
+<SPAN CLASS="html">&lt;/HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;BODY onLoad="process()"&gt;<BR>
+<SPAN CLASS="html">&lt;DIV ID="div" /&gt;<BR>
+<SPAN CLASS="html">&lt;/BODY&gt;<BR>
+<SPAN CLASS="html">&lt;/HTML&gt;<BR>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<P>В примере 1 осуществляется чтение текстовых данных с локального сервера с
+помощью технологии  <SPAN CLASS="svoj">AJAX</SPAN>: в переменную 
+<SPAN CLASS="svoj">serverAddr</SPAN> заносится URL-адрес файла
+локального сервера ("http://zykov/data.txt"), который содержит строку "Привет,
+клиент!", а в переменную <SPAN CLASS="svoj">serverPar</SPAN> - пустая строка, поскольку в этом примере
+данные на сервер не передаются.<BR>
+<SPAN CLASS="txt_abz">Поскольку </SPAN>технология <SPAN CLASS="svoj">AJAX</SPAN>
+требует использования Web-сервера, он должен быть запущен до выполнения примера.<BR>
+<SPAN CLASS="txt_abz">Необходимо </SPAN>также отметить, что текстовые данные, если
+они являются кириллицей, должны быть сохранены на сервере в кодировке UTF-8.<BR>
+<SPAN CLASS="txt_abz">Фукция <SPAN CLASS="svoj">handleStateChange()
+</SPAN></SPAN> с помощью свойства <SPAN CLASS="svoj">readyState</SPAN> проверяет
+текущее состояние запроса и при его изменении выводит на экран в тэг &lt;DIV&gt;
+с помощью свойства <SPAN CLASS="svoj">innerHTML</SPAN> такие данные: номер
+состояния, его текстовое значение и статус. Текстовое значение статуса
+определяется с помощью свойства <SPAN CLASS="svoj">statusText</SPAN> объекта
+ <SPAN CLASS="svoj">xmlHttp</SPAN>. Поскольку не для всех состояний запроса оно
+доступно, применяется конструкция <SPAN CLASS="svoj">try/catch(e)</SPAN>.<BR>
+<SPAN CLASS="txt_abz">Вывод </SPAN>всех состояний запроса сделан с учебной
+целью. Для получения данных достаточно проанализировать состояние 4 ("обемен
+данными завершен"), что и сделано в примере 
+<SPAN><A CLASS="pri" HREF=#prim2>№ 2</A></SPAN>.<BR>
+<SPAN CLASS="txt_abz">Затем </SPAN>в состоянии 4 с помощью свойства
+<SPAN CLASS="svoj">status</SPAN> определяется, нормально ли закончился обмен
+данными с сервером. Если статус равен 200 (текстовое значение "OK"), что
+означает, что операции с сервером закончились успешно, делается попытка чтение
+данных, возвращенных сервером. Если ошибки нет -  данные выводятся на экран, в
+виде свойства <SPAN CLASS="svoj">innerText</SPAN> тэга &lt;DIV>.<BR>
+<SPAN CLASS="txt_abz">В </SPAN>случае возникновения ошибки на экран выводится
+сообщение "Ошибка чтения ответа" с указанием дополнительных данных с помощью
+свойства <SPAN CLASS="svoj">e.description</SPAN>.<BR>
+<SPAN CLASS="txt_abz">Если </SPAN>сервер передает другое значение статуса, что
+означает, что обмен произошел с ошибками, на экран выводится соответствующее
+сообщение с указанием статуса ошибки в текстовом виде.<BR>
+<SPAN CLASS="txt_abz">При </SPAN>выполнении всех операций в примере 1 без
+ошибок на экран будут выведены следующие данные:<BR><BR>
+<SPAN CLASS="htmlp">Состояние запроса:1 (подготовка к отправлению)<BR>
+Состояние запроса:2 (отправлен), статус: OK<BR>
+Состояние запроса:3 (идет обмен), статус: OK<BR>
+Состояние запроса:4 (обмен завершен), статус: OK<BR>
+<P CLASS="ba"><SPAN CLASS="htmlp">Сервер передал: Привет, клиент!</SPAN><BR>
+<P>Если необходимо осуществить чтение данных, находящихся на сервере в
+формате XML, например, из файла data.xml содержащего такие данные:
+<P  CLASS="ba">
+<SPAN CLASS="html">&lt;?xml version="1.0" ?><BR>
+<SPAN CLASS="html"><SPAN CLASS="htmlp">&lt;name>Robert Sheckly&lt;/name>,<BR>
+<P CLASS="ba">необходимо, помимо указания нового адреса файла - 
+<SPAN CLASS="svoj">serverAddr</SPAN>="http://zykov/data.xml", заменить в
+функции <SPAN CLASS="svoj">handleStateChange() строку
+<P CLASS="ba"><SPAN CLASS="html">resp=xmlHttp.responseText;<BR>
+<P CLASS="ba">строкой<P CLASS="ba">
+<SPAN CLASS="html">resp=xmlHttp.responseXML.getElementsByTagName("name")[0].firstChild.data;
+<P CLASS="ba">Тогда вместо сообщения 
+<P CLASS="ba"><SPAN CLASS="htmlp">Сервер передал: Привет, клиент!</SPAN><BR>
+<P CLASS="ba">появится сообщение
+<P CLASS="ba"><SPAN CLASS="htmlp">Сервер передал: Robert Sheckly</SPAN><BR>
+<A NAME="prim2"></A><BR>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<P><A CLASS="out" HREF="js_pr8-2.htm">Пример 2</A><BR><BR>
+<SPAN CLASS="html">&lt;HTML&gt;<BR>
+<SPAN CLASS="html">&lt;HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;TITLE&gt;Чтение случайных чисел из удаленного сервера с помощью AJAX/TITLE&gt;<BR>
+<SPAN CLASS="html">&lt;SCRIPT&gt;<BR>
+<SPAN CLASS="html">serverAddr="http://www.random.org/integers/";<BR>
+<SPAN CLASS="html">serverPar="?num=1&min=1&max=25&col=1&base=10&format=plain";<BR>
+<SPAN CLASS="html">function handleStateChange()<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">myDiv=document.getElementById("div");<BR>
+<SPAN CLASS="html">if(xmlHttp.readyState==4)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">if(xmlHttp.status==200)<BR>
+<SPAN CLASS="html">{<BR>
+<SPAN CLASS="html">try { myDiv.innerHTML+=xmlHttp.responseText; }<BR>
+<SPAN CLASS="html">catch(e) { alert("Ошибка чтения ответа: "+e.toStrintg()); }<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">else { alert("Ошибка получения данных\n статус: "+xmlHttp.statusText);}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">}<BR>
+<SPAN CLASS="html">&lt;/SCRIPT&gt;<BR>
+<SPAN CLASS="html">&lt;SCRIPT SRC="ajax.js"&gt;&lt;/SCRIPT&gt;<BR>
+<SPAN CLASS="html">&lt;/HEAD&gt;<BR>
+<SPAN CLASS="html">&lt;BODY onLoad="process()"&gt;<BR>
+<SPAN CLASS="html">&lt;DIV ID="div" /&gt;<BR>
+<SPAN CLASS="html">&lt;/BODY&gt;<BR>
+<SPAN CLASS="html">&lt;/HTML&gt;<BR>
+<P>В примере 2 осуществляется получение случайных чисел с удаленного сервера с
+помощью технологии  <SPAN CLASS="svoj">AJAX</SPAN>: в переменную
+<SPAN CLASS="svoj">serverAddr</SPAN> заносится URL-адрес удаленного сервера
+("http://www.random.org/integers/"), который снабжает клиентов настоящими
+случайными числами, а в переменную <SPAN CLASS="svoj">serverPar</SPAN> - строку 
+"?num=1&min=1&max=20&col=1&base=10&format=plain", задающую значения следующих
+параметров запроса на получение случайных чисел:
+<UL CLASS="list">
+<LI>num - количество получаемых чисел;
+<LI>min - минимальное число диапазона;
+<LI>max - максимальное число диапазона;
+<LI>col - количество столбцов для вывода случайных чисел на экран;
+<LI>base - основание системы счисления случайных чисел;
+<LI>format - формат представления случайных чисел:  
+<UL CLASS="list2">
+<LI>plain - в виде простого текста;
+<LI>html -  в виде HTML-документа.
+</UL>
+</UL>
+<P>В отличии от примера <SPAN><A CLASS="pri" HREF=#prim1>№ 1</A></SPAN>
+функция <SPAN CLASS="svoj">handleStateChange()</SPAN> не содержит кода,
+осуществляющего вывод на экран названия и статус различных состояний запроса.<BR>
+<SPAN CLASS="txt_abz">В </SPAN>результате работы скрипта при каждом запросе на
+экран выводится одно случайное число в диапазоне от 1 до 25.
+<A NAME="ind"></A>
+<TABLE WIDTH=70%  ALIGN=CENTER BORDER=0>
+<TR><TD ALIGN=right>
+<A CLASS="out" HREF="#beg">Оглавление</A>
+</TABLE>
+<H4>Индивидуальные задания </H4>
+<P>Отметить указанный в таблице объект и осуществить из заданной точки  его движение
+с заданной функцией по указанному событию.
+<p> <table border=1 align=center width="100%" style="font:5mm;color:#00a">
+<tr><th>№<th>Объект<th>(X,Y)<th>Фукция F(x)<th>Куда<th>Отметка<th>Движение
+<tr><td>1<td>Слово<td>X=0;Y=450<td>2x+5<td>Вправо/вверх<td>onDblclick<td>onKeydown/Alt-1
+<tr><td>2<td>Рисунок<td>X=300;Y=400<td>25cos(x)<td>Вверх<td>onClick<td>onDblclick
+<tr><td>3<td>Ссылка<td>X=450;Y=220<td>40sin(3x)<td>Влево<td>onMouseover<td>onKeydown/ShiftLeft
+<tr><td>4<td>Таблица<td>X=600;Y=400<td>x*x/500<td>Влево/вверх<td>onMousemove><td>onKeydown/Shift-Z
+<tr><td>5<td>Буква<td>X=200;Y=0<td>exp(x/100)<td>Вниз<td>onContextmenu<td>onKeydown/Ctrl-5
+<tr><td>6<td>Рисунок<td>X=10;Y=300<td>30log(x+10)<td>Вправо<td>onClick<td>onContextmenu
+<tr><td>7<td>Ссылка<td>X=600;Y=200<td>10tan(x)<td>Влево<td>onDblclick<td>onKeydown/Tab-2
+<tr><td>8<td>Слово<td>X=50;Y=50<td>0.001x*x+x<td>Вправо/вниз<td>onMousemove<td>onKeydown/W
+<tr><td>9<td>Кнопка <td>X=500;Y=5<td>60sin(x*x)<td>Влево/вниз<td>onContextmenu<td>onClick<td>
+<tr><td>10<td>Буква<td>X=250;Y=450<td>25cos(2x+1)<td>Вверх<td>onClick<td>onContextmenu
+<tr><td>11<td>Кнопка<td>X=350;Y=0<td>0.5exp(x/250)<td>Вниз<td>onDblclick<td>onKeydown/1
+<tr><td>12<td>Ссылка <td>X=75;Y=175<td>50log(x+5)-50<td>Вправо<td>onMousemove<td>onContextmenu
+<tr><td>13<td>Таблица<td>X=20;Y=420<td>0.2x+45<td>Вправо/вверх<td>onMousemover<td>onKeydown/Atd>
+</table>
