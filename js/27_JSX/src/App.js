@@ -102,7 +102,16 @@ const PasswordConfirm = ({ min = 1, onLogin }) => {
     const [pass2, setPass2] = useState("");
 
     // let regexp = /\d/; //  - хотя бы одна цифра
-    let regexp = /[A-Z]/; //  - хотя бы одна ЗАГЛАВНАЯ буква латинского алфавита
+    // let regexp = /[A-Z]/; //  - хотя бы одна ЗАГЛАВНАЯ буква латинского алфавита
+
+    let regexp = /(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z]).*/;
+
+    // (?=^.{6,}$) - Строкa > 5 символов
+    // (?=.*[0-9]) - содержит цифру
+    // (?=.*[A-Z]) - содержит прописную букву
+    // (?=.*[a-z]) - содержит строчную букву
+    // (?=.*[^A-Za-z0-9]) - символ не является буквенно-цифровым.
+
     let color1 =
         pass1.length < min || !regexp.test(pass1) ? "pink" : "lightgreen";
     let color2 = pass2.length < min || pass1 !== pass2 ? "pink" : "lightgreen";
@@ -130,6 +139,47 @@ const PasswordConfirm = ({ min = 1, onLogin }) => {
                 onClick={() => onLogin(pass1, pass2)}
             >
                 Confirm
+            </button>
+        </>
+    );
+};
+
+const Timer = ({ sec = 0 }) => {
+    if (isNaN(sec)) {
+        sec = 0;
+    }
+    const [timeLeft, setTimeLeft] = useState(sec);
+    const [pause, setPause] = useState(true);
+
+    let h, m, s;
+
+    //FIXME:
+    // интересный метод, но барахлит из-за дробных значений
+    // надо будет переписать с банальным %
+    // хотя последний вариант floor-floor-round вроде норм
+    h = timeLeft / (60 * 60);
+    m = (h - ~~h) * 60;
+    s = (m - ~~m) * 60;
+    h = Math.floor(h);
+    m = Math.floor(m);
+    s = Math.round(s);
+
+    const decTime = () => {
+        if (!pause && timeLeft > 0) {
+            setTimeLeft(timeLeft - 1);
+        }
+    };
+
+    setTimeout(decTime, 1000);
+
+    return (
+        <>
+            {/* prettier-ignore */}
+            <span Style={"border: 2px solid gray"}>
+                {`--- ${h}:${m.toString().padStart(2, 0)}:${s.toString().padStart(2, 0)} ---`}
+            </span>
+            <button onClick={() => setPause(!pause)}>
+                {(pause && "Go") || "Stop"}
             </button>
         </>
     );
@@ -165,7 +215,7 @@ const App = () => {
                     </li>
                     <li>
                         prop max - максимальная длина строки в инпуте, если
-                        большe - инпут становится красным{" "}
+                        большe - инпут становится красным (лучше зеленым)))){" "}
                     </li>
                     <li>
                         Используйте компонент-класс и setState для отслеживания
@@ -202,16 +252,44 @@ const App = () => {
                 </ul>
                 <br />
                 <p>
-                    Делаю так: первый пароль должен быть боьше min значения а
-                    второй пароль - боьше min значения и равен первому. А так же
-                    нужна хотябы одна цифра,
+                    Делаю так:
+                    <ul>
+                        <li>
+                            первый пароль должен быть боьше min значения а
+                            второй пароль - боьше min значения и равен первому
+                        </li>
+                        <li>должна быть хотябы одна цифра</li>
+                        <li>
+                            должна быть хотябы одна <i>ПРОПИСНАЯ</i> латинская
+                            буква
+                        </li>
+                        <li>
+                            должна быть хотябы одна <i>строчная</i> латинская
+                            буква
+                        </li>
+                    </ul>
                 </p>
                 <br />
                 {/* prettier-ignore */}
                 <PasswordConfirm
-                    min={2}
+                    min={3}
                     onLogin={(p1, p2) =>console.log(`pass1: ${p1}, pass2: ${p2} `)}
                 />
+            </Spoiler>
+            <br />
+            <br />
+
+            {/*  ================================================================================= */}
+            <Spoiler header="Timer" open={true}>
+                Напишите компонент, в который передается через props количество
+                секунд, а компонент при этом реализует обратный отсчет раз в
+                секунду уменьшая количество секунд на 1. Останавливается на 0.
+                Добавьте в компонент кнопку паузы. <p />
+                Компонент должен отображать часы, минуты и секунды.
+                <br />
+                <br />
+                {/* prettier-ignore */}
+                <Timer sec={7205} />
             </Spoiler>
             <br />
             <br />
