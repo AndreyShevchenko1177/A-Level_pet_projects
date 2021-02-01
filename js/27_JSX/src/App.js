@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState, useRef } from "react";
 import "./App.css";
 
 const ButtonCounter = ({ KOGOMALUVATY }) => {
@@ -47,9 +47,7 @@ const Spoiler = ({ header = "--no header--", open, children }) => {
             <h1
                 style={{ cursor: "pointer" }}
                 onClick={() => {
-                    console.log("Был до - ", show); /// ????????? одно и тоже значение
                     setShow(!show);
-                    console.log("Стал после - ", show); /// ????????? )) разобрался, так и должно
                 }}
             >
                 {header}
@@ -169,35 +167,49 @@ const PasswordConfirm = ({ min = 1, onLogin }) => {
     );
 };
 
-const Timer = ({ Sec = 0, StartWithPause = true }) => {
+const Timer = ({ sec = 0, startWithPause = true }) => {
     // если во время работы счетчика скрыть спойлер, то весь этот контент помрет
     // и при открытии спойлера все начнется с начала
     // чтобы побороть - думаю надо не убивать контент спойлера, а делать просто
     // display = none (так и есть, все получилось)
 
-    if (isNaN(Sec)) {
-        Sec = 0;
-    }
-    const [timeLeft, setTimeLeft] = useState(Sec);
-    const [pause, setPause] = useState(StartWithPause);
+    const ifSecIsNan = function (sec) {
+        if (isNaN(sec)) return 0;
+        return sec;
+    };
+
+    const [timeLeft, setTimeLeft] = useState(ifSecIsNan(sec));
+    const [pause, setPause] = useState(startWithPause);
+    const clockface = useRef(null);
 
     useEffect(() => {
-        console.log("Timer перерисовка");
-        return () => console.log("Timer я помер");
-    });
+        setTimeLeft(sec);
+        setPause(startWithPause);
+        return () => console.log("помер");
+    }, [sec, startWithPause]);
 
     let h, m, s;
 
     // интересный метод, но барахлит из-за дробных значений
-    // надо будет переписать с банальным %
-    // ...
-    // хотя последний вариант floor-floor-round вроде норм
-    h = timeLeft / (60 * 60);
-    m = (h - ~~h) * 60;
-    s = (m - ~~m) * 60;
-    h = Math.floor(h);
-    m = Math.floor(m);
-    s = Math.round(s);
+    // надо будет переписать с банальным делением
+    // h = timeLeft / (60 * 60);
+    // m = (h - ~~h) * 60;
+    // s = (m - ~~m) * 60;
+    // h = Math.floor(h);
+    // m = Math.floor(m);
+    // s = Math.round(s);
+
+    h = Math.floor(timeLeft / 3600);
+    m = Math.floor((timeLeft - h * 60 * 60) / 60);
+    s = timeLeft - h * 60 * 60 - m * 60;
+
+    if (timeLeft === 0) {
+        clockface.current && (clockface.current.style.backgroundColor = "red");
+        // setTimeout(() => clockface.current.remove(), 5000);
+    } else {
+        clockface.current &&
+            (clockface.current.style.backgroundColor = "white");
+    }
 
     const decTime = () => {
         if (!pause && timeLeft > 0) {
@@ -210,70 +222,107 @@ const Timer = ({ Sec = 0, StartWithPause = true }) => {
     return (
         <>
             {/* prettier-ignore */}
-            <span style={{ border: "2px solid gray" }}>
+            <span ref = {clockface} style={{ border: "2px solid gray" }}>
                 {`--- ${h}:${m.toString().padStart(2, 0)}:${s.toString().padStart(2, 0)} ---`}
             </span>
             <button onClick={() => setPause(!pause)}>
-                {(pause && "Go") || "Stop"}
+                {(pause && "Continue") || "Pause"}
             </button>
         </>
     );
 };
 
 const TimerControl = () => {
-    const [TotalSec, setTotalSec] = useState(0);
+    const [totalSec, setTotalSec] = useState(0);
     const [mySwitch, setMySwitch] = useState(false);
+    const input_H_ref = useRef(null);
+    const input_M_ref = useRef(null);
+    const input_S_ref = useRef(null);
+    const interimSec = useRef(0);
 
     const countTotalSec = function () {
-        let hh = document.getElementById("hh");
-        let mm = document.getElementById("mm");
-        let ss = document.getElementById("ss");
         let total =
-            (hh.value * 3600 || 0) +
-            (mm.value * 60 || 0) +
-            (parseInt(ss.value, 10) || 0);
-        setTotalSec(total);
+            (input_H_ref.current.value * 3600 || 0) +
+            (input_M_ref.current.value * 60 || 0) +
+            (parseInt(input_S_ref.current.value, 10) || 0);
+        interimSec.current = total;
     };
 
     return (
         <>
             <input
-                id="hh"
+                ref={input_H_ref}
                 onInput={countTotalSec}
                 placeholder="hh"
                 type="number"
                 min="0"
             />
-
             <input
-                id="mm"
+                ref={input_M_ref}
                 onInput={countTotalSec}
                 placeholder="mm"
                 type="number"
                 min="0"
                 max="59"
             />
-
             <input
-                id="ss"
+                ref={input_S_ref}
                 onInput={countTotalSec}
                 placeholder="ss"
                 type="number"
                 min="0"
                 max="59"
             />
-
             <button
                 onClick={() => {
-                    console.log(TotalSec);
+                    setTotalSec(interimSec.current);
                     setMySwitch(!mySwitch);
                 }}
             >
                 Start
             </button>
 
-            {mySwitch && <Timer Sec={TotalSec} StartWithPause={false} />}
-            {!mySwitch && <Timer Sec={TotalSec} StartWithPause={false} />}
+            {!mySwitch && <Timer sec={totalSec} startWithPause={false} />}
+            {mySwitch && <Timer sec={totalSec} startWithPause={false} />}
+        </>
+    );
+};
+
+const SecondsTimer = ({ seconds }) => <h2>{seconds}</h2>;
+
+const TimerContainer = ({ seconds = 1800, refresh = 100, render: Render }) => {
+    const [startMoment, setStartMoment] = useState(0);
+    const [timeLeft, setTimeLeft] = useState(seconds);
+    const intervalId = useRef(null);
+    const count = useRef(1);
+
+    console.log(timeLeft);
+
+    const checkTime = () => {
+        console.log("checkTime");
+        if (count.current <= timeLeft) {
+            if (
+                performance.now() / 1000 - startMoment / 1000 >=
+                count.current
+            ) {
+                count.current++;
+                setTimeLeft((prev) => prev - 1);
+                // почему setTimeLeft(timer - 1) не срабатывает???
+                // console.log("!!!", timeLeft, count.current); //????????????????????
+            }
+        } else {
+            clearInterval(intervalId.current);
+        }
+    };
+
+    useEffect(() => {
+        setStartMoment(performance.now());
+        intervalId.current = setInterval(checkTime, refresh);
+    }, []);
+
+    return (
+        <>
+            <Render seconds={timeLeft} />
         </>
     );
 };
@@ -381,19 +430,74 @@ const App = () => {
                 Компонент должен отображать часы, минуты и секунды.
                 <br />
                 <br />
-                <Timer Sec={65} />
+                <Timer sec={65} />
             </Spoiler>
             <br />
             <br />
 
             {/*  ================================================================================= */}
-            <Spoiler header="TimerControl" open={true}>
+            <Spoiler header="TimerControl" open={false}>
                 Напишите компонент, с тремя полями ввода (часы, минуты и
                 секунды) и кнопкой Start, по которой будет стартовать компонент
                 Timer
                 <br />
                 <br />
                 <TimerControl />
+            </Spoiler>
+            <br />
+            <br />
+
+            {/*  ================================================================================= */}
+            <Spoiler header="TimerContainer" open={true}>
+                {`const SecondsTimer = ({seconds}) => <h2>{seconds}</h2>`}
+                <br />
+                <br />
+                SecondsTimer в данном случае играет роль presentation
+                компонента, который сам ничего не умеет делать, а просто
+                является шаблоном для отображения своих props в удобном для
+                пользователя виде. Реализуйте контейнерный компонент, который
+                будет обеспечивать состояние и логику для любого таймера:
+                <br />
+                <br />
+                {`<TimerContainer seconds={1800} refresh={100} render={SecondsTimer} />`}
+                <br />
+                <br />
+                TimerContainer должен:
+                <ul>
+                    <li>
+                        воспринимать три пропса:
+                        <ul>
+                            <li>seconds - секунды для обратного отсчета</li>
+                            <li>
+                                {" "}
+                                refresh - периодичность обновления таймера в
+                                миллисекундах
+                            </li>
+                            <li>
+                                render - компонент для отрисовки, которому
+                                передается текущее время
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        Время вычисляется не по количеству обновлений, а по
+                        разности между стартовым и текущим моментом. Иначе
+                        таймер будет очень неточен
+                    </li>
+                    <li>
+                        так как JSX понимает переменные с маленькой буквы не как
+                        компоненты-функции, а как тэги HTML, переприсвойте props
+                        render в переменную с большой буквы и используйте её в
+                        JSX, как имя компонента, передавая пропс seconds.
+                    </li>
+                </ul>
+                <br />
+                <br />
+                <TimerContainer
+                    seconds={10}
+                    refresh={100}
+                    render={SecondsTimer}
+                />
             </Spoiler>
             <br />
             <br />
