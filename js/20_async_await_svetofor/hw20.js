@@ -1,6 +1,10 @@
-const delaySec = (sec) => new Promise((ok) => setTimeout(() => ok(sec), sec * 1000));
+const delaySec = (sec) =>
+    new Promise((ok) => setTimeout(() => ok(sec), sec * 1000));
 
-async function trafficLight(domElement, { redSec = 5, yellowSec = 2, greenSec = 3 } = {}) {
+async function trafficLight(
+    domElement,
+    { redSec = 5, yellowSec = 2, greenSec = 3 } = {}
+) {
     while (true) {
         domElement.children[2].style.background = "green";
         await delaySec(greenSec);
@@ -38,10 +42,14 @@ let domEventPromise = (domElement, eventName) =>
             domElement.removeEventListener(eventName, res);
             console.log("domEventPromise - done");
         };
+
         domElement.addEventListener(eventName, res);
     });
 
-knopka2.onclick = () => domEventPromise(knopka, "click").then((e) => console.log("event click happens", e));
+knopka2.onclick = () =>
+    domEventPromise(knopka, "click").then((e) =>
+        console.log("event click happens", e)
+    );
 
 //
 
@@ -55,7 +63,10 @@ function innerTimer(domElement, sec) {
     setTimeout(() => (domElement.innerText = ""), sec * 1000);
 }
 
-async function pedestrianTrafficLight(domElement, { redSec = 10, greenSec = 3 } = {}) {
+async function pedestrianTrafficLight(
+    domElement,
+    { redSec = 10, greenSec = 3 } = {}
+) {
     domElement.children[1].style.background = "lightgreen";
     innerTimer(domElement.children[1], greenSec);
     await delaySec(greenSec);
@@ -132,13 +143,16 @@ async function pedestrianManageBtn(domElement) {
             isGoButtonPressed = true;
             innerTimer(goButton, goButtonDelay + greenDelay);
             setTimeout(() => {
-                if (domElement.children[1].style.background !== "lightgreen") goButton.disabled = false;
+                if (domElement.children[1].style.background !== "lightgreen")
+                    goButton.disabled = false;
                 goButton.innerText = "GO";
             }, (goButtonDelay + greenDelay) * 1000);
         });
 
         while (!isGoButtonPressed) {
-            await Promise.race([btn, (red = redLite(redDelay))]).then(() => (green = greenLite(greenDelay)));
+            await Promise.race([btn, (red = redLite(redDelay))]).then(
+                () => (green = greenLite(greenDelay))
+            );
             await Promise.all([red, green]);
             console.log("await Promise.all([red, green])");
         }
@@ -207,7 +221,8 @@ pedestrianManageBtn(lights2btn);
 // Для отладки попробуйте на delay (пример выше есть, реальное время будет отличаться на единицы - десятки миллисекунд).
 // Потом можете попробовать на swapi.dev.Не создавайте чрезмерно много параллельных запросов.
 
-const delay = (msec) => new Promise((resolve) => setTimeout(() => resolve(msec), msec));
+const delay = (msec) =>
+    new Promise((resolve) => setTimeout(() => resolve(msec), msec));
 
 let setTimer = function () {
     let timeStart = performance.now();
@@ -224,7 +239,8 @@ async function speedtest(getPromise, count = 1, parallel = 1) {
 
     duration = setTimer();
     for (let iterations = 0; iterations < count; iterations++) {
-        for (let together = 0; together < parallel; together++) promiseArr.push(getPromise());
+        for (let together = 0; together < parallel; together++)
+            promiseArr.push(getPromise());
 
         // let timer = setTimer();
         await Promise.all(promiseArr);
@@ -245,8 +261,12 @@ async function speedtest(getPromise, count = 1, parallel = 1) {
     };
 }
 
-speedtest(() => delay(1000), 10, 10).then((result) => console.log(" delay(1000) ", result));
-
-speedtest(() => fetch("http://swapi.dev/api/people/1").then((res) => res.json()), 10, 5).then((result) =>
-    console.log(" swapi.dev ", result)
+speedtest(() => delay(1000), 10, 10).then((result) =>
+    console.log(" delay(1000) ", result)
 );
+
+speedtest(
+    () => fetch("http://swapi.dev/api/people/1").then((res) => res.json()),
+    10,
+    5
+).then((result) => console.log(" swapi.dev ", result));
