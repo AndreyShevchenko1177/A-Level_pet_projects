@@ -288,9 +288,19 @@ const TimerControl = () => {
     );
 };
 
+//
+
+//
+
+//
+
 const SecondsTimer = ({ seconds }) => <h2>{seconds}</h2>;
 
-const TimerContainer = ({ seconds = 1800, refresh = 100, render: Render }) => {
+const TimerContainer = ({
+    seconds = 1800,
+    refresh = 100,
+    render: Render = SecondsTimer,
+}) => {
     const [startMoment, setStartMoment] = useState(0);
     const [timeLeft, setTimeLeft] = useState(seconds);
     const intervalId = useRef(null);
@@ -448,7 +458,7 @@ const App = () => {
             <br />
 
             {/*  ================================================================================= */}
-            <Spoiler header="TimerContainer" open={true}>
+            <Spoiler header="TimerContainer" open={false}>
                 {`const SecondsTimer = ({seconds}) => <h2>{seconds}</h2>`}
                 <br />
                 <br />
@@ -493,11 +503,7 @@ const App = () => {
                 </ul>
                 <br />
                 <br />
-                <TimerContainer
-                    seconds={10}
-                    refresh={100}
-                    render={SecondsTimer}
-                />
+                <TimerContainer seconds={100} />
             </Spoiler>
             <br />
             <br />
