@@ -306,10 +306,10 @@ const TimerContainer = ({
     const intervalId = useRef(null);
     const count = useRef(1);
 
-    console.log(timeLeft);
+    // console.log(timeLeft);
 
     const checkTime = () => {
-        console.log("checkTime");
+        // console.log("checkTime");
         if (count.current <= timeLeft) {
             if (
                 performance.now() / 1000 - startMoment / 1000 >=
