@@ -288,12 +288,6 @@ const TimerControl = () => {
     );
 };
 
-//
-
-//
-
-//
-
 const SecondsTimer = ({ seconds }) => <h2>{seconds}</h2>;
 
 const TimerContainer = ({
@@ -336,6 +330,12 @@ const TimerContainer = ({
         </>
     );
 };
+
+const TimerPresentation = ({ seconds }) => (
+    <h1>
+        <Timer sec={seconds} startWithPause={true} />
+    </h1>
+);
 
 //
 
@@ -503,7 +503,18 @@ const App = () => {
                 </ul>
                 <br />
                 <br />
-                <TimerContainer seconds={100} />
+                <TimerContainer seconds={900} />
+            </Spoiler>
+            <br />
+            <br />
+
+            {/*  ================================================================================= */}
+            <Spoiler header="LCD" open={false}>
+                Сделайте из компонента Timer presentation компонент без state,
+                прикрутите его к TimerContainer
+                <br />
+                <br />
+                <TimerContainer seconds={900} render={TimerPresentation} />
             </Spoiler>
             <br />
             <br />
