@@ -7,7 +7,10 @@
     </head>
     <body>
         <div class="wrapper" style="display: inline-flex">
-            <div id="div1" style="margin: 10px; min-width: 400px; border: 2px solid red"></div>
+            <div
+                id="div1"
+                style="margin: 10px; min-width: 400px; border: 2px solid red"
+            ></div>
             <div id="div2" style="margin: 10px; border: 2px solid red"></div>
         </div>
         <script>
@@ -85,14 +88,21 @@
 
                     xhr.onload = function () {
                         if ((this.status = 200)) ok(this.response);
-                        else fail(new Error(`Ошибка. Статус ${this.status}: ${this.statusText}`));
+                        else
+                            fail(
+                                new Error(
+                                    `Ошибка. Статус ${this.status}: ${this.statusText}`
+                                )
+                            );
                     };
 
                     // xhr.onerror = function (e) {
                     //     fail(`Ошибка2 ${this.status}: ${this.statusText} +++ ${e}`);
                     // };
 
-                    xhr.addEventListener("error", () => fail(new Error("Network error")));
+                    xhr.addEventListener("error", () =>
+                        fail(new Error("Network error"))
+                    );
 
                     xhr.send(null);
                 });
@@ -133,9 +143,15 @@
             document.body.append(faster);
 
             btn.onclick = function () {
-                let delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(`Delay ${ms} ms`), ms));
+                let delay = (ms) =>
+                    new Promise((resolve) =>
+                        setTimeout(() => resolve(`Delay ${ms} ms`), ms)
+                    );
                 console.log("GO!");
-                Promise.race([delay(+msInput.value), myfetch("https://swapi.dev/api/people/1/")]).then(
+                Promise.race([
+                    delay(+msInput.value),
+                    myfetch("https://swapi.dev/api/people/1/"),
+                ]).then(
                     (ok) => {
                         faster.value = ok;
                         console.log(ok);

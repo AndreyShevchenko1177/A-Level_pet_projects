@@ -1,5 +1,9 @@
 import React, { Component, useEffect, useState, useRef } from "react";
 import "./App.css";
+import clockFace from "./imgages/ClockFace.png";
+import clockFaceH from "./imgages/ClockFace_H.png";
+import clockFaceM from "./imgages/ClockFace_M.png";
+import clockFaceS from "./imgages/ClockFace_S.png";
 
 const ButtonCounter = ({ KOGOMALUVATY }) => {
     const [counter, setCounter] = useState(0);
@@ -185,7 +189,7 @@ const Timer = ({ sec = 0, startWithPause = true }) => {
     useEffect(() => {
         setTimeLeft(sec);
         setPause(startWithPause);
-        return () => console.log("помер");
+        // return () => console.log("помер");
     }, [sec, startWithPause]);
 
     let h, m, s;
@@ -300,8 +304,6 @@ const TimerContainer = ({
     const intervalId = useRef(null);
     const count = useRef(1);
 
-    // console.log(timeLeft);
-
     const checkTime = () => {
         // console.log("checkTime");
         if (count.current <= timeLeft) {
@@ -311,8 +313,6 @@ const TimerContainer = ({
             ) {
                 count.current++;
                 setTimeLeft((prev) => prev - 1);
-                // почему setTimeLeft(timer - 1) не срабатывает???
-                // console.log("!!!", timeLeft, count.current); //????????????????????
             }
         } else {
             clearInterval(intervalId.current);
@@ -336,6 +336,37 @@ const TimerPresentation = ({ seconds }) => (
         <Timer sec={seconds} startWithPause={true} />
     </h1>
 );
+
+const WatchPresentation = ({ seconds = 0 }) => {
+    let h = Math.floor(seconds / 3600);
+    let m = Math.floor((seconds % 3600) / 60);
+    let s = seconds % 60;
+
+    let sDeg = s * 6; // 360°:60сек = 6° для одной минуты и для 1 секунды
+    let mDeg = (m + s / 60) * 6;
+    let hDeg = (h + m / 60 + s / 3600) * 30; // 360°:12часов = 30° для одного часа
+
+    return (
+        <>
+            {`${seconds} - ${h}:${m}:${s}`}
+            <div className="watch">
+                <img src={clockFace}></img>
+                <img
+                    src={clockFaceH}
+                    style={{ transform: `rotate(${hDeg}deg)` }}
+                ></img>
+                <img
+                    src={clockFaceM}
+                    style={{ transform: `rotate(${mDeg}deg)` }}
+                ></img>
+                <img
+                    src={clockFaceS}
+                    style={{ transform: `rotate(${sDeg}deg)` }}
+                ></img>
+            </div>
+        </>
+    );
+};
 
 //
 
@@ -515,6 +546,37 @@ const App = () => {
                 <br />
                 <br />
                 <TimerContainer seconds={900} render={TimerPresentation} />
+            </Spoiler>
+            <br />
+            <br />
+
+            {/*  ================================================================================= */}
+            <Spoiler header="Watch" open={true}>
+                Реализуйте часы со стрелками в качестве presentation компонента:
+                <ul>
+                    <li>квадратный блок-контейнер</li>
+                    <li>
+                        стрелки и, возможно, цифры позиционируются с помощью
+                        transform: rotate(УГОЛdeg)
+                    </li>
+                    <li>
+                        В верстке используйте position absolute для накладывания
+                        блоков стрелок и цифр друг на друга (это даст общий
+                        центр вращения)
+                    </li>
+                    <li>
+                        для корректного центра вращения блок со стрелкой или
+                        цифрой должен быть шириной с родительский квадратный
+                        блок
+                    </li>
+                    <li>
+                        есть еще всякий css (text-orientation) для вращения цифр
+                        внутри повернутого блока
+                    </li>
+                </ul>
+                <br />
+                <br />
+                <TimerContainer seconds={1800} render={WatchPresentation} />
             </Spoiler>
             <br />
             <br />
