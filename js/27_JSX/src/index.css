@@ -15,14 +15,14 @@ code {
 .watch {
     background-color: lime;
     position: relative;
-    width: 410px;
-    height: 410px;
+    width: 260px;
+    height: 260px;
     border-radius: 50%;
     margin: 10px;
 }
 
 .watch img {
-    width: 400px;
+    width: 250px;
     margin: 0;
     position: absolute;
     left: 5px;

@@ -172,11 +172,6 @@ const PasswordConfirm = ({ min = 1, onLogin }) => {
 };
 
 const Timer = ({ sec = 0, startWithPause = true }) => {
-    // если во время работы счетчика скрыть спойлер, то весь этот контент помрет
-    // и при открытии спойлера все начнется с начала
-    // чтобы побороть - думаю надо не убивать контент спойлера, а делать просто
-    // display = none (так и есть, все получилось)
-
     const ifSecIsNan = function (sec) {
         if (isNaN(sec)) return 0;
         return sec;
@@ -193,15 +188,6 @@ const Timer = ({ sec = 0, startWithPause = true }) => {
     }, [sec, startWithPause]);
 
     let h, m, s;
-
-    // интересный метод, но барахлит из-за дробных значений
-    // надо будет переписать с банальным делением
-    // h = timeLeft / (60 * 60);
-    // m = (h - ~~h) * 60;
-    // s = (m - ~~m) * 60;
-    // h = Math.floor(h);
-    // m = Math.floor(m);
-    // s = Math.round(s);
 
     h = Math.floor(timeLeft / 3600);
     m = Math.floor((timeLeft - h * 60 * 60) / 60);
@@ -236,34 +222,38 @@ const Timer = ({ sec = 0, startWithPause = true }) => {
     );
 };
 
-const TimerControl = () => {
+const TimerControl = ({
+    counter: Counter = Timer,
+    // render: Render /* = WatchPresentation */,
+    ...props
+}) => {
     const [totalSec, setTotalSec] = useState(0);
-    const [mySwitch, setMySwitch] = useState(false);
     const input_H_ref = useRef(null);
     const input_M_ref = useRef(null);
     const input_S_ref = useRef(null);
-    const interimSec = useRef(0);
+    const [clickCount, setClickCount] = useState(0);
 
     const countTotalSec = function () {
         let total =
             (input_H_ref.current.value * 3600 || 0) +
             (input_M_ref.current.value * 60 || 0) +
             (parseInt(input_S_ref.current.value, 10) || 0);
-        interimSec.current = total;
+        // interimSec.current = total;
+        setTotalSec(total);
     };
 
     return (
         <>
             <input
                 ref={input_H_ref}
-                onInput={countTotalSec}
+                // onInput={countTotalSec}
                 placeholder="hh"
                 type="number"
                 min="0"
             />
             <input
                 ref={input_M_ref}
-                onInput={countTotalSec}
+                // onInput={countTotalSec}
                 placeholder="mm"
                 type="number"
                 min="0"
@@ -271,23 +261,33 @@ const TimerControl = () => {
             />
             <input
                 ref={input_S_ref}
-                onInput={countTotalSec}
+                // onInput={countTotalSec}
                 placeholder="ss"
                 type="number"
                 min="0"
                 max="59"
             />
+
             <button
                 onClick={() => {
-                    setTotalSec(interimSec.current);
-                    setMySwitch(!mySwitch);
+                    countTotalSec();
+                    setClickCount((prev) => prev + 1);
+                    // setMySwitch(!mySwitch);
                 }}
             >
                 Start
             </button>
 
-            {!mySwitch && <Timer sec={totalSec} startWithPause={false} />}
-            {mySwitch && <Timer sec={totalSec} startWithPause={false} />}
+            {
+                <Counter
+                    sec={totalSec}
+                    seconds={totalSec}
+                    startWithPause={false}
+                    clickNumber={clickCount}
+                    {...props}
+                    key={clickCount}
+                />
+            }
         </>
     );
 };
@@ -295,34 +295,40 @@ const TimerControl = () => {
 const SecondsTimer = ({ seconds }) => <h2>{seconds}</h2>;
 
 const TimerContainer = ({
-    seconds = 1800,
+    seconds = 0,
     refresh = 100,
+    clickNumber = 0,
     render: Render = SecondsTimer,
 }) => {
-    const [startMoment, setStartMoment] = useState(0);
+    const [startMoment, setStartMoment] = useState(performance.now());
     const [timeLeft, setTimeLeft] = useState(seconds);
-    const intervalId = useRef(null);
+    const [clickCount, setClickCount] = useState(0);
     const count = useRef(1);
+    const intervalId = useRef(null);
 
-    const checkTime = () => {
-        // console.log("checkTime");
-        if (count.current <= timeLeft) {
-            if (
-                performance.now() / 1000 - startMoment / 1000 >=
-                count.current
-            ) {
-                count.current++;
-                setTimeLeft((prev) => prev - 1);
-            }
-        } else {
-            clearInterval(intervalId.current);
-        }
+    // console.log(timeLeft, clickCount);
+
+    const trackTime = () => {
+        intervalId.current = setInterval(() => {
+            console.log("interval");
+            if (timeLeft >= count.current) {
+                if ((performance.now() - startMoment) / 1000 > count.current) {
+                    count.current++;
+                    setTimeLeft((prev) => prev - 1);
+                }
+            } else clearInterval(intervalId.current);
+        }, refresh);
     };
 
     useEffect(() => {
+        clearInterval(intervalId.current);
+        setClickCount(clickNumber);
+        setTimeLeft(seconds);
+        count.current = 1;
         setStartMoment(performance.now());
-        intervalId.current = setInterval(checkTime, refresh);
-    }, []);
+        trackTime();
+        return () => clearInterval(intervalId.current);
+    }, [clickNumber]);
 
     return (
         <>
@@ -350,17 +356,20 @@ const WatchPresentation = ({ seconds = 0 }) => {
         <>
             {`${seconds} - ${h}:${m}:${s}`}
             <div className="watch">
-                <img src={clockFace}></img>
+                <img src={clockFace} alt=""></img>
                 <img
                     src={clockFaceH}
+                    alt=""
                     style={{ transform: `rotate(${hDeg}deg)` }}
                 ></img>
                 <img
                     src={clockFaceM}
+                    alt=""
                     style={{ transform: `rotate(${mDeg}deg)` }}
                 ></img>
                 <img
                     src={clockFaceS}
+                    alt=""
                     style={{ transform: `rotate(${sDeg}deg)` }}
                 ></img>
             </div>
@@ -534,7 +543,7 @@ const App = () => {
                 </ul>
                 <br />
                 <br />
-                <TimerContainer seconds={900} />
+                <TimerContainer seconds={1800} />
             </Spoiler>
             <br />
             <br />
@@ -545,13 +554,13 @@ const App = () => {
                 прикрутите его к TimerContainer
                 <br />
                 <br />
-                <TimerContainer seconds={900} render={TimerPresentation} />
+                <TimerContainer seconds={1800} render={TimerPresentation} />
             </Spoiler>
             <br />
             <br />
 
             {/*  ================================================================================= */}
-            <Spoiler header="Watch" open={true}>
+            <Spoiler header="Watch" open={false}>
                 Реализуйте часы со стрелками в качестве presentation компонента:
                 <ul>
                     <li>квадратный блок-контейнер</li>
@@ -577,6 +586,21 @@ const App = () => {
                 <br />
                 <br />
                 <TimerContainer seconds={1800} render={WatchPresentation} />
+            </Spoiler>
+            <br />
+            <br />
+
+            {/*  ================================================================================= */}
+            <Spoiler header="TimerControl + TimerContainer" open={false}>
+                Используя TimerControl обновите его код, в котором будет
+                использоваться не Timer, а новый контейнерный компонент
+                <br />
+                <br />
+                {/* <TimerContainer seconds={1800} render={WatchPresentation} /> */}
+                <TimerControl
+                    counter={TimerContainer}
+                    render={WatchPresentation}
+                />
             </Spoiler>
             <br />
             <br />
