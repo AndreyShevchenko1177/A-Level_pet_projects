@@ -13,22 +13,14 @@ export const TimerControl = ({ counter: Counter = Timer, ...props }) => {
             (input_H_ref.current.value * 3600 || 0) +
             (input_M_ref.current.value * 60 || 0) +
             (parseInt(input_S_ref.current.value, 10) || 0);
-        // interimSec.current = total;
         setTotalSec(total);
     };
 
     return (
         <>
-            <input
-                ref={input_H_ref}
-                // onInput={countTotalSec}
-                placeholder="hh"
-                type="number"
-                min="0"
-            />
+            <input ref={input_H_ref} placeholder="hh" type="number" min="0" />
             <input
                 ref={input_M_ref}
-                // onInput={countTotalSec}
                 placeholder="mm"
                 type="number"
                 min="0"
@@ -36,7 +28,6 @@ export const TimerControl = ({ counter: Counter = Timer, ...props }) => {
             />
             <input
                 ref={input_S_ref}
-                // onInput={countTotalSec}
                 placeholder="ss"
                 type="number"
                 min="0"
@@ -47,7 +38,6 @@ export const TimerControl = ({ counter: Counter = Timer, ...props }) => {
                 onClick={() => {
                     countTotalSec();
                     setClickCount((prev) => prev + 1);
-                    // setMySwitch(!mySwitch);
                 }}
             >
                 Start

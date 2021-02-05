@@ -24,7 +24,6 @@ export const Timer = ({ sec = 0, startWithPause = true }) => {
 
     if (timeLeft === 0) {
         clockface.current && (clockface.current.style.backgroundColor = "red");
-        // setTimeout(() => clockface.current.remove(), 5000);
     } else {
         clockface.current &&
             (clockface.current.style.backgroundColor = "white");
