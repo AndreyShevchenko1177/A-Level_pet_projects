@@ -44,8 +44,10 @@ async function setLoginFromToken() {
     loginName = defaultLoginName;
     loginId = defaultLoginId;
     try {
-        loginName = await JSON.parse(atob(localStorage.authToken.split(".")[1])).sub.login;
-        loginId = await JSON.parse(atob(localStorage.authToken.split(".")[1])).sub.id;
+        loginName = await JSON.parse(atob(localStorage.authToken.split(".")[1]))
+            .sub.login;
+        loginId = await JSON.parse(atob(localStorage.authToken.split(".")[1]))
+            .sub.id;
         updateBasketObj();
     } catch (error) {
         console.log(
@@ -98,7 +100,10 @@ async function updateBasketObj() {
         let temp = await JSON.stringify(basketObj);
         localStorage.basket = temp;
     } catch (error) {
-        console.log("Ошибка localStorage.basket = JSON.stringify(basketObj) - ", error);
+        console.log(
+            "Ошибка localStorage.basket = JSON.stringify(basketObj) - ",
+            error
+        );
     }
 }
 
@@ -128,7 +133,12 @@ async function categories(parentEl = leftSide, parentID = null) {
                 name
             }
         }`,
-        { query: JSON.stringify([{ "parent._id": parentID }, { sort: [{ name: 1 }] }]) }
+        {
+            query: JSON.stringify([
+                { "parent._id": parentID },
+                { sort: [{ name: 1 }] },
+            ]),
+        }
     );
     if (result.errors) return;
 
@@ -144,7 +154,10 @@ async function categories(parentEl = leftSide, parentID = null) {
         li.onclick = (event) => {
             if (event) event.stopPropagation();
             li.parentElement.parentElement.style.fontWeight = "";
-            [].forEach.call(li.parentElement.children, (el) => (el.style.fontWeight = ""));
+            [].forEach.call(
+                li.parentElement.children,
+                (el) => (el.style.fontWeight = "")
+            );
             li.style.fontWeight = "700";
 
             if (!loaded) {
@@ -200,12 +213,18 @@ async function showGoodsInCategory(parentEl, _id) {
                 }
             }
         }`,
-        { sort: JSON.stringify([{ "categories._id": _id }, { sort: [{ name: 1 }] }]) }
+        {
+            sort: JSON.stringify([
+                { "categories._id": _id },
+                { sort: [{ name: 1 }] },
+            ]),
+        }
     );
 
     if (result.errors) return;
 
-    for (let { name, _id, description, price, images } of result.data.GoodFind) {
+    for (let { name, _id, description, price, images } of result.data
+        .GoodFind) {
         let shelfToker = document.createElement("div");
         shelfToker.classList.add("shelfToker");
 
@@ -254,7 +273,9 @@ async function showGoodsInCategory(parentEl, _id) {
                     forImgSrc.src =
                         urlConst +
                         `/` +
-                        images[namberOfImg++ % (images.lenght ? images.lenght : 1)].url;
+                        images[
+                            namberOfImg++ % (images.lenght ? images.lenght : 1)
+                        ].url;
                 };
 
                 let imgKeyEsc = (ev) => {
@@ -289,9 +310,16 @@ async function showGoodsInCategory(parentEl, _id) {
         };
 
         shelfToker.append(putInBasketBtn);
-        shelfToker.insertAdjacentHTML("beforeEnd", `<div>${_id} - id товара</div>`);
+        shelfToker.insertAdjacentHTML(
+            "beforeEnd",
+            `<div>${_id} - id товара</div>`
+        );
 
-        let shelfTokerExitBtn = appendActionBtn(shelfToker, { onTop: false }, "Вернуться назад");
+        let shelfTokerExitBtn = appendActionBtn(
+            shelfToker,
+            { onTop: false },
+            "Вернуться назад"
+        );
         shelfTokerExitBtn.classList.add("shelfTokerExitBtn");
     }
 }
@@ -311,7 +339,12 @@ async function showAllGoodsInAllSubcategories(parentEl, catId) {
                 
             }
         }`,
-        { subcat: JSON.stringify([{ "parent._id": catId }, { sort: [{ name: 1 }] }]) }
+        {
+            subcat: JSON.stringify([
+                { "parent._id": catId },
+                { sort: [{ name: 1 }] },
+            ]),
+        }
     );
 
     if (result.errors) return;
@@ -542,7 +575,11 @@ async function showOrderHistory(parentNode) {
     forBasket.scrollTop = 0;
 }
 
-const appendActionBtn = function (parent, { onTop = false }, innerText = "Вернуться назад") {
+const appendActionBtn = function (
+    parent,
+    { onTop = false },
+    innerText = "Вернуться назад"
+) {
     let exitBtn = document.createElement("button");
     exitBtn.append(innerText);
     if (onTop) {
@@ -559,7 +596,10 @@ const appendActionBtn = function (parent, { onTop = false }, innerText = "Вер
     return exitBtn;
 };
 
-const showOrder = function (parent, { orderGoods: orderArray, total: total1Order }) {
+const showOrder = function (
+    parent,
+    { orderGoods: orderArray, total: total1Order }
+) {
     for (let { good, price, count, total: total1pozition } of orderArray) {
         if (!good) {
             good = {
@@ -626,22 +666,26 @@ async function showBasket(parent) {
 
     appendActionBtn(parent, { onTop: false }, "Вернуться назад");
 
+    let btn = appendActionBtn(
+        parent,
+        { onTop: false },
+        "Оформить заказ (купить)"
+    );
+    btn.setAttribute("id", "buyBtn");
+    if (!Object.keys(basketObj[loginId]).length || loginId === "0") {
+        btn.setAttribute("disabled", "disabled");
+    }
+
+    btn.onclick = async function () {
+        parent.style.display = "none";
+        parent.innerHTML = "";
+        await buy();
+    };
+
     if (loginId === "0") {
         let h = document.createElement("h3");
         h.append("Для оформления заказа необходимо авторизоваться");
         parent.append(h);
-    } else {
-        let btn = appendActionBtn(parent, { onTop: false }, "Оформить заказ (купить)");
-        btn.setAttribute("id", "buyBtn");
-        if (!Object.keys(basketObj[loginId]).length) {
-            btn.setAttribute("disabled", "disabled");
-        }
-
-        btn.onclick = async function () {
-            parent.style.display = "none";
-            parent.innerHTML = "";
-            await buy();
-        };
     }
 }
 
@@ -724,7 +768,17 @@ async function show1goodFromBasket(parent, _id, count) {
             buyBtn.setAttribute("disabled", "disabled");
         }
         await updateBasketObj();
-        div.remove();
+        // div.remove();
+        CountTotal(parent);
+    };
+    addEventListener();
+    btn.onclick = async function () {
+        delete basketObj[loginId][_id];
+        if (!Object.keys(basketObj[loginId]).length) {
+            buyBtn.setAttribute("disabled", "disabled");
+        }
+        await updateBasketObj();
+        // div.remove();
         CountTotal(parent);
     };
 }
@@ -750,12 +804,17 @@ async function buy() {
     );
 
     if (result.errors) {
-        console.log("не смог получить товар из DB для отображения в корзине:", result.errors);
+        console.log(
+            "не смог получить товар из DB для отображения в корзине:",
+            result.errors
+        );
         return;
     }
 
     console.log(result.data.OrderUpsert.total);
-    alert(`Ваш заказ успешно оформлен. \nОбщая сумма заказа $${result.data.OrderUpsert.total}`);
+    alert(
+        `Ваш заказ успешно оформлен. \nОбщая сумма заказа $${result.data.OrderUpsert.total}`
+    );
     for (let key in basketObj[loginId]) {
         delete basketObj[loginId][key];
     }
