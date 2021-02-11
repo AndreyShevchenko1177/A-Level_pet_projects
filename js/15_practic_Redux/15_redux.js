@@ -27,7 +27,6 @@ let store = createStore(({ type }, state = true) => {
     return state;
 });
 
-document.wr;
 
 //console.log(store.getState())
 

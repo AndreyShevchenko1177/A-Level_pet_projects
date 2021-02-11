@@ -66,11 +66,15 @@
 
             fetch("https://swapi.dev/api/people/1/")
                 .then((res) => res.json())
-                .then((luke) => objectToDom(div1, luke));
+                .then((luke) => {
+                    objectToDom(div1, luke);
+                    objectToDom(div2, luke);
+                    console.log(luke);
+                });
 
-            fetch("https://swapi.dev/api/people/1/")
-                .then((res) => res.json())
-                .then((luke) => objectToDom(div2, luke));
+            // fetch("https://swapi.dev/api/people/1/")
+            //     .then((res) => res.json())
+            //     .then((luke) => objectToDom(div2, luke));
 
             //
 

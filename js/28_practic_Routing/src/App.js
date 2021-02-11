@@ -11,6 +11,7 @@ const menuItems = {
     '/about' : 'About',
     '/add/2/2' : '2 + 2',
     '/add/3/10' : '3 + 10',
+    '/category/5': 'категория-5'
 }
 
 const MenuItem = ({url, text}) => 
