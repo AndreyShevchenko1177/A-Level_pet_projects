@@ -1,0 +1,17 @@
+li {
+    list-style: none;
+}
+
+.GoodCard {
+    figure {
+        img {
+            max-width: 50vw;
+        }
+    }
+    figcaption {
+        font-weight: bold;
+    }
+    button {
+        font-size: 2em;
+    }
+}
