@@ -6,8 +6,6 @@ import { Provider, connect } from "react-redux";
 import "./App.scss";
 import jwt_decode from "jwt-decode";
 
-
-
 function authReducer(state, action) {
     if (state === undefined) {
         if (!localStorage.authToken) {
@@ -77,10 +75,7 @@ export const actionPromise = (name, promise) => {
     };
 };
 
-
-
-const store = createStore(combineReducers({ promise: promiseReducer, auth: authReducer }), 
-                                            applyMiddleware(thunk));
+const store = createStore(combineReducers({ promise: promiseReducer, auth: authReducer }), applyMiddleware(thunk));
 
 store.subscribe(() => console.log(store.getState()));
 
@@ -120,6 +115,7 @@ const actionLogin = (login, password) => async (dispatch) => {
             )
         )
     );
+
     if (loginData && loginData.data.login) {
         dispatch(actionAuthLogin(loginData.data.login));
     }
@@ -163,7 +159,7 @@ const PasswordConfirm = ({ onLogin = null, isLoggedIn }) => {
     );
 };
 
-const CPasswordConfirm = connect((s) => ({isLoggedIn: s.auth.login}),{ onLogin: actionLogin })(PasswordConfirm);
+const CPasswordConfirm = connect((s) => ({ isLoggedIn: s.auth.login }), { onLogin: actionLogin })(PasswordConfirm);
 
 const LoginTablo = ({ loginName }) => <div>{`Your loginname: ${loginName || ""}`}</div>;
 const CLoginTablo = connect((s) => ({ loginName: s.auth.payload }), null)(LoginTablo);
