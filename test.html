@@ -7,9 +7,27 @@
         <title>Document</title>
     </head>
     <body>
-        <img
-            src="http://marketplace.asmer.fs.a-level.com.ua/images/b3e910bcdd497bceb7df5f4c54966379"
-            alt=""
-        />
+        <img src="http://marketplace.asmer.fs.a-level.com.ua/images/b3e910bcdd497bceb7df5f4c54966379" alt="" />
+        <!-- Простая форма, которая пошлёт GET запрос -->
+        <form action="">
+            <label for="GET-name">Name:</label>
+            <input id="GET-name" type="text" name="name" />
+            <input type="submit" value="Save" />
+        </form>
+
+        <!-- Простая форма, которая пошлёт POST запрос -->
+        <form action="" method="post">
+            <label for="POST-name">Name:</label>
+            <input id="POST-name" type="text" name="name" />
+            <input type="submit" value="Save" />
+        </form>
+
+        <!-- Форма с fieldset, legend, и label -->
+        <form action="" method="post">
+            <fieldset>
+                <legend>Title</legend>
+                <input type="radio" name="radio" id="radio" /> <label for="radio">Click me</label>
+            </fieldset>
+        </form>
     </body>
 </html>
