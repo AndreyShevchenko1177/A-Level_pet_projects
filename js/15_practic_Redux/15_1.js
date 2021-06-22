@@ -1,3 +1,5 @@
+//
+
 function createStoreMy(reducer) {
     let state = reducer({});
     let cbs = [];
@@ -28,6 +30,8 @@ let storeMy = createStoreMy(({ type }, state = true) => {
     if (type === "RESET") return false;
     if (type === "TOGGLE") return !state;
 });
+
+let store2 = createStoreMy(() => {});
 
 storeMy.subscribe(() => console.log(storeMy.getState()));
 
