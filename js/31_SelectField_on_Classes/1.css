@@ -1,0 +1,10 @@
+*
+
+#customSelectFieldArea {
+
+border: 2px solid red;
+min-height: 50px;
+min-width:  50px;
+background-color: white;
+
+}
